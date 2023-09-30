@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "713461462365",
+    "project_id": "globecarry",
+    "storage_bucket": "globecarry.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713461462365:android:7029ece78b0dbc5c47e4b4",
+        "android_client_info": {
+          "package_name": "com.example.globe_carry"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB05nYY9CoxbBOG8d_TZyulRkA7uIp8rVI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
