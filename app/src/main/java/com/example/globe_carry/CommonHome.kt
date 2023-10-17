@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -28,6 +29,7 @@ class CommonHome : AppCompatActivity() {
     private lateinit var linearNavbarItem1 : LinearLayout
     private lateinit var linearNavbarItem2 : LinearLayout
     private lateinit var linearNavbarItem3 : LinearLayout
+    private lateinit var linearRowsend : LinearLayout
     private lateinit var userAuth: FirebaseAuth
     private lateinit var profileImageView: ImageView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -59,6 +61,10 @@ class CommonHome : AppCompatActivity() {
             swipeRefreshLayout.isRefreshing = false
         }
 
+        linearRowsend = findViewById(R.id.linearRowsend)
+        linearRowsend.setOnClickListener { view ->
+            Log.d("Button Send Clicked","Button Send Clicked")
+        }
 
         linearNavbarItem1 = findViewById(R.id.linearNavbarItem1)
         linearNavbarItem2 = findViewById(R.id.linearNavbarItem2)

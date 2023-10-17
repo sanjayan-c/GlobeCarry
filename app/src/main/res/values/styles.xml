@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="usergroupStyleamber_300cornerRadius">
+        <item name="android:background">@drawable/home_send</item>
+    </style>
+    <style name="usertxtPoppinsbold14">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white_A700</item>
+        <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+</resources>
