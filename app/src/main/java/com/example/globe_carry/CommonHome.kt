@@ -144,6 +144,7 @@ class CommonHome : AppCompatActivity() {
 
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+
                 R.id.logout -> {
                     // Perform the logout action
                     userAuth= FirebaseAuth.getInstance()
@@ -168,6 +169,16 @@ class CommonHome : AppCompatActivity() {
             when (item.itemId) {
                 R.id.help -> {
                     val intent = Intent(this@CommonHome,HelpCenter::class.java)
+                    startActivity(intent)
+                    true
+                }
+                // Add more menu items and their actions here
+                else -> false
+            }
+            when (item.itemId) {
+
+                R.id.profile -> {
+                    val intent = Intent(this@CommonHome, CommonUserProfile::class.java)
                     startActivity(intent)
                     true
                 }
