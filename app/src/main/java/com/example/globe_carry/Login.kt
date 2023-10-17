@@ -1,5 +1,6 @@
 package com.example.globe_carry
 
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -72,7 +73,7 @@ class Login : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     //logging in
-                    val intent=Intent(this@Login,UserActivity::class.java)
+                    val intent=Intent(this@Login,CommonHome::class.java)
                     finish()
                     startActivity(intent)
                 } else {
@@ -82,6 +83,33 @@ class Login : AppCompatActivity() {
                 }
             }
     }
-
+//private fun login(email: String, password: String) {
+//    userAuth.signInWithEmailAndPassword(email, password)
+//        .addOnCompleteListener(this) { task ->
+//            if (task.isSuccessful) {
+//                val user = userAuth.currentUser
+//                if (user != null && user.isEmailVerified) {
+//                    // User is authenticated and their email is verified
+//                    Log.d(ContentValues.TAG, "signInWithEmail:success")
+//
+//                    // Proceed to the next screen or perform any other actions
+//                    val intent = Intent(this@Login, UserActivity::class.java)
+//                    startActivity(intent)
+//                    finish()
+//                } else {
+//                    // User is authenticated but their email is not verified
+//                    Toast.makeText(
+//                        this@Login,
+//                        "Please verify your email address first.",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//            } else {
+//                // If sign-in fails, display a message to the user.
+//                Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
+//                Toast.makeText(this@Login, "Authentication failed.", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//}
 }
 //android:theme="@style/Theme.Globe_Carry"

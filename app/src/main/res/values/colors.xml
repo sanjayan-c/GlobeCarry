@@ -5,4 +5,6 @@
     <color name="appcolour">#FFD64D</color>
     <color name="appcolourlight">#FFEBA7</color>
     <color name="red">#FF0000</color>
+    <color name="white_A700">#ffffff</color>
+    <color name="bluegray_100_87">#876C6969</color>
 </resources>

@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login"
+    android:paddingVertical="20dp"
     android:background="@color/appcolour">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/app_logo"
         android:layout_width="500dp"
@@ -24,36 +30,40 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"/>
 
-    <LinearLayout
-        android:id="@+id/layout_password"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/edt_email"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/edt_background">
-
-        <EditText
-            android:id="@+id/edt_password"
-            android:layout_width="320dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_password"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Password"
-            android:padding="10dp"
-            android:backgroundTint="@android:color/transparent"
-            android:inputType="textPassword"/>
+            android:layout_below="@id/edt_email"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/edt_background">
 
-        <ImageView
-            android:id="@+id/imgPasswordVisibility"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:src="@drawable/visibility"
-            android:contentDescription="Toggle Password Visibility"
-            android:clickable="true"
-            android:padding="10dp"
-            android:layout_alignParentEnd="true"/>
-    </LinearLayout>
+            <EditText
+                android:id="@+id/edt_password"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:hint="Password"
+                android:padding="10dp"
+                android:backgroundTint="@android:color/transparent"
+                android:inputType="textPassword"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imgPasswordVisibility"/>
+
+            <ImageView
+                android:id="@+id/imgPasswordVisibility"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:src="@drawable/visibility"
+                android:contentDescription="Toggle Password Visibility"
+                android:clickable="true"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_alignParentEnd="true"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/btnLogin"
@@ -73,22 +83,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/text_register"
+        android:layout_below="@+id/btnLogin"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         android:text="Don't have an account?"
         android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/text_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="16sp"
-        android:clickable="true"
-        android:onClick="onRegisterClicked"
-        android:paddingBottom="10dp"
-        android:textStyle="bold"
-        android:background="?android:attr/selectableItemBackground"
-        android:layout_marginBottom="32dp"/>
+        <TextView
+            android:id="@+id/text_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="Register"
+            android:textSize="16sp"
+            android:clickable="true"
+            android:layout_below="@+id/text_dont_have_account"
+            android:layout_alignParentBottom="true"
+            android:onClick="onRegisterClicked"
+            android:textStyle="bold" />
 </RelativeLayout>
+</ScrollView>
