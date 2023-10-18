@@ -14,4 +14,5 @@
     <color name="indigo_A200">#4471fe</color>
     <color name="red_A200_aa">#aaf94c4c</color>
     <color name="red_A200_aa1">#aafa4d4d</color>
+    <color name="light_white">#F7F4F4</color>
 </resources>
