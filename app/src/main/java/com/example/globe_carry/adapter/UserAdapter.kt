@@ -2,10 +2,15 @@ package com.example.globe_carry.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ChatActivity
 import com.example.globe_carry.R
@@ -34,9 +39,21 @@ class UserAdapter(val context: Context, val userList:ArrayList<User>):
         // Get the chat room ID for the selected chat
         val chatRoom = FirebaseAuth.getInstance().currentUser?.uid+currentUser.uid // Replace with the actual chat room ID
         println(chatRoom)
-        getUnreadMessageCount(chatRoom, holder.textUnreadCount)
+        getUnreadMessageCount(chatRoom, holder.textUnreadCount,holder.msgItemType,holder.msgLayout)
 
-        holder.itemView.setOnClickListener{
+        // Retrieve the last message's timestamp from Firebase
+        getLastMessageTimestamp(chatRoom) { lastMessageTimestamp ->
+            // Now, you have the last message's timestamp, set it to homeItemPostDate
+            holder.msgItemPostDate.text = lastMessageTimestamp
+        }
+
+        val chat = "CHAT  >"
+        val mSpannableString = SpannableString(chat)
+        mSpannableString.setSpan(UnderlineSpan(), 0, mSpannableString.length, 0)
+        holder.msgItemDetails.text = mSpannableString
+
+        holder.msgItemDetails.setOnClickListener{
+            Log.d("Click","Click")
             val intent = Intent(context, ChatActivity::class.java)
 
             intent.putExtra("name",currentUser.name)
@@ -73,7 +90,7 @@ class UserAdapter(val context: Context, val userList:ArrayList<User>):
             }
         })
     }
-    private fun getUnreadMessageCount(chatRoom: String, textView: TextView) {
+    private fun getUnreadMessageCount(chatRoom: String, textView: TextView, msgItemType: TextView, msgLayout: ConstraintLayout) {
         userDbRef = FirebaseDatabase.getInstance().getReference()
         val messagesRef = userDbRef.child("chats").child(chatRoom).child("messages")
 
@@ -83,7 +100,21 @@ class UserAdapter(val context: Context, val userList:ArrayList<User>):
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val unreadMessageCount = snapshot.childrenCount.toInt()
-                textView.text = if (unreadMessageCount > 0) "$unreadMessageCount new" else ""
+                if (unreadMessageCount > 0) {
+                    textView.text = "$unreadMessageCount"
+                    textView.visibility = View.VISIBLE
+                }
+
+                // Retrieve the last unread message
+                var lastUnreadMessage: String? = ""
+                for (messageSnapshot in snapshot.children) {
+                    lastUnreadMessage = messageSnapshot.child("message").getValue(String::class.java)
+                }
+                if(lastUnreadMessage!=""){
+                    msgLayout.visibility=View.VISIBLE
+                }
+                // Display the last unread message in msgItemType
+                msgItemType.text = lastUnreadMessage ?: ""
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -91,13 +122,41 @@ class UserAdapter(val context: Context, val userList:ArrayList<User>):
             }
         })
     }
+    private fun getLastMessageTimestamp(chatRoom: String, callback: (String) -> Unit) {
+        userDbRef = FirebaseDatabase.getInstance().getReference()
+        val messagesRef = userDbRef.child("chats").child(chatRoom).child("messages")
+
+        val query = messagesRef.limitToLast(1).orderByKey() // Get the last message
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val lastMessage = snapshot.children.first() // Get the last message
+                    val timestamp = lastMessage.child("timeStamp").getValue(String::class.java) // Assuming "timestamp" is the field in your message object
+                    if (timestamp != null) {
+                        callback(timestamp)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+    }
+
     override fun getItemCount(): Int {
         return userList.size
     }
 
     class UserViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
+        val cardMessage=itemView.findViewById<CardView>(R.id.cardMessage)
         val textName=itemView.findViewById<TextView>(R.id.txt_name)
         val textUnreadCount: TextView = itemView.findViewById(R.id.txt_unread_count)
+        val msgItemType: TextView = itemView.findViewById(R.id.msgItemType)
+        val msgLayout: ConstraintLayout = itemView.findViewById(R.id.msgLayout)
+        val msgItemDetails: TextView = itemView.findViewById(R.id.msgItemDetails)
+        val msgItemPostDate: TextView = itemView.findViewById(R.id.msgItemPostDate)
     }
 
 }

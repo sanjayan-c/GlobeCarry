@@ -17,6 +17,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ChatActivity : AppCompatActivity() {
 
@@ -127,9 +130,14 @@ class ChatActivity : AppCompatActivity() {
                 val senderMessageRef = userDbRef.child("chats").child(senderRoom!!).child("messages").push()
                 val receiverMessageRef = userDbRef.child("chats").child(receiverRoom!!).child("messages").push()
 
+                // Get the current timestamp
+                val timestamp = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(
+                    Date()
+                )
+
                 // Set the read status to false for the sender's message and true for the receiver's message
-                val senderMessage = message.copy(read = false)
-                val receiverMessage = message.copy(read = true)
+                val senderMessage = message.copy(read = false, timeStamp = timestamp)
+                val receiverMessage = message.copy(read = true, timeStamp = timestamp)
 
                 senderMessageRef.setValue(senderMessage).addOnSuccessListener {
                     // Message sent successfully for the sender
