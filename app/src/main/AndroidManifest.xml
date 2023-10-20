@@ -46,11 +46,12 @@
             android:name=".ViewVerificationRequest"
             android:exported="false" />
 
-<!--            android:name=".StaffCommonHome"-->
+<!--      android:name=".StaffCommonHome"       -->
 <!--            android:exported="true">-->
+<!--        android:name=".CommonHome"-->
 
         <activity
-            android:name=".CommonHome"
+            android:name=".Login"
             android:exported="true" >
 
             <intent-filter>

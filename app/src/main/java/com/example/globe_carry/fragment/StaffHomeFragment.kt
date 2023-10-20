@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.globe_carry.CusConSQL
+import com.example.globe_carry.ConnectionSQL
 import com.example.globe_carry.HomeItems
 import com.example.globe_carry.R
 import com.example.globe_carry.Verification
@@ -27,7 +27,7 @@ class StaffHomeFragment: Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private val cusConSQL = CusConSQL()
+    private val cusConSQL = ConnectionSQL()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {

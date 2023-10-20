@@ -12,7 +12,7 @@ import java.sql.SQLException
 import java.sql.Timestamp
 
 class ViewVerificationRequest: AppCompatActivity() {
-    private val cusConSQL = CusConSQL()
+    private val cusConSQL = ConnectionSQL()
     private var intVerficationId :Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
