@@ -51,7 +51,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
-
     implementation ("net.sourceforge.jtds:jtds:1.3.1")
     implementation("mysql:mysql-connector-java:5.1.49")
 }

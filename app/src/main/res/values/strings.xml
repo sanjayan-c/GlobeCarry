@@ -2,4 +2,20 @@
     <string name="app_name">Globe_Carry</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="categories">
+        <item>Gifts</item>
+        <item>Chocolates</item>
+        <item>Electronics</item>
+        <!-- Add more categories as needed -->
+    </string-array>
+    <string name="msg_please_take_an">Please take an image of your passport as shown Keep these points in note:
+Ensure High Quality&amp;
+Ensure High Quality
+Ensure High Quality</string>
+    <string name="msg_please_take_a_s">"Please take a selfie with your document so that it's&#13;
+clearly visible and does not cover your face."</string>
+    <string name="msg_please_take_an3">Please take an image of your flight ticket as shown, Keep these points in note:
+Capture the Entire Ticket:
+Capture both front &amp; back side of the tickets</string>
 </resources>

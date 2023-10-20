@@ -45,6 +45,25 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".AdPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddTravellerRequest1"
+            android:exported="false" />
+        <activity
+            android:name=".AddTravellerRequest2"
+            android:exported="false" />
+        <activity
+            android:name=".AddTravellerRequest3"
+            android:exported="false" />
+        <activity
+            android:name=".AddTravellerRequest4"
+            android:exported="false" />
     </application>
 
 </manifest>

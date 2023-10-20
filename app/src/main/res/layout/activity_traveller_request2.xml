@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/custom_toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".AddTravellerRequest"
+        android:paddingVertical="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/travellerRequestLayout"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:layout_marginTop="70dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ttlLayout"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/arrowImageView"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/baseline_arrow_circle_left_24"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    />
+                <TextView android:ellipsize="end"
+                    android:id="@+id/Title"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="70dp"
+                    android:layout_width="wrap_content"
+                    android:singleLine="true"
+                    android:text="Upload Documnents"
+                    style="@style/txtPoppinsmedium12_1" tools:text="Upload Documents"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtParcelNo"
+                style="@style/txtPoppinsmedium12_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ttlLayout"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="21dp"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:singleLine="true"
+                tools:text="Parcel No : " />
+
+            <EditText
+                android:id="@+id/editTxtParcelNo"
+                style="@style/txtPoppinsmedium12_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:layout_below="@id/ttlLayout"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/txtParcelNo"
+                android:layout_marginEnd="21dp"
+                android:ellipsize="end"
+                android:gravity="end"
+                android:singleLine="true"
+                tools:text="Parcel No : " />
+            <FrameLayout
+                android:id="@+id/frameStackvectorone"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/editTxtParcelNo"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp">
+
+                <View
+                    android:id="@+id/lineVectorOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@color/black" />
+
+                <ImageButton
+                    android:background="@drawable/step_ball"
+                    android:id="@+id/btnGroupTwentyFive"
+                    android:layout_gravity="start"
+                    android:layout_height="40dp"
+                    android:layout_width="40dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/img_group25" tools:ignore="ContentDescription"/>
+
+                <View
+                    android:id="@+id/viewEllipseTwo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="110dp"
+                    android:background="@drawable/step_ball" />
+
+                <View
+                    android:id="@+id/viewEllipseThree"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="230dp"
+                    android:background="@drawable/step_ball_inactive" />
+
+                <View
+                    android:id="@+id/viewEllipseFour"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/step_ball_inactive" />
+            </FrameLayout>
+            <TextView
+                android:id="@+id/txtODc"
+                style="@style/txtPoppinsmedium12_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/frameStackvectorone"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="21dp"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:singleLine="true"
+                tools:text="Please Upload Selfie with your ticket : " />
+
+            <LinearLayout
+                android:id="@+id/linearUpload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtODc"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="12dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/travellerImgUpload"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="4dp"
+                    android:gravity="center_horizontal"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_upload"
+                    tools:ignore="ContentDescription"
+                    tools:src="@drawable/img_upload" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearRowdescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_below="@+id/linearUpload"
+                android:layout_marginTop="10dp"
+                android:gravity="start"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageImageOne"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:scaleType="fitXY"
+                    tools:ignore="ContentDescription"
+                    tools:src="@drawable/img_image3" />
+
+                <TextView
+                    android:id="@+id/txtDescription"
+                    android:textSize="15dp"
+                    android:gravity="fill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_weight="0.10"
+                    android:layout_marginEnd="8dp"
+                    tools:text="@string/msg_please_take_an" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/linearRowdescription">
+
+                <Button
+                    android:id="@+id/btnCancel2"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/layout_password"
+                    android:text="Previous"
+                    android:textSize="12dp"
+                    android:layout_marginStart="100dp"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/bluegray_100_87"
+                    android:background="@drawable/edt_background"
+                    android:layout_marginTop="10dp" />
+
+                <Button
+                    android:id="@+id/btnNext2"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/btnCancel"
+                    android:text="NEXT"
+                    android:textSize="12dp"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    android:backgroundTint="@color/amber_300"
+                    android:background="@drawable/edt_background"
+                    android:layout_marginTop="10dp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
