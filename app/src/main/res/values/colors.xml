@@ -7,4 +7,9 @@
     <color name="red">#FF0000</color>
     <color name="white_A700">#ffffff</color>
     <color name="bluegray_100_87">#876C6969</color>
+    <color name="greenColor">#00FF00</color>
+    <color name="redColor">#FF0000</color>
+    <color name="black_900_3f">#3f000000</color>
+    <color name="amber_500">#ffcf0f</color>
+    <color name="amber_300">#ffd64d</color>
 </resources>
