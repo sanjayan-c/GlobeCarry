@@ -3,11 +3,15 @@ package com.example.globe_carry
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.adapter.MessageAdapter
@@ -17,6 +21,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ChatActivity : AppCompatActivity() {
 
@@ -29,6 +36,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var messageList: ArrayList<com.example.globe_carry.Message>
     private lateinit var userDbRef: DatabaseReference
     private lateinit var profileImageView: ImageView
+    private lateinit var cusAccManagementBack: ImageView
 
     var receiverRoom: String? = null
     var senderRoom: String? = null
@@ -39,9 +47,21 @@ class ChatActivity : AppCompatActivity() {
 
         val name = intent.getStringExtra("name")
         val receiverUid = intent.getStringExtra("uid")
-
+        cusAccManagementBack = findViewById(R.id.cusAccManagementBack)
         barTextView = findViewById(R.id.barTextView)
         barTextView.text = name
+
+        barTextView.setOnClickListener {
+            val intent =
+                Intent(this@ChatActivity, CommonUserProfile::class.java)
+            intent.putExtra("userFromIntent", receiverUid)
+            startActivity(intent)
+        }
+        cusAccManagementBack.setOnClickListener {
+            val intent =
+                Intent(this@ChatActivity, ChatHistory::class.java)
+            startActivity(intent)
+        }
 
         val senderUid = FirebaseAuth.getInstance().currentUser?.uid
         userDbRef = FirebaseDatabase.getInstance().getReference()
@@ -121,15 +141,20 @@ class ChatActivity : AppCompatActivity() {
         sendButton.setOnClickListener{
             val messageText = messageBox.text.toString()
 
-            if (messageText.isNotBlank()) { // Check if the message is not empty
+            if (messageText.isNotBlank()) {  // Check if the message is not empty
                 val message = Message(messageText, senderUid!!,receiverUid!!)
 
                 val senderMessageRef = userDbRef.child("chats").child(senderRoom!!).child("messages").push()
                 val receiverMessageRef = userDbRef.child("chats").child(receiverRoom!!).child("messages").push()
 
+                // Get the current timestamp
+                val timestamp = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(
+                    Date()
+                )
+
                 // Set the read status to false for the sender's message and true for the receiver's message
-                val senderMessage = message.copy(read = false)
-                val receiverMessage = message.copy(read = true)
+                val senderMessage = message.copy(read = false, timeStamp = timestamp)
+                val receiverMessage = message.copy(read = true, timeStamp = timestamp)
 
                 senderMessageRef.setValue(senderMessage).addOnSuccessListener {
                     // Message sent successfully for the sender
@@ -140,6 +165,19 @@ class ChatActivity : AppCompatActivity() {
                 }
 
                 messageBox.setText("")
+
+                // Check if it's the first message based on chat history
+                checkFirstMessage(senderRoom!!, receiverRoom!!, senderUid!!,receiverUid!!)
+
+            }else{
+                val blinkAnimation = AnimationUtils.loadAnimation(this, R.anim.blink_message_box)
+                messageBox.background = ContextCompat.getDrawable(this, R.drawable.blink_border)
+                messageBox.startAnimation(blinkAnimation)
+                // Create a Handler to reset the messageBox after 2 seconds
+                val handler = Handler()
+                handler.postDelayed({
+                    messageBox.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                }, 2000)
             }
         }
 
@@ -185,4 +223,74 @@ class ChatActivity : AppCompatActivity() {
 
         popupMenu.show()
     }
+    private fun checkFirstMessage(
+        senderRoom: String,
+        receiverRoom: String,
+        senderUid: String,
+        receiverUid: String
+    ) {
+        // Query the messages for the sender's room
+        val senderMessagesRef = userDbRef.child("chats").child(senderRoom).child("messages")
+        Log.d("Debug", "Check first message for senderRoom: $senderRoom, receiverRoom: $receiverRoom")
+        senderMessagesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(senderSnapshot: DataSnapshot) {
+                // Query the messages for the receiver's room
+                val receiverMessagesRef = userDbRef.child("chats").child(receiverRoom).child("messages")
+
+                receiverMessagesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(receiverSnapshot: DataSnapshot) {
+                        // Check if both sender and receiver have at least one message
+                        val senderHasMessages = senderSnapshot.childrenCount > 1
+                        val receiverHasMessages = receiverSnapshot.childrenCount > 1
+                        Log.d("senderHasMessages", senderSnapshot.childrenCount.toString())
+                        Log.d("receiverHasMessages", receiverSnapshot.childrenCount.toString())
+                        Log.d("senderHasMessages", senderHasMessages.toString())
+                        Log.d("receiverHasMessages", receiverHasMessages.toString())
+                        if (!senderHasMessages && !receiverHasMessages) {
+                            // It's the first message between the users, send a "Welcome" message
+                            sendWelcomeMessage(senderRoom, receiverRoom, senderUid, receiverUid)
+                        }
+                    }
+
+                    override fun onCancelled(receiverError: DatabaseError) {
+                        // Handle error
+                    }
+                })
+            }
+
+            override fun onCancelled(senderError: DatabaseError) {
+                // Handle error
+            }
+        })
+    }
+
+    private fun sendWelcomeMessage(
+        senderRoom: String,
+        receiverRoom: String,
+        senderUid: String,
+        receiverUid: String
+    ) {
+        val welcomeMessageText = "Good Day! This is an automatic reply\nThank you for connecting with TourARound.\nOne of our associate will connect with you soon."
+        val welcomeMessage = Message(welcomeMessageText, receiverUid!!, senderUid!!)
+        val receiverMessageRef = userDbRef.child("chats").child(senderRoom).child("messages").push()
+        val senderMessageRef= userDbRef.child("chats").child(receiverRoom).child("messages").push()
+
+        // Get the current timestamp
+        val timestamp = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(
+            Date()
+        )
+
+        // Set the read status to false for the sender's message and true for the receiver's message
+        val senderMessage = welcomeMessage.copy(read = true, timeStamp = timestamp)
+        val receiverMessage = welcomeMessage.copy(read = true, timeStamp = timestamp)
+
+        senderMessageRef.setValue(senderMessage).addOnSuccessListener {
+            // "Welcome" message sent successfully for the sender
+        }
+
+        receiverMessageRef.setValue(receiverMessage).addOnSuccessListener {
+            // "Welcome" message sent successfully for the receiver
+        }
+    }
+
 }
