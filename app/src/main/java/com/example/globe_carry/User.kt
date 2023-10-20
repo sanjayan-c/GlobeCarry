@@ -20,7 +20,8 @@ data class Message(
     var message: String = "",
     var senderId: String = "",
     var receiverId: String = "",
-    var read: Boolean = false
+    var read: Boolean = false,
+    var timeStamp: String = ""
 )
 data class HomeItems(
     var id: String? = null,

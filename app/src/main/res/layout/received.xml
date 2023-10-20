@@ -7,14 +7,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@drawable/edt_background">
+        android:paddingHorizontal="5dp"
+        android:background="@drawable/send_message">
 
         <TextView
             android:id="@+id/txt_receive_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="This is receive message"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="@color/black"
             android:padding="10dp"/>
 

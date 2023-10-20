@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="lightblack">#5A5A5A</color>
     <color name="white">#FFFFFFFF</color>
     <color name="appcolour">#FFD64D</color>
     <color name="appcolourlight">#FFEBA7</color>
+    <color name="appextracolourlight">#F8F0D7</color>
     <color name="red">#FF0000</color>
     <color name="white_A700">#ffffff</color>
     <color name="bluegray_100_87">#876C6969</color>
+    <color name="my_grey">#87AEA9A9</color>
+    <color name="my_send">#FFFEEC</color>
     <color name="amber_300">#ffd64d</color>
     <color name="gray_900">#111111</color>
     <color name="green">#36973A</color>
+    <color name="indigo_300">#637ede</color>
+    <color name="indigo_A200">#4471fe</color>
+    <color name="red_A200_aa">#aaf94c4c</color>
+    <color name="red_A200_aa1">#aafa4d4d</color>
+    <color name="red_A200_aaa">#AAFB7979</color>
+    <color name="light_white">#F7F4F4</color>
 </resources>
