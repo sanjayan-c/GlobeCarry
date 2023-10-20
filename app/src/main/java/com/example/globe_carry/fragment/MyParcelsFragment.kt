@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.globe_carry.ConnectSQL
+import com.example.globe_carry.ConnectionSQL
 import com.example.globe_carry.HomeItems
 import com.example.globe_carry.R
 import com.example.globe_carry.adapter.MyParcelItemAdapter
@@ -40,7 +40,7 @@ class MyParcelsFragment : Fragment() {
         val data = mutableListOf<HomeItems>()
 
         // Replace with your database connection code
-        val cusConSQL = ConnectSQL()
+        val cusConSQL = ConnectionSQL()
         cusConSQL.conclass { connection ->
             if (connection != null) {
                 val user = userAuth.currentUser?.uid ?: ""

@@ -114,7 +114,7 @@ class DetailActivity:AppCompatActivity() {
     }
 
     private fun fetchCustomerDetails(createdBy: String?) {
-        val cusConSQL = ConnectSQL()
+        val cusConSQL = ConnectionSQL()
         cusConSQL.conclass { connection ->
             if (connection != null) {
                 try {
