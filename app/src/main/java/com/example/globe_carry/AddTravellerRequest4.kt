@@ -81,7 +81,7 @@ class AddTravellerRequest4 : AppCompatActivity() {
             val currentDate = getCurrentDate()
             val currentUser = FirebaseAuth.getInstance().currentUser
             val userID = currentUser?.uid
-            val connectSQL = ConnectSQL()
+            val connectSQL = ConnectionSQL()
             connectSQL.conclass { connection ->
                 if (connection != null) {
                     try {

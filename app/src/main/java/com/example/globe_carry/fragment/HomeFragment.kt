@@ -1,22 +1,18 @@
 package com.example.globe_carry.fragment
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.globe_carry.ConnectSQL
+import com.example.globe_carry.ConnectionSQL
 import com.example.globe_carry.HomeItems
 import com.example.globe_carry.R
 import com.example.globe_carry.adapter.HomeItemsAdapter
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.*
 import java.sql.SQLException
 
 
@@ -41,7 +37,7 @@ class HomeFragment : Fragment() {
         val data = mutableListOf<HomeItems>()
 
         // Replace with your database connection code
-        val cusConSQL = ConnectSQL()
+        val cusConSQL = ConnectionSQL()
         cusConSQL.conclass { connection ->
             if (connection != null) {
                 val user = userAuth.currentUser?.uid ?: ""

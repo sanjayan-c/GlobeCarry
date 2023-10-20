@@ -125,7 +125,7 @@ class AdPostActivity : AppCompatActivity() {
             val userID = currentUser?.uid
 
             // Insert the data into the database
-            val connectSQL = ConnectSQL()
+            val connectSQL = ConnectionSQL()
             connectSQL.conclass { connection ->
                 if (connection != null) {
                     try {
