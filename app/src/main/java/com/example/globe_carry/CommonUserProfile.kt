@@ -1,17 +1,24 @@
 package com.example.globe_carry
 
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
+import android.graphics.drawable.AnimationDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.util.Base64
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -23,9 +30,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.adapter.CommentAdapter
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import java.io.ByteArrayOutputStream
 import java.sql.SQLException
 
@@ -79,6 +88,8 @@ class CommonUserProfile : AppCompatActivity() {
     private var ratingBar: RatingBar? = null
     private var commentsRecyclerView: RecyclerView? = null
 
+    private var runningManImageView: ImageView? = null
+
     private var imageData: String = ""
     private val PICK_IMAGE_REQUEST = 1
     private var selectedImageUri: Uri? = null
@@ -87,8 +98,31 @@ class CommonUserProfile : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_common_user_profile)
+        //setContentView(R.layout.activity_common_user_profile)
         setContentView(R.layout.common_user_profile_splash)
+
+        val runningManImageView = findViewById<ImageView>(R.id.runningManImageView1)
+
+        // Calculate the width of the screen for animation bounds
+        val screenWidth = resources.displayMetrics.widthPixels
+
+        // Create an ObjectAnimator to animate translation from left to right
+        val translationAnimator = ObjectAnimator.ofFloat(
+            runningManImageView,
+            "translationX",
+            -screenWidth.toFloat(),
+            screenWidth.toFloat()
+        )
+
+        // Set the animator duration
+        translationAnimator.duration = 1000  // Adjust the duration as needed
+
+        // Set the repeat mode to reverse for back-and-forth animation
+        translationAnimator.repeatMode = ObjectAnimator.RESTART
+        translationAnimator.repeatCount = ObjectAnimator.INFINITE
+
+        // Start the animation
+        translationAnimator.start()
 
 
         userAuth= FirebaseAuth.getInstance()
@@ -96,13 +130,19 @@ class CommonUserProfile : AppCompatActivity() {
         val cusConSQL = ConnectionSQL()
         cusConSQL.conclass { connection ->
             if (connection != null) {
-
+                val intent = intent
                 // Your SQL query to fetch customer details
                 val user = userAuth.currentUser?.uid ?: ""
+                    var userFromIntent = intent.getStringExtra("userFromIntent")
+                println("userFromIntent1 : $userFromIntent")
+                if(userFromIntent==null){
+                    userFromIntent=user
+                }
                 println("User : $user")
+                println("userFromIntent2 : $userFromIntent")
                 val query = "SELECT firstName, lastName, nic, phoneNo, gmail, addressLine1, addressLine2, addressLine3, city, postalCode, country, userImage, signUpDate ,signUpTime " +
                         "FROM user " +
-                        "WHERE userId = '$user' ";
+                        "WHERE userId = '$userFromIntent' ";
 
                 try {
 
@@ -162,6 +202,10 @@ class CommonUserProfile : AppCompatActivity() {
                     // Close the statement and result set
                     statement.close()
                     resultSet.close()
+                    runOnUiThread {
+                        runningManImageView?.visibility = View.GONE
+                        translationAnimator.cancel()
+                    }
                     switchToCustomerHomeLayout()
                     runOnUiThread {
 
@@ -235,22 +279,54 @@ class CommonUserProfile : AppCompatActivity() {
                                 // Set ImageDataSingleton.imageData to null
                                 imageData = null.toString()
 
-                                // Create an AlertDialog
-                                val alertDialogBuilder = AlertDialog.Builder(this)
+                                // Create a custom dialog
+                                val dialog = Dialog(this)
 
-                                // Set the dialog message and title
-                                alertDialogBuilder
-                                    .setTitle("Confirmation")
-                                    .setMessage("Are you sure you want to remove the image?")
+                                // Set the custom layout for the dialog
+                                dialog.setContentView(R.layout.profile_popup)
 
-                                // Add a "Cancel" button
-                                alertDialogBuilder.setNegativeButton("Cancel") { dialog, _ ->
-                                    // Dismiss the dialog if "Cancel" is clicked
+                                // Set the width of the dialog to match the parent's width
+                                val layoutParams = WindowManager.LayoutParams()
+                                layoutParams.copyFrom(dialog.window?.attributes)
+
+                                // Get the display metrics to calculate the width
+                                val displayMetrics = DisplayMetrics()
+                                windowManager.defaultDisplay.getMetrics(displayMetrics)
+
+                                val screenWidth = displayMetrics.widthPixels
+                                val screenHeight = displayMetrics.heightPixels
+                                val isPortrait = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+
+                                val dialogWidthPercent = if (isPortrait) 0.9 else 0.6
+                                var dialogWidth = (if (isPortrait) screenHeight else screenWidth) * dialogWidthPercent
+
+                                // Ensure the dialog width doesn't exceed the screen width
+                                if (dialogWidth > screenWidth) {
+                                    dialogWidth = screenWidth * 0.9 // Cap it at 80% of the screen width
+                                }
+
+                                // Set the calculated width to the layout parameters
+                                layoutParams.width = dialogWidth.toInt()
+
+                                dialog.window?.attributes = layoutParams
+
+                                val btnConfirmCusUpdate = dialog.findViewById<AppCompatButton>(R.id.btnConfirmCusUpdate)
+                                val btnConfirmCusCancel = dialog.findViewById<AppCompatButton>(R.id.btnConfirmCusCancel)
+                                val tv_title = dialog.findViewById<TextView>(R.id.tv_title)
+
+                                tv_title.text="Are you sure you want to remove the image?"
+                                btnConfirmCusUpdate.text = "Update" // Change the text as needed
+                                btnConfirmCusCancel.text = "Cancel" // Change the text as needed
+
+                                btnConfirmCusCancel.setOnClickListener {
+                                    Log.d("Photo","Cancel")
                                     dialog.dismiss()
                                 }
 
-                                // Add a "Confirm" button
-                                alertDialogBuilder.setPositiveButton("Confirm") { dialog, _ ->
+
+
+                                btnConfirmCusUpdate.setOnClickListener {
+                                    Log.d("Photo","Confirm")
                                     imageData = null.toString()
                                     // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
                                     cusAccountProfileImage?.setImageResource(R.drawable.cus_image_not_found)
@@ -258,9 +334,35 @@ class CommonUserProfile : AppCompatActivity() {
                                     dialog.dismiss()
                                 }
 
-                                // Create and show the AlertDialog
-                                val alertDialog = alertDialogBuilder.create()
-                                alertDialog.show()
+                                dialog.show()
+
+
+//                                // Create an AlertDialog
+//                                val alertDialogBuilder = AlertDialog.Builder(this)
+//
+//                                // Set the dialog message and title
+//                                alertDialogBuilder
+//                                    .setTitle("Confirmation")
+//                                    .setMessage("Are you sure you want to remove the image?")
+//
+//                                // Add a "Cancel" button
+//                                alertDialogBuilder.setNegativeButton("Cancel") { dialog, _ ->
+//                                    // Dismiss the dialog if "Cancel" is clicked
+//                                    dialog.dismiss()
+//                                }
+//
+//                                // Add a "Confirm" button
+//                                alertDialogBuilder.setPositiveButton("Confirm") { dialog, _ ->
+//                                    imageData = null.toString()
+//                                    // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
+//                                    cusAccountProfileImage?.setImageResource(R.drawable.cus_image_not_found)
+//                                    // Dismiss the dialog
+//                                    dialog.dismiss()
+//                                }
+//
+//                                // Create and show the AlertDialog
+//                                val alertDialog = alertDialogBuilder.create()
+//                                alertDialog.show()
                             }else(
                                     Toast.makeText(this@CommonUserProfile, "No Image Found", Toast.LENGTH_SHORT,).show()
 
@@ -319,79 +421,183 @@ class CommonUserProfile : AppCompatActivity() {
                             cusAccountCountry1?.visibility=View.VISIBLE
                         }
                         btnCusUpdate?.setOnClickListener{
-                            // Create an AlertDialog
-                            val alertDialogBuilder = AlertDialog.Builder(this)
+                            Log.d("editTextFirstName?.text.toString()",editTextFirstName?.text.toString())
+                            Log.d("viewInputLastName?.text.toString()",viewInputLastName?.text.toString())
 
-                            // Set the dialog message and title
-                            alertDialogBuilder
-                                .setTitle("Update Profile")
-                                .setMessage("Are you sure you want to update your profile?")
+                            if(editTextFirstName?.text.toString()!=""||viewInputLastName?.text.toString()!="") {
 
-                            // Add a "Cancel" button
-                            alertDialogBuilder.setNegativeButton("Cancel") { dialog, _ ->
-                                // Dismiss the dialog if "Cancel" is clicked
-                                dialog.dismiss()
-                            }
+                                // Create a custom dialog
+                                val dialog = Dialog(this)
 
-                            // Add a "Confirm" button
-                            alertDialogBuilder.setPositiveButton("Confirm") { dialog, _ ->
+                                // Set the custom layout for the dialog
+                                dialog.setContentView(R.layout.profile_popup)
 
-                                runOnUiThread {
-                                    setContentView(R.layout.activity_common_user_profile)
+                                // Set the width of the dialog to match the parent's width
+                                val layoutParams = WindowManager.LayoutParams()
+                                layoutParams.copyFrom(dialog.window?.attributes)
+
+                                // Get the display metrics to calculate the width
+                                val displayMetrics = DisplayMetrics()
+                                windowManager.defaultDisplay.getMetrics(displayMetrics)
+
+                                val screenWidth = displayMetrics.widthPixels
+                                val screenHeight = displayMetrics.heightPixels
+                                val isPortrait = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+
+                                val dialogWidthPercent = if (isPortrait) 0.9 else 0.6
+                                var dialogWidth = (if (isPortrait) screenHeight else screenWidth) * dialogWidthPercent
+
+                                // Ensure the dialog width doesn't exceed the screen width
+                                if (dialogWidth > screenWidth) {
+                                    dialogWidth = screenWidth * 0.9 // Cap it at 80% of the screen width
                                 }
 
-                                val cusConSQL = ConnectionSQL()
-                                cusConSQL.conclass { connection ->
-                                    if (connection != null) {
-                                        try {
-                                            // Update query with placeholders for binding
-                                            val query = "UPDATE user SET firstName = ?, lastName = ?, nic = ?, phoneNo = ?, addressLine1 = ?, addressLine2 = ?, addressLine3 = ?, city = ?, postalCode = ?, country = ?, userImage = ? WHERE userId = ?"
+                                // Set the calculated width to the layout parameters
+                                layoutParams.width = dialogWidth.toInt()
 
-                                            val preparedStatement = connection.prepareStatement(query)
-                                            preparedStatement.setString(1, editTextFirstName?.text.toString())
-                                            preparedStatement.setString(2, viewInputLastName?.text.toString())
-                                            preparedStatement.setString(3, viewInputNIC?.text.toString())
-                                            preparedStatement.setString(4, viewInputPhoneNo?.text.toString())
-                                            preparedStatement.setString(5, cusAccountAddressLine1?.text.toString())
-                                            preparedStatement.setString(6, cusAccountAddressLine2?.text.toString())
-                                            preparedStatement.setString(7, cusAccountAddressLine3?.text.toString())
-                                            preparedStatement.setString(8, cusAccountCity1?.text.toString())
-                                            preparedStatement.setString(9, cusAccountPostalCode1?.text.toString())
-                                            preparedStatement.setString(10, cusAccountCountry1?.text.toString())
-                                            preparedStatement.setString(11, imageData)
-                                            preparedStatement.setString(12, user)
+                                dialog.window?.attributes = layoutParams
 
-                                            // Execute the update query
-                                            preparedStatement.executeUpdate()
-                                            preparedStatement.close()
+                                val btnConfirmCusUpdate = dialog.findViewById<AppCompatButton>(R.id.btnConfirmCusUpdate)
+                                val btnConfirmCusCancel = dialog.findViewById<AppCompatButton>(R.id.btnConfirmCusCancel)
 
-                                            runOnUiThread {
-                                                Log.d("btnCusUpdate", "Clicked")
-                                                recreate()
-                                            }
-                                            // Perform any UI updates or navigation as needed
-                                            // For example, show a success message or navigate to another screen
-                                        } catch (e: SQLException) {
-                                            Log.e("Update Error", "SQL Exception: ${e.message}")
-                                            e.printStackTrace()
-                                            // Handle any errors that occur during the update
-                                        } finally {
-                                            // Close the connection in the finally block to ensure it's always closed
-                                            connection.close()
-                                        }
-                                    } else {
-                                        Log.e("Update Error", "Database connection is null")
-                                        // Handle the case where the database connection is null
+                                btnConfirmCusCancel.setOnClickListener {
+                                    Log.d("Update","Cancel")
+                                    dialog.dismiss()
+                                }
+
+
+
+                                btnConfirmCusUpdate.setOnClickListener {
+                                    Log.d("Update","Confirm")
+//                                // Create an AlertDialog
+//                                val alertDialogBuilder = AlertDialog.Builder(this)
+//
+//                                // Set the dialog message and title
+//                                alertDialogBuilder
+//                                    .setTitle("Update Profile")
+//                                    .setMessage("Are you sure you want to update your profile?")
+//
+//                                // Add a "Cancel" button
+//                                alertDialogBuilder.setNegativeButton("Cancel") { dialog, _ ->
+//                                    // Dismiss the dialog if "Cancel" is clicked
+//                                    dialog.dismiss()
+//                                }
+//
+//                                // Add a "Confirm" button
+//                                alertDialogBuilder.setPositiveButton("Confirm") { dialog, _ ->
+                                    runOnUiThread {
+                                        setContentView(R.layout.common_user_profile_splash)
                                     }
+
+
+                                    val cusConSQL2 = ConnectionSQL()
+                                    cusConSQL2.conclass { connection ->
+                                        if (connection != null) {
+                                            try {
+                                                val userDbRef = FirebaseDatabase.getInstance().getReference()
+                                                val userRef = userDbRef.child("user").child(user)
+
+                                                // Update the name in the database
+                                                userRef.child("name").setValue( editTextFirstName?.text.toString()+" "+ viewInputLastName?.text.toString())
+
+                                                // Update query with placeholders for binding
+                                                val query =
+                                                    "UPDATE user SET firstName = ?, lastName = ?, nic = ?, phoneNo = ?, addressLine1 = ?, addressLine2 = ?, addressLine3 = ?, city = ?, postalCode = ?, country = ?, userImage = ? WHERE userId = ?"
+
+                                                val preparedStatement =
+                                                    connection.prepareStatement(query)
+                                                preparedStatement.setString(
+                                                    1,
+                                                    editTextFirstName?.text.toString()
+                                                )
+                                                preparedStatement.setString(
+                                                    2,
+                                                    viewInputLastName?.text.toString()
+                                                )
+                                                preparedStatement.setString(
+                                                    3,
+                                                    viewInputNIC?.text.toString()
+                                                )
+                                                preparedStatement.setString(
+                                                    4,
+                                                    viewInputPhoneNo?.text.toString()
+                                                )
+                                                preparedStatement.setString(
+                                                    5,
+                                                    cusAccountAddressLine1?.text.toString()
+                                                )
+                                                preparedStatement.setString(
+                                                    6,
+                                                    cusAccountAddressLine2?.text.toString()
+                                                )
+                                                preparedStatement.setString(
+                                                    7,
+                                                    cusAccountAddressLine3?.text.toString()
+                                                )
+                                                preparedStatement.setString(
+                                                    8,
+                                                    cusAccountCity1?.text.toString()
+                                                )
+                                                preparedStatement.setString(
+                                                    9,
+                                                    cusAccountPostalCode1?.text.toString()
+                                                )
+                                                preparedStatement.setString(
+                                                    10,
+                                                    cusAccountCountry1?.text.toString()
+                                                )
+                                                preparedStatement.setString(11, imageData)
+                                                preparedStatement.setString(12, user)
+
+                                                // Execute the update query
+                                                preparedStatement.executeUpdate()
+                                                preparedStatement.close()
+
+                                                runOnUiThread {
+                                                    Log.d("btnCusUpdate", "Clicked")
+                                                    recreate()
+                                                }
+                                                // Perform any UI updates or navigation as needed
+                                                // For example, show a success message or navigate to another screen
+                                            } catch (e: SQLException) {
+                                                Log.e("Update Error", "SQL Exception: ${e.message}")
+                                                e.printStackTrace()
+                                                // Handle any errors that occur during the update
+                                            } finally {
+                                                // Close the connection in the finally block to ensure it's always closed
+                                                connection.close()
+                                            }
+                                        } else {
+                                            Log.e("Update Error", "Database connection is null")
+                                            // Handle the case where the database connection is null
+                                        }
+                                    }
+
+                                    // Dismiss the dialog
+                                    dialog.dismiss()
                                 }
-
-                                // Dismiss the dialog
-                                dialog.dismiss()
+                                dialog.show()
+//                                // Create and show the AlertDialog
+//                                val alertDialog = alertDialogBuilder.create()
+//                                alertDialog.show()
+                            }else{
+                                val blinkAnimation = AnimationUtils.loadAnimation(this, R.anim.blink_message_box)
+                                editTextFirstName?.background = ContextCompat.getDrawable(this, R.drawable.cus_profile_inputbox_border)
+                                viewInputLastName?.background = ContextCompat.getDrawable(this, R.drawable.cus_profile_inputbox_border)
+                                editTextFirstName?.startAnimation(blinkAnimation)
+                                viewInputLastName?.startAnimation(blinkAnimation)
+                                // Create a Handler to reset the messageBox after 2 seconds
+                                val handler = Handler()
+                                handler.postDelayed({
+                                    editTextFirstName?.background = ContextCompat.getDrawable(this, R.drawable.cus_profile_inputbox_border)
+                                    viewInputLastName?.background = ContextCompat.getDrawable(this, R.drawable.cus_profile_inputbox_border)
+                                }, 2000)
+                                Toast.makeText(
+                                    this@CommonUserProfile,
+                                    "Name cannot be empty",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-
-                            // Create and show the AlertDialog
-                            val alertDialog = alertDialogBuilder.create()
-                            alertDialog.show()
 
                         }
 
@@ -520,7 +726,10 @@ class CommonUserProfile : AppCompatActivity() {
 //        ratingBar= findViewById(R.id.ratingBar)
 
             commentsRecyclerView= findViewById(R.id.commentsRecyclerView)
-
+            val intent = intent
+            if(intent.getStringExtra("userFromIntent")==null){
+                profileEditImage?.visibility=View.VISIBLE
+            }
         }
     }
 

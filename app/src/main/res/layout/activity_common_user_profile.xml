@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CommonUserProfile"
-    android:background="@color/appextracolourlight">
+    android:background="@color/white">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,14 +27,14 @@
                     android:id="@+id/cusAccManagementHeading"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="15dp"
+                    android:paddingVertical="20dp"
                     android:paddingHorizontal="10dp"
                     android:background="@drawable/app_bar_background">
 
                     <ImageView
                         android:id="@+id/cusAccManagementBack"
-                        android:layout_height="40dp"
-                        android:layout_width="40dp"
+                        android:layout_height="30dp"
+                        android:layout_width="30dp"
                         android:scaleType="fitXY"
                         tools:ignore="ContentDescription"
                         android:rotation="270"
@@ -47,7 +48,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="Account Management"
-                        android:textSize="25dp" />
+                        android:textSize="20sp" />
                 </RelativeLayout>
 
                 <androidx.cardview.widget.CardView
@@ -136,7 +137,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
-                            android:backgroundTint="@color/appcolourlight">
+                            android:backgroundTint="@color/appextracolourlight">
 
                             <ImageView
                                 android:id="@+id/cusAccountProfileImage"
@@ -198,8 +199,9 @@
                                 android:textSize="16sp"
                                 android:paddingStart="15dp"
                                 android:paddingEnd="15dp"
-                                android:textColorHint="@color/black"
                                 android:inputType="text"
+                                android:textColorHint="@color/my_grey"
+                                android:textColor="@color/black"
                                 android:layout_gravity="center_vertical"/>
                             <TextView
                                 android:id="@+id/editTextFirstName2"
@@ -244,8 +246,8 @@
                                 android:textSize="16sp"
                                 android:paddingStart="15dp"
                                 android:paddingEnd="15dp"
-                                android:textColorHint="@color/black"
-                                android:inputType="text"
+                                android:textColorHint="@color/my_grey"
+                                android:textColor="@color/black"                                android:inputType="text"
                                 android:layout_gravity="center_vertical"/>
                             <TextView
                                 android:id="@+id/viewInputLastName2"
@@ -290,8 +292,8 @@
                                 android:textSize="16sp"
                                 android:paddingStart="15dp"
                                 android:paddingEnd="15dp"
-                                android:textColorHint="@color/black"
-                                android:inputType="text"
+                                android:textColorHint="@color/my_grey"
+                                android:textColor="@color/black"                                android:inputType="text"
                                 android:visibility="gone"
                                 android:gravity="center_vertical"
                                 android:layout_gravity="center_vertical"/>
@@ -336,8 +338,8 @@
                                 android:textSize="16sp"
                                 android:paddingStart="15dp"
                                 android:paddingEnd="15dp"
-                                android:textColorHint="@color/black"
-                                android:inputType="text"
+                                android:textColorHint="@color/my_grey"
+                                android:textColor="@color/black"                                android:inputType="text"
                                 android:visibility="gone"
                                 android:gravity="center_vertical"
                                 android:layout_gravity="center_vertical"/>
@@ -388,8 +390,8 @@
                                 android:textSize="16sp"
                                 android:paddingStart="15dp"
                                 android:paddingEnd="15dp"
-                                android:textColorHint="@color/black"
-                                android:inputType="text"
+                                android:textColorHint="@color/my_grey"
+                                android:textColor="@color/black"                                android:inputType="text"
                                 android:visibility="gone"
                                 android:gravity="center_vertical"
                                 android:layout_gravity="center_vertical"/>
@@ -416,8 +418,8 @@
                                 android:textSize="16sp"
                                 android:paddingStart="15dp"
                                 android:paddingEnd="15dp"
-                                android:textColorHint="@color/black"
-                                android:inputType="text"
+                                android:textColorHint="@color/my_grey"
+                                android:textColor="@color/black"                                android:inputType="text"
                                 android:visibility="gone"
                                 android:gravity="center_vertical"
                                 android:layout_gravity="center_vertical"/>
@@ -444,8 +446,8 @@
                                 android:textSize="16sp"
                                 android:paddingStart="15dp"
                                 android:paddingEnd="15dp"
-                                android:textColorHint="@color/black"
-                                android:inputType="text"
+                                android:textColorHint="@color/my_grey"
+                                android:textColor="@color/black"                                android:inputType="text"
                                 android:visibility="gone"
                                 android:gravity="center_vertical"
                                 android:layout_gravity="center_vertical"/>
@@ -491,8 +493,8 @@
                                 android:textSize="16sp"
                                 android:paddingStart="15dp"
                                 android:paddingEnd="15dp"
-                                android:textColorHint="@color/black"
-                                android:inputType="text"
+                                android:textColorHint="@color/my_grey"
+                                android:textColor="@color/black"                                android:inputType="text"
                                 android:visibility="gone"
                                 android:gravity="center_vertical"
                                 android:layout_gravity="center_vertical"/>
@@ -537,8 +539,8 @@
                                 android:textSize="16sp"
                                 android:paddingStart="15dp"
                                 android:paddingEnd="15dp"
-                                android:textColorHint="@color/black"
-                                android:inputType="text"
+                                android:textColorHint="@color/my_grey"
+                                android:textColor="@color/black"                                android:inputType="text"
                                 android:visibility="gone"
                                 android:gravity="center_vertical"
                                 android:layout_gravity="center_vertical"/>
@@ -583,8 +585,8 @@
                                 android:textSize="16sp"
                                 android:paddingStart="15dp"
                                 android:paddingEnd="15dp"
-                                android:textColorHint="@color/black"
-                                android:inputType="text"
+                                android:textColorHint="@color/my_grey"
+                                android:textColor="@color/black"                                android:inputType="text"
                                 android:visibility="gone"
                                 android:gravity="center_vertical"
                                 android:layout_gravity="center_vertical"/>
@@ -609,6 +611,7 @@
                             <ImageView
                                 android:id="@+id/profileEditImage"
                                 android:layout_width="30dp"
+                                android:visibility="gone"
                                 android:layout_height="30dp"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignParentBottom="true"
@@ -639,6 +642,7 @@
                                     android:text="Update"
                                     android:layout_marginEnd="10dp"
                                     android:textAllCaps="false"
+                                    android:background="@drawable/hint_profile_update"
                                     style="@style/cusbtnSolidRoundedOutline"/>
                                 <androidx.appcompat.widget.AppCompatButton
                                     android:ellipsize="end" android:gravity="center"
@@ -649,6 +653,7 @@
                                     android:text="Cancel"
                                     android:layout_marginStart="10dp"
                                     android:textAllCaps="false"
+                                    android:background="@drawable/hint_profile_cancel"
                                     style="@style/cusbtnSolidRoundedOutline_1"/>
                             </LinearLayout>
                         </RelativeLayout>

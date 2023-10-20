@@ -5,18 +5,24 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.SpannableString
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.RotateAnimation
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -37,6 +43,8 @@ class SignUp : AppCompatActivity() {
     private lateinit var edtConfirmPassword: EditText
     private lateinit var pwdVisible: ImageView
     private lateinit var pwdConfirmVisible: ImageView
+    private lateinit var layout_password: ConstraintLayout
+    private lateinit var layout_confirm_password: ConstraintLayout
     private lateinit var btnSignup: Button
     private lateinit var cus_login_no_username_password: TextView
     private lateinit var cus_matching_password: TextView
@@ -44,7 +52,8 @@ class SignUp : AppCompatActivity() {
     private lateinit var userAuth: FirebaseAuth
     private lateinit var userDbRef: DatabaseReference
     private lateinit var cusWalletProgressBarLayout: FrameLayout
-
+    private lateinit var worldImageView: ImageView
+    private lateinit var worldImageViewText: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -62,6 +71,10 @@ class SignUp : AppCompatActivity() {
         cus_login_no_username_password=findViewById(R.id.cus_login_no_username_password)
         cus_matching_password=findViewById(R.id.cus_matching_password)
         cusWalletProgressBarLayout=findViewById(R.id.cusWalletProgressBarLayout)
+        worldImageView=findViewById(R.id.worldImageView)
+        worldImageViewText=findViewById(R.id.worldImageViewText)
+        layout_password=findViewById(R.id.layout_password)
+        layout_confirm_password=findViewById(R.id.layout_confirm_password)
 
         val registerString = "Login"
         val mSpannableString = SpannableString(registerString)
@@ -110,15 +123,61 @@ class SignUp : AppCompatActivity() {
                 if(firstName==""||lastName==""||email==""||password==""){
                     cus_login_no_username_password.text = "Fill the above form"
                     cus_login_no_username_password.visibility = View.VISIBLE
+                    val blinkAnimation = AnimationUtils.loadAnimation(this, R.anim.blink_message_box)
+                    if(firstName==""){
+                        edtFirstName.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                        edtFirstName.startAnimation(blinkAnimation)
+                    }
+                    if(lastName==""){
+                        edtLastName.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                        edtLastName.startAnimation(blinkAnimation)
+                    }
+                    if(email==""){
+                        edtEmail.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                        edtEmail.startAnimation(blinkAnimation)
+                    }
+                    if(password==""){
+                        layout_password.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                        layout_password.startAnimation(blinkAnimation)
+                    }
+
+                    if(confirmPassword==""){
+                        layout_confirm_password.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                        layout_confirm_password.startAnimation(blinkAnimation)
+                    }
+                    // Create a Handler to reset the messageBox after 2 seconds
+                    val handler = Handler()
+                    handler.postDelayed({
+                        edtFirstName.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                        edtLastName.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                        edtEmail.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                        layout_password.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                        layout_confirm_password.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                    }, 2000)
                 }
+
                 if(password!=confirmPassword){
                     cus_matching_password.text = "Passwords doesn't match"
                     cus_matching_password.visibility = View.VISIBLE
+                    val blinkAnimation = AnimationUtils.loadAnimation(this, R.anim.blink_message_box)
+                    layout_password.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                    layout_password.startAnimation(blinkAnimation)
+                    layout_confirm_password.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                    layout_confirm_password.startAnimation(blinkAnimation)
+                    // Create a Handler to reset the messageBox after 2 seconds
+                    val handler = Handler()
+                    handler.postDelayed({
+                        layout_password.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                        layout_confirm_password.background = ContextCompat.getDrawable(this, R.drawable.edt_background)
+                    }, 2000)
                 }
             }else{
                 cusWalletProgressBarLayout.visibility=View.VISIBLE
                 cusWalletProgressBarLayout.isClickable = true
                 cusWalletProgressBarLayout.isFocusable = true
+                worldImageView = findViewById(R.id.worldImageView)
+                val horizontalRotationAnimation = createHorizontalRotationAnimation()
+                worldImageView.startAnimation(horizontalRotationAnimation)
                 signUp(firstName,lastName,email,password)
             }
 
@@ -147,6 +206,7 @@ private fun signUp(firstName: String, lastName: String, email: String, password:
     userAuth.createUserWithEmailAndPassword(email, password)
         .addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
+                worldImageViewText.text="Welcome To GlobeCarry"
                 // Sign in success, update UI with the signed-in user's information
                 Log.d(ContentValues.TAG, "createUserWithEmail:success")
 
@@ -177,6 +237,7 @@ private fun signUp(firstName: String, lastName: String, email: String, password:
 
                 // You may want to navigate to the login screen or another activity here
             } else {
+                recreate()
                 // If sign-up fails, check the error code
                 val errorCode = (task.exception as FirebaseAuthException).errorCode
                 if (errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
@@ -223,13 +284,22 @@ private fun signUp(firstName: String, lastName: String, email: String, password:
                     preparedStatement.close()
                     //navigate to home
                     runOnUiThread {
-                        cusWalletProgressBarLayout.visibility = View.GONE
-                        cusWalletProgressBarLayout.isClickable = false
-                        cusWalletProgressBarLayout.isFocusable = false
+                        val handler = Handler()
+                        val delayMillis = 2000 // 2000 milliseconds (2 seconds)
+
+                        handler.postDelayed({
+                            // Set the text
+                            worldImageViewText.text = "Verify and Login"
+
+                            // Delay the startActivity call by another 2 seconds
+                            handler.postDelayed({
+                                val intent = Intent(this@SignUp, Login::class.java)
+                                finish()
+                                startActivity(intent)
+                            }, delayMillis.toLong())
+                        }, delayMillis.toLong())
+
                     }
-                    val intent= Intent(this@SignUp,Login::class.java)
-                    finish()
-                    startActivity(intent)
                 } catch (e: SQLException) {
                     Log.e("addUserToDatabase", "SQL Exception: ${e.message}")
                     e.printStackTrace()
@@ -249,5 +319,18 @@ private fun signUp(firstName: String, lastName: String, email: String, password:
         val currentDate = currentDateTime.format(dateFormatter)
         val currentTime = currentDateTime.format(timeFormatter)
         return Pair(currentDate, currentTime)
+    }
+
+    private fun createHorizontalRotationAnimation(): RotateAnimation {
+        val rotateAnimation = RotateAnimation(
+            0.0f,
+            360.0f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        rotateAnimation.duration = 1000 // Animation duration in milliseconds
+        return rotateAnimation
     }
 }

@@ -1,16 +1,19 @@
 package com.example.globe_carry.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ChatActivity
 import com.example.globe_carry.R
@@ -32,6 +35,7 @@ class UserAdapter(val context: Context, val userList:ArrayList<User>):
         return UserViewHolder(view)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val currentUser=userList[position]
         holder.textName.text=currentUser.name
@@ -52,7 +56,32 @@ class UserAdapter(val context: Context, val userList:ArrayList<User>):
         mSpannableString.setSpan(UnderlineSpan(), 0, mSpannableString.length, 0)
         holder.msgItemDetails.text = mSpannableString
 
-        holder.msgItemDetails.setOnClickListener{
+
+        // Define the normal and clicked text colors
+        val normalTextColor = ContextCompat.getColor(context, R.color.black)
+        val clickedTextColor = ContextCompat.getColor(context, R.color.lightblack)
+
+        // Set the initial text color to normal
+        holder.msgItemDetails.setTextColor(normalTextColor)
+
+        holder.cardMessage.setOnTouchListener { view, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // Change the text color when the user touches the view
+                    holder.msgItemDetails.setTextColor(clickedTextColor)
+                    holder.textName.setTextColor(clickedTextColor)
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    // Revert the text color when the user releases it or cancels
+                    holder.msgItemDetails.setTextColor(normalTextColor)
+                    holder.textName.setTextColor(normalTextColor)
+                }
+            }
+            false // Ensure that the touch event is still propagated
+        }
+
+
+        holder.cardMessage.setOnClickListener{
             Log.d("Click","Click")
             val intent = Intent(context, ChatActivity::class.java)
 
