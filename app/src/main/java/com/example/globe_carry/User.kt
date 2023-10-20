@@ -22,10 +22,18 @@ data class Message(
     var message: String = "",
     var senderId: String = "",
     var receiverId: String = "",
-    var read: Boolean = false
+    var read: Boolean = false,
+    var timeStamp: String = ""
 )
 data class HomeItems(
-    var no: String? = null,
+    var id: String? = null,
+    var urgent: Boolean? = null,
+    var image: String? = null,
+    var category: String? = null,
+    var content: String? = null,
+    var value: Float? = null,
+    var weight: String? = null,
+    var dlvryAddress: String? = null,
     var city: String? = null,
     var country: String? = null,
     var type: String? = null,
@@ -66,3 +74,82 @@ data class MyDeliveries(
     var date: String? = null,
     var urgent: Boolean? = null,
 )
+    var recipient: String? = null,
+    var rcptContactNo: String? = null,
+    var dlvryDate: String? = null,
+    var instructions: String? = null,
+    var ttlCharge: Float? = null,
+    var dimension: String? = null,
+    var createdDate: String? = null,
+    var createdBy: String? = null
+
+)
+
+//data class travellerItems(
+//    var travellerId: String? = null,
+//    var pasportImg: String? = null,
+//    var travellerImg: String? = null,
+//    var ticketImg: String? = null,
+//    var passportNum: String? = null,
+//    var flightDate: String? = null,
+//    var destCountry: String? = null,
+//    var destCity: String? = null,
+//    var origin: String? = null,
+//    var reqDate: String? = null,
+//    var requId: String? = null
+//
+//    )
+
+//object HomeItemsData {
+//    var id: String? = null
+//    var urgent: Boolean? = null
+//    var image: String? = null
+//    var category: String? = null
+//    var content: String? = null
+//    var value: Float? = null
+//    var weight: String? = null
+//    var dlvryAddress: String? = null
+//    var city: String? = null
+//    var country: String? = null
+//    var recipient: String? = null
+//    var rcptContactNo: String? = null
+//    var dlvryDate: String? = null
+//    var instructions: String? = null
+//    var ttlCharge: Float? = null
+//    var dimension: String? = null
+//    var createdDate: String? = null
+//    var createdBy: String? = null
+//}
+object DetailDataSingleton {
+    var postId: String? = null
+    var urgent: Boolean? = null
+    var image: String? = null
+    var category: String? = null
+    var content: String? = null
+    var value: Float? = null
+    var weight: String? = null
+    var dlvryAddress: String? = null
+    var city: String? = null
+    var country: String? = null
+    var recipient: String? = null
+    var rcptContactNo: String? = null
+    var dlvryDate: String? = null
+    var instructions: String? = null
+    var ttlCharge: Float? = null
+    var dimension: String? = null
+    var createdDate: String? = null
+    var createdBy: String? = null
+}
+object PassportImgSingleton {
+    var passportImageBase64: String? = null
+    // Add other properties or methods as needed
+}
+
+object TicketImgSingleton {
+    var ticketImageBase64: String? = null
+    // Add other properties or methods as needed
+}
+object TravellerImgSingleton {
+    var travellerImageBase64: String? = null
+    // Add other properties or methods as needed
+}

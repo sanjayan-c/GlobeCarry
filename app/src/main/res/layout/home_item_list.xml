@@ -13,147 +13,233 @@
         app:cardCornerRadius="8dp"
         android:layout_margin="8dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/homeItemListLinear1"
-        tools:ignore="MissingConstraints"
-        android:gravity="center"
-        android:padding="10dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/homeItemListLinear1"
+            tools:ignore="MissingConstraints"
+            android:gravity="center"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/homeItemNo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_gravity="start"
-            android:gravity="start"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="0000909090909090" />
+            <TextView
+                android:id="@+id/homeItemNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="0000909090909090" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/homeItemArea"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:gravity="end">
 
-        <TextView
-            android:id="@+id/homeItemArea"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="end"
-            android:gravity="end"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="Paris, France" />
+                <TextView
+                    android:id="@+id/homeItemCity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="Paris"
+                    android:layout_marginEnd="8dp" />
+                <TextView
+                    android:id="@+id/homeItemCountry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="1dp"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="France" />
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/homeItemType"
-            android:layout_below="@+id/homeItemNo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_gravity="start"
-            android:gravity="start"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="Clothing, Booking" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/homeItemUrgent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_alignTop="@+id/homeItemType"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="end"
-            android:gravity="end"
-            android:textColor="@color/red"
-            android:textSize="14sp"
-            android:text="Urgent" />
-          <TextView
-              android:id="@+id/homeItemWeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/homeItemType"
-              android:textColor="@color/black"
-              android:textSize="14sp"
-            android:text="Weight : " />
-        <TextView
-            android:id="@+id/homeItemWeight1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/homeItemWeight"
-            android:layout_alignTop="@+id/homeItemWeight"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="150 g" />
-        <TextView
-            android:id="@+id/homeItemDimensions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/homeItemWeight"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="Dimension : " />
-        <TextView
-            android:id="@+id/homeItemDimensions1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/homeItemDimensions"
-            android:layout_alignTop="@+id/homeItemDimensions"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="5 * 8 * 5"/>
-        <TextView
-            android:id="@+id/homeItemCharge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:layout_below="@+id/homeItemDimensions"
-            android:text="Charge : " />
-        <TextView
-            android:id="@+id/homeItemCharge1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/homeItemCharge"
-            android:layout_alignTop="@+id/homeItemCharge"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="LKR 150" />
-        <TextView
-            android:id="@+id/homeItemDate"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_below="@+id/homeItemCharge"
-            android:text="Expected delivery within : " />
-        <TextView
-            android:id="@+id/homeItemDate1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/homeItemDate"
-            android:layout_alignTop="@+id/homeItemDate"
-            android:textSize="14sp"
-            android:text="27/09/2023" />
-        <TextView
-            android:id="@+id/homeItemDetails"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_below="@+id/homeItemDate"
-            android:text="Details >" />
-        <TextView
-            android:id="@+id/homeItemPostDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="end"
-            android:gravity="end"
-            android:layout_toEndOf="@+id/homeItemDetails"
-            android:layout_alignTop="@+id/homeItemDetails"
-            android:textSize="14sp"
-            android:text="11:35   27/09/2023" />
-    </RelativeLayout>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/homeItemType"
+                android:layout_below="@+id/homeItemNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Clothing, Booking" />
+
+            <TextView
+                android:id="@+id/homeItemUrgent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_alignTop="@+id/homeItemType"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:textColor="@color/red"
+                android:textSize="14sp"
+                android:text="Urgent" />
+            <TextView
+                android:id="@+id/homeItemWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/homeItemType"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Weight : " />
+            <TextView
+                android:id="@+id/homeItemWeight1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/homeItemWeight"
+                android:layout_alignTop="@+id/homeItemWeight"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="150 g" />
+            <TextView
+                android:id="@+id/homeItemDimensions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/homeItemWeight"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Dimension : " />
+            <TextView
+                android:id="@+id/homeItemDimensions1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/homeItemDimensions"
+                android:layout_alignTop="@+id/homeItemDimensions"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="5 * 8 * 5"/>
+            <TextView
+                android:id="@+id/homeItemCharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:layout_below="@+id/homeItemDimensions"
+                android:text="Charge : " />
+            <TextView
+                android:id="@+id/homeItemCharge1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/homeItemCharge"
+                android:layout_alignTop="@+id/homeItemCharge"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="LKR 150" />
+            <TextView
+                android:id="@+id/homeItemDate"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_below="@+id/homeItemCharge"
+                android:text="Expected delivery within : " />
+            <TextView
+                android:id="@+id/viewDlvryAdrs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/viewSpclIns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/homeRecName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/homeRecNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/cusName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/cusNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/itemContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/homeValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <ImageView
+                android:id="@+id/homeImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/homeItemDlvryDate1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/homeItemDate"
+                android:layout_alignTop="@+id/homeItemDate"
+                android:textSize="14sp"
+                android:text="27/09/2023" />
+            <TextView
+                android:id="@+id/homeItemDetails"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_below="@+id/homeItemDate"
+                android:text="Details >" />
+            <TextView
+                android:id="@+id/homeItemPostDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:layout_toEndOf="@+id/homeItemDetails"
+                android:layout_alignTop="@+id/homeItemDetails"
+                android:textSize="14sp"
+                android:text="11:35   27/09/2023" />
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

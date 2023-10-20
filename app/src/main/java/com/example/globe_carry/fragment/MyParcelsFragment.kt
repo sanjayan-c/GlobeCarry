@@ -1,33 +1,28 @@
 package com.example.globe_carry.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.globe_carry.ConnectionSQL
+import com.example.globe_carry.HomeItems
 import com.example.globe_carry.R
+import com.example.globe_carry.adapter.MyParcelItemAdapter
+import com.google.firebase.auth.FirebaseAuth
+import java.sql.SQLException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MyParcelsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MyParcelsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -38,23 +33,123 @@ class MyParcelsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_my_parcels, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MyParcelsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MyParcelsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val userAuth = FirebaseAuth.getInstance()
+        val user = userAuth.currentUser?.uid ?: ""
+        val data = mutableListOf<HomeItems>()
+
+        // Replace with your database connection code
+        val cusConSQL = ConnectionSQL()
+        cusConSQL.conclass { connection ->
+            if (connection != null) {
+                val user = userAuth.currentUser?.uid ?: ""
+
+                val query = "SELECT * FROM AdPosts WHERE Created_by = ? AND dlvryDate < ?"
+// Assuming you want to filter posts with a delivery date earlier than the current date
+                val currentDate = getCurrentDate() // Get the current date
+                val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate)
+                try {
+                    val preparedStatement = connection.prepareStatement(query)
+                    preparedStatement.setString(1, user)
+                    preparedStatement.setString(2, formattedDate)
+                    val resultSet = preparedStatement.executeQuery()
+                    val filteredData = mutableListOf<HomeItems>()
+
+                    while (resultSet.next()) {
+                        // Parse data from the result set
+                        val postId = resultSet.getInt("postid")
+                        val urgency = resultSet.getBoolean("urgency")
+                        val category = resultSet.getString("category")
+                        val content = resultSet.getString("content")
+                        val weight = resultSet.getString("weight")
+                        val value = resultSet.getFloat("value")
+                        val dlvryAddress = resultSet.getString("dlvryAddress")
+                        val city = resultSet.getString("city")
+                        val country = resultSet.getString("country")
+                        val dimension = resultSet.getString("dimension")
+                        val dlvryDate = resultSet.getString("dlvryDate")
+                        val instructions = resultSet.getString("instructions")
+                        val recipient = resultSet.getString("recipient")
+                        val rcptContactNo = resultSet.getString("rcptContactNo")
+                        val ttlCharge = resultSet.getFloat("ttlCharge")
+                        val imageBytes = resultSet.getString("image")
+                        val createdBy = resultSet.getString("Created_by")
+
+                        Log.d("Query ","Query is successful")
+
+                        Log.d("MyParcel", "PostNo: $postId")
+                        Log.d("MyParcel", "urgency: $urgency")
+                        Log.d("MyParcel", "category: $category")
+                        Log.d("MyParcel", "content: $content")
+                        Log.d("MyParcel", "weight: $weight")
+                        Log.d("MyParcel", "value: $value")
+                        Log.d("MyParcel", "dlvryAddress: $dlvryAddress")
+                        Log.d("MyParcel", "city: $city")
+                        Log.d("MyParcel", "country: $country")
+                        Log.d("MyParcel", "dimension: $dimension")
+                        Log.d("MyParcel", "dlvryDate: $dlvryDate")
+                        Log.d("MyParcel", "recipient: $recipient")
+                        Log.d("MyParcel", "rcptContactNo: $rcptContactNo")
+                        Log.d("MyParcel", "recipient: $recipient")
+                        Log.d("MyParcel", "instructions: $instructions")
+                        Log.d("MyParcel", "ttlCharge: $ttlCharge")
+                        Log.d("MyParcel", "Created_by: $createdBy")
+                        // Create a HomeItems object and add it to the data list
+                        val homeItem = HomeItems(
+                            id = postId.toString(),
+                            urgent = urgency,
+                            image = imageBytes,
+                            category = category,
+                            content = content,
+                            value = value,
+                            weight = weight.toString(),
+                            dlvryAddress = dlvryAddress,
+                            city = city,
+                            country = country,
+                            recipient = recipient,
+                            rcptContactNo = rcptContactNo,
+                            dlvryDate = dlvryDate,
+                            instructions = instructions,
+                            ttlCharge = ttlCharge,
+                            dimension = dimension,
+                            createdBy = createdBy,
+
+                            )
+
+
+                        filteredData.add(homeItem)
+                    }
+
+                    resultSet.close()
+                    preparedStatement.close()
+                    updateRecyclerView(filteredData) // Pass filteredData here
+
+                } catch (e: SQLException) {
+                    Log.e("SQL Error", "SQL Exception: " + e.message)
+                    e.printStackTrace()
+
+                }finally {
+                    connection.close()
                 }
             }
+        }
+
     }
+    fun getCurrentDate(): Date {
+        val currentDate = Date() // Get the current date and time
+        Log.d("CurrentDate", currentDate.toString()) // Log the current date
+        return currentDate
+
+    }
+
+    private fun updateRecyclerView(filteredData: List<HomeItems>) {
+        requireActivity().runOnUiThread {
+            val recyclerView = view?.findViewById<RecyclerView>(R.id.myParcelRecyclerView)
+            val adapter = MyParcelItemAdapter(filteredData)
+            recyclerView?.adapter = adapter
+            recyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
 }

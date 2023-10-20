@@ -1,13 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-<!--    <style name="Base.Theme.Globe_Carry" parent="Theme.Material3.DayNight.NoActionBar">-->
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <!--    <style name="Base.Theme.Globe_Carry" parent="Theme.Material3.DayNight.NoActionBar">-->
+    <!-- Customize your dark theme here. -->
+    <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     <style name="Base.Theme.Globe_Carry.No_Bar" parent="Theme.AppCompat.Light.DarkActionBar"/>
     <style name="Base.Theme.Globe_Carry" parent="Theme.AppCompat.Light.NoActionBar"/>
-<!--    <style name="CustomActionBar" parent="Theme.AppCompat.Light.DarkActionBar">-->
-<!--        <item name="actionBarStyle">@color/appcolour</item>-->
-<!--&lt;!&ndash;        <item name="titleTextStyle">@style/CustomActionBarTitleText</item>&ndash;&gt;-->
-<!--        &lt;!&ndash; Add other customizations as needed &ndash;&gt;-->
-<!--    </style>-->
+    <!--    <style name="CustomActionBar" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <!--        <item name="actionBarStyle">@color/appcolour</item>-->
+    <!--&lt;!&ndash;        <item name="titleTextStyle">@style/CustomActionBarTitleText</item>&ndash;&gt;-->
+    <!--        &lt;!&ndash; Add other customizations as needed &ndash;&gt;-->
+    <!--    </style>-->
+    <style name="ThemeOverlay.PopupTheme" parent="Theme.AppCompat.Light">
+        <item name="android:colorBackground">@color/appcolour</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

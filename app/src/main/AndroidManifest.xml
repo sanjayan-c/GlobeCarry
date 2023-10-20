@@ -8,13 +8,19 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Globe_Carry"
         tools:targetApi="31">
 <!--        <activity-->
 <!--            android:name=".CommonHome"-->
 <!--            android:exported="false" />-->
+        <activity
+            android:name=".CommonUserProfile"
+            android:exported="false" />
+        <activity
+            android:name=".CommonHome"
+            android:exported="false" />
         <activity
             android:name=".HelpCenter"
             android:exported="false" />
@@ -36,16 +42,9 @@
 <!--            android:name=".StaffCommonHome"-->
 <!--            android:exported="false" />-->
 
-
-
-
-
         <activity
             android:name=".ViewVerificationRequest"
             android:exported="false" />
-
-
-
 
 <!--            android:name=".StaffCommonHome"-->
 <!--            android:exported="true">-->
@@ -62,6 +61,25 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AdPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddTravellerRequest1"
+            android:exported="false" />
+        <activity
+            android:name=".AddTravellerRequest2"
+            android:exported="false" />
+        <activity
+            android:name=".AddTravellerRequest3"
+            android:exported="false" />
+        <activity
+            android:name=".AddTravellerRequest4"
             android:exported="false" />
     </application>
 

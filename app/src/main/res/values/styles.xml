@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
@@ -19,4 +20,58 @@
         <item name="android:background">@drawable/rectangle_gradient_s_amber_500_e_amber_300_radius_8</item>
     </style>
 
+</resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="usergroupStyleamber_300cornerRadius">
+        <item name="android:background">@drawable/home_send</item>
+    </style>
+    <style name="usertxtPoppinsbold14">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white_A700</item>
+        <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+    <style name="txtPoppinsmedium12_1">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/gray_900</item>
+        <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:textFontWeight" tools:targetApi="p">500</item>
+        </style>
+    <style name="custxtOpenSansromanbold20">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+    <style name="cusbtnSolidRoundedOutline">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:textFontWeight" tools:targetApi="p">600</item>
+        <item name="android:background">@drawable/cus_button_update</item>
+    </style>
+    <style name="cusbtnSolidRoundedOutline11">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:textFontWeight" tools:targetApi="p">600</item>
+        <item name="android:background">@drawable/hint_profile_update_confirm</item>
+    </style>
+    <style name="cusbtnSolidRoundedOutline_1">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:textFontWeight" tools:targetApi="p">600</item>
+        <item name="android:background">@drawable/cus_button_cancel</item>
+    </style>
+    <style name="MyPopupMenuStyle">
+        <item name="android:background">@color/appcolour</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="MenuItemStyle" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:background">@drawable/cus_button_update</item>
+    </style>
+    <style name="PopupMenuStyle" parent="ThemeOverlay.MyPopupTheme">
+        <item name="android:colorBackground">@color/appcolour</item>
+        <item name="android:background">@color/appcolour</item>
+        <item name="android:backgroundTint">@color/appcolour</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

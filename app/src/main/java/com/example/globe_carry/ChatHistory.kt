@@ -1,11 +1,16 @@
 package com.example.globe_carry
 
+import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.adapter.UserAdapter
@@ -15,6 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import org.w3c.dom.Text
 
 class ChatHistory : AppCompatActivity() {
 
@@ -24,18 +30,46 @@ class ChatHistory : AppCompatActivity() {
     private lateinit var userAuth: FirebaseAuth
     private lateinit var profileImageView: ImageView
     private lateinit var userDbRef: DatabaseReference
-
+    private lateinit var cusWalletProgressBarLayout: LinearLayout
+    private lateinit var runningManImageView1: ImageView
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user)
+        setContentView(R.layout.activity_chat_history)
 
         userAuth= FirebaseAuth.getInstance()
         userDbRef=FirebaseDatabase.getInstance().getReference()
 
         profileImageView = findViewById(R.id.profile_image)
+        cusWalletProgressBarLayout = findViewById(R.id.cusWalletProgressBarLayout)
+        runningManImageView1 = findViewById(R.id.runningManImageView1)
+
         userList=ArrayList()
         adapter= UserAdapter(this,userList)
         userRecyclerView=findViewById(R.id.userRecyclerView)
+
+
+        // Calculate the width of the screen for animation bounds
+        val screenWidth = resources.displayMetrics.widthPixels
+
+        // Create an ObjectAnimator to animate translation from left to right
+        val translationAnimator = ObjectAnimator.ofFloat(
+            runningManImageView1,
+            "translationX",
+            -screenWidth.toFloat(),
+            screenWidth.toFloat()
+        )
+
+        // Set the animator duration
+        translationAnimator.duration = 2000  // Adjust the duration as needed
+
+        // Set the repeat mode to reverse for back-and-forth animation
+        translationAnimator.repeatMode = ObjectAnimator.RESTART
+        translationAnimator.repeatCount = ObjectAnimator.INFINITE
+
+        // Start the animation
+        translationAnimator.start()
+
 
         userRecyclerView.layoutManager=LinearLayoutManager(this)
         userRecyclerView.adapter=adapter
@@ -45,6 +79,16 @@ class ChatHistory : AppCompatActivity() {
         }
 
         fetchUsersWithMessages()
+
+        // After loading the adapter with data
+        adapter.notifyDataSetChanged()
+        // Create a Handler and post a delayed action
+        Handler().postDelayed({
+            userRecyclerView.visibility = View.VISIBLE
+            cusWalletProgressBarLayout.visibility = View.GONE
+            translationAnimator.cancel()
+        }, 2000) // 2000 milliseconds (2 seconds)
+
     }
 //    private fun fetchUsersWithMessages() {
 //        val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
@@ -213,6 +257,16 @@ private fun fetchUsersWithMessages() {
             when (item.itemId) {
                 R.id.help -> {
                     val intent = Intent(this@ChatHistory,HelpCenter::class.java)
+                    startActivity(intent)
+                    true
+                }
+                // Add more menu items and their actions here
+                else -> false
+            }
+            when (item.itemId) {
+
+                R.id.profile -> {
+                    val intent = Intent(this@ChatHistory, CommonUserProfile::class.java)
                     startActivity(intent)
                     true
                 }

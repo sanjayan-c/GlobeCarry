@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
+    app:popupTheme="@style/ThemeOverlay.MyPopupTheme"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/app_bar_background"
-    android:theme="?actionBarTheme"
     app:contentInsetStart="0dp"
     app:contentInsetEnd="0dp"
     android:gravity="center">
@@ -30,6 +30,17 @@
                 android:text="𝐆𝐥𝐨𝐛𝐞𝐂𝐚𝐫𝐫𝐲"
                 android:textColor="@color/black"
                 android:textSize="36sp" />
+            <TextView
+                android:id="@+id/countMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20"
+                android:visibility="gone"
+                android:padding="5dp"
+                android:background="@color/red"
+                android:layout_marginEnd="-5dp"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="50dp"
@@ -37,7 +48,6 @@
                 android:src="@drawable/profile"
                 android:layout_gravity="end"/>
         </LinearLayout>
-
         <LinearLayout
             android:id="@+id/toolBarSearchBar"
             android:layout_width="match_parent"

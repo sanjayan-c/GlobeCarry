@@ -4,11 +4,13 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -20,7 +22,11 @@ import com.example.globe_carry.fragment.HomeFragment
 import com.example.globe_carry.fragment.MyDeliveriesFragment
 import com.example.globe_carry.fragment.MyParcelsFragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class CommonHome : AppCompatActivity() {
 
@@ -28,10 +34,13 @@ class CommonHome : AppCompatActivity() {
     private lateinit var linearNavbarItem1 : LinearLayout
     private lateinit var linearNavbarItem2 : LinearLayout
     private lateinit var linearNavbarItem3 : LinearLayout
+    private lateinit var linearRowsend : LinearLayout
     private lateinit var userAuth: FirebaseAuth
     private lateinit var profileImageView: ImageView
+    private lateinit var countMessage: TextView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var currentFragment: Fragment? = null
+    private lateinit var userDbRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +50,7 @@ class CommonHome : AppCompatActivity() {
         toolBarSearchBar.visibility=View.VISIBLE
 
         userAuth= FirebaseAuth.getInstance()
+        userDbRef=FirebaseDatabase.getInstance().reference
 
         profileImageView = findViewById(R.id.profile_image)
 
@@ -48,14 +58,44 @@ class CommonHome : AppCompatActivity() {
             showPopupMenu(view)
         }
 
+        countMessage=findViewById(R.id.countMessage)
+        // Query staff users
+        val staffQuery = userDbRef.child("user").orderByChild("type").equalTo("staff")
+        staffQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val staffCount = snapshot.childrenCount.toInt()
+                if (staffCount == 1) {
+                    // There is only one staff member, so go directly to the chat
+                    val staffUser = snapshot.children.first().getValue(User::class.java)
+                    if (staffUser != null) {
+                        // Log the uid of the staff member
+                        val staffUid = staffUser.uid
+                        Log.d("StaffUid", "Staff UID: $staffUid")
+                        val chatRoom = FirebaseAuth.getInstance().currentUser?.uid+staffUid // Replace with the actual chat room ID
+                        println(chatRoom)
+                        getUnreadMessageCount(chatRoom) { unreadCount ->
+                            // Handle the unread message count here
+                            Log.d("UnreadMessages", "Unread messages: $unreadCount")
+                            if(unreadCount>0){
+                                countMessage.text=unreadCount.toString()
+                                countMessage.visibility=View.VISIBLE
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle onCancelled event, if needed
+            }
+        })
+
+
+
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout.setOnRefreshListener {
             // This is where you handle the refresh action.
-            // You can perform any data loading or refreshing here.
-            // When you're done, call setRefreshing(false) to stop the refresh animation.
             recreate()
-            // Example:
-            // fetchData()
             swipeRefreshLayout.isRefreshing = false
         }
 
@@ -76,17 +116,17 @@ class CommonHome : AppCompatActivity() {
 
         // Set click listeners for your LinearLayouts (Transactions and Top Up)
         linearNavbarItem1.setOnClickListener {
-            setFragment(myParcelsFragment)
+            setFragment(myDeliveriesFragment)
             val image1 = findViewById<ImageView>(R.id.imageFolder1)
             val text1 = findViewById<TextView>(R.id.txtMyparcels)
             image1.setColorFilter(ContextCompat.getColor(this, R.color.bluegray_100_87), PorterDuff.Mode.SRC_IN)
             text1.setTextColor(ContextCompat.getColor(this, R.color.bluegray_100_87))
-            setFragment(myParcelsFragment)
+
             val image2 = findViewById<ImageView>(R.id.imageFolder2)
             val text2 = findViewById<TextView>(R.id.txtHome)
             image2.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
             text2.setTextColor(ContextCompat.getColor(this, R.color.black))
-            setFragment(myParcelsFragment)
+
             val image3 = findViewById<ImageView>(R.id.imageFolder3)
             val text3 = findViewById<TextView>(R.id.txtMyDeliveries)
             image3.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
@@ -112,7 +152,7 @@ class CommonHome : AppCompatActivity() {
         }
 
         linearNavbarItem3.setOnClickListener {
-            setFragment(myDeliveriesFragment)
+            setFragment(myParcelsFragment)
             val image1 = findViewById<ImageView>(R.id.imageFolder1)
             val text1 = findViewById<TextView>(R.id.txtMyparcels)
             image1.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
@@ -128,6 +168,14 @@ class CommonHome : AppCompatActivity() {
             image3.setColorFilter(ContextCompat.getColor(this, R.color.bluegray_100_87), PorterDuff.Mode.SRC_IN)
             text3.setTextColor(ContextCompat.getColor(this, R.color.bluegray_100_87))
         }
+        val linearRowsendLayout = findViewById<LinearLayout>(R.id.linearRowsend)
+        linearRowsendLayout.setOnClickListener {
+            // Define the intent to start the AdPostActivity
+            val intent = Intent(this, AdPostActivity::class.java)
+
+            // Start the AdPostActivity
+            startActivity(intent)
+        }
 
     }
 
@@ -138,6 +186,7 @@ class CommonHome : AppCompatActivity() {
 
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+
                 R.id.logout -> {
                     // Perform the logout action
                     userAuth= FirebaseAuth.getInstance()
@@ -168,6 +217,16 @@ class CommonHome : AppCompatActivity() {
                 // Add more menu items and their actions here
                 else -> false
             }
+            when (item.itemId) {
+
+                R.id.profile -> {
+                    val intent = Intent(this@CommonHome, CommonUserProfile::class.java)
+                    startActivity(intent)
+                    true
+                }
+                // Add more menu items and their actions here
+                else -> false
+            }
         }
 
         popupMenu.show()
@@ -185,14 +244,31 @@ class CommonHome : AppCompatActivity() {
 
         currentFragment = fragment
     }
-    fun maskCusId(cusId: String): String {
-        if (cusId.length >= 8) {
-            val firstFour = cusId.take(4)
-            val lastFour = cusId.takeLast(4)
-            val maskedMiddle = "X".repeat(cusId.length - 8)
-            return "$firstFour$maskedMiddle$lastFour"
-        }
-        return cusId
+
+
+    private fun getUnreadMessageCount(chatRoom: String, callback: (Int) -> Unit) {
+        userDbRef = FirebaseDatabase.getInstance().getReference()
+        val messagesRef = userDbRef.child("chats").child(chatRoom).child("messages")
+
+        // Query for unread messages
+        val query = messagesRef.orderByChild("read").equalTo(false)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val unreadMessageCount = snapshot.childrenCount.toInt()
+                // Call the callback function and pass the unread message count
+                Log.d("Count",unreadMessageCount.toString())
+                callback(unreadMessageCount)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
     }
+
+
+
+
 
 }
