@@ -61,10 +61,6 @@ class CommonHome : AppCompatActivity() {
             swipeRefreshLayout.isRefreshing = false
         }
 
-        linearRowsend = findViewById(R.id.linearRowsend)
-        linearRowsend.setOnClickListener { view ->
-            Log.d("Button Send Clicked","Button Send Clicked")
-        }
 
         linearNavbarItem1 = findViewById(R.id.linearNavbarItem1)
         linearNavbarItem2 = findViewById(R.id.linearNavbarItem2)
@@ -133,6 +129,14 @@ class CommonHome : AppCompatActivity() {
             val text3 = findViewById<TextView>(R.id.txtMyDeliveries)
             image3.setColorFilter(ContextCompat.getColor(this, R.color.bluegray_100_87), PorterDuff.Mode.SRC_IN)
             text3.setTextColor(ContextCompat.getColor(this, R.color.bluegray_100_87))
+        }
+        val linearRowsendLayout = findViewById<LinearLayout>(R.id.linearRowsend)
+        linearRowsendLayout.setOnClickListener {
+            // Define the intent to start the AdPostActivity
+            val intent = Intent(this, AdPostActivity::class.java)
+
+            // Start the AdPostActivity
+            startActivity(intent)
         }
 
     }
