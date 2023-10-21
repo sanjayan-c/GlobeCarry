@@ -44,9 +44,7 @@ data class HomeItems(
     var dimension: String? = null,
     var createdDate: String? = null,
     var createdBy: String? = null
-
 )
-
 data class Verification(
     var no: String? = null,
     var Fname:String?=null,

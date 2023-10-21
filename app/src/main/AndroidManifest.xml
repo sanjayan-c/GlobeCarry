@@ -12,9 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Globe_Carry"
         tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".CommonHome"-->
-<!--            android:exported="false" />-->
+
         <activity
             android:name=".CommonUserProfile"
             android:exported="false" />
@@ -46,9 +44,9 @@
             android:name=".ViewVerificationRequest"
             android:exported="false" />
 
-<!--      android:name=".StaffCommonHome"       -->
-<!--            android:exported="true">-->
-<!--        android:name=".CommonHome"-->
+      <activity
+            android:name=".StaffCommonHome"
+            android:exported="false"/>
 
         <activity
             android:name=".Login"
