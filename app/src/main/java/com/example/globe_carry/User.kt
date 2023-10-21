@@ -128,3 +128,34 @@ object TravellerImgSingleton {
     var travellerImageBase64: String? = null
     // Add other properties or methods as needed
 }
+
+data class MyDeliveryRequests(
+    var postId: Int,
+    var urgency: Boolean? = null,
+    var category: String? = null,
+    var content: String? = null,
+    var value: BigDecimal? = BigDecimal.ZERO,
+    var weight: BigDecimal? = BigDecimal.ZERO,
+    var dlvryAddress: String? = null,
+    var city: String? = null,
+    var country: String? = null,
+    var recipient: String? = null,
+    var rcptContactNo: String? = null,
+    var dlvryDate: String? = null,
+    var instructions: String? = null,
+    var ttlCharge: BigDecimal? = BigDecimal.ZERO,
+    var dimension: String? = null,
+    var createdDate: String? = null,
+    var createdBy: String? = null,
+    var imageBytes: String? = null,
+    var orderstatus_id: Int,
+    var received: Boolean? = null,
+    var delivered: Boolean? = null,
+    var paid: Boolean? = null,
+    var departed: Boolean? = null,
+    var reached: Boolean? = null,
+    var firstName: String? = null,
+    var lastName: String? = null,
+    var cityOrgin: String? = null,
+    var countryOrgin: String? = null
+)

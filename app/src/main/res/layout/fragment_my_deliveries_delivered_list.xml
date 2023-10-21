@@ -123,13 +123,17 @@
                 android:layout_below="@+id/itemFlightDate"
                 android:text="Details >" />
 
-            <Button
+            <TextView
                 android:id="@+id/button2"
-                android:layout_width="109dp"
+                android:layout_width="150dp"
                 android:layout_height="54dp"
+                android:textColor="@color/green"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="18sp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:text="Scan QR" />
+                android:text="Earned : " />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

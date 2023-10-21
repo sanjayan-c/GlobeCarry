@@ -108,11 +108,53 @@ class CommonHome : AppCompatActivity() {
         val myDeliveriesFragment = MyDeliveriesFragment()
         val myParcelsFragment = MyParcelsFragment()
 
+
+
         val image = findViewById<ImageView>(R.id.imageFolder2)
         val text = findViewById<TextView>(R.id.txtHome)
         image.setColorFilter(ContextCompat.getColor(this, R.color.bluegray_100_87), PorterDuff.Mode.SRC_IN)
         text.setTextColor(ContextCompat.getColor(this, R.color.bluegray_100_87))
-        setFragment(myDeliveriesFragment)
+
+        val fragmentToShow = intent.getStringExtra("FRAGMENT_TO_SHOW")
+
+        if (fragmentToShow == "") {
+            setFragment(homeFragment)
+        }else if(fragmentToShow == "MyDeliveriesFragment") {
+            setFragment(myDeliveriesFragment)
+            val image1 = findViewById<ImageView>(R.id.imageFolder1)
+            val text1 = findViewById<TextView>(R.id.txtMyparcels)
+            image1.setColorFilter(ContextCompat.getColor(this, R.color.bluegray_100_87), PorterDuff.Mode.SRC_IN)
+            text1.setTextColor(ContextCompat.getColor(this, R.color.bluegray_100_87))
+
+            val image2 = findViewById<ImageView>(R.id.imageFolder2)
+            val text2 = findViewById<TextView>(R.id.txtHome)
+            image2.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
+            text2.setTextColor(ContextCompat.getColor(this, R.color.black))
+
+            val image3 = findViewById<ImageView>(R.id.imageFolder3)
+            val text3 = findViewById<TextView>(R.id.txtMyDeliveries)
+            image3.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
+            text3.setTextColor(ContextCompat.getColor(this, R.color.black))
+        }else if (fragmentToShow == "MyParcelsFragment") {
+            setFragment(myParcelsFragment)
+            val image1 = findViewById<ImageView>(R.id.imageFolder1)
+            val text1 = findViewById<TextView>(R.id.txtMyparcels)
+            image1.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
+            text1.setTextColor(ContextCompat.getColor(this, R.color.black))
+
+            val image2 = findViewById<ImageView>(R.id.imageFolder2)
+            val text2 = findViewById<TextView>(R.id.txtHome)
+            image2.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
+            text2.setTextColor(ContextCompat.getColor(this, R.color.black))
+
+            val image3 = findViewById<ImageView>(R.id.imageFolder3)
+            val text3 = findViewById<TextView>(R.id.txtMyDeliveries)
+            image3.setColorFilter(ContextCompat.getColor(this, R.color.bluegray_100_87), PorterDuff.Mode.SRC_IN)
+            text3.setTextColor(ContextCompat.getColor(this, R.color.bluegray_100_87))
+        }else{
+            setFragment(homeFragment)
+        }
+
 
         // Set click listeners for your LinearLayouts (Transactions and Top Up)
         linearNavbarItem1.setOnClickListener {

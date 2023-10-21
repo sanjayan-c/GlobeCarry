@@ -32,6 +32,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.globe_carry.adapter.CommentAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -95,6 +96,8 @@ class CommonUserProfile : AppCompatActivity() {
     private var selectedImageUri: Uri? = null
     private lateinit var userAuth: FirebaseAuth
     private var editMode: Boolean = false
+
+    private var swipeRefreshLayout: SwipeRefreshLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -249,6 +252,13 @@ class CommonUserProfile : AppCompatActivity() {
                         cusAccManagementBack?.setOnClickListener { // Start the CustomerAccountManagement activity
                             finish()
                         }
+
+                        swipeRefreshLayout?.setOnRefreshListener {
+                            // This is where you handle the refresh action.
+                            recreate()
+                            swipeRefreshLayout?.isRefreshing = false
+                        }
+
 
                         cusAccountProfileImageFrame?.setOnClickListener {
                             if(editMode) {
@@ -724,6 +734,8 @@ class CommonUserProfile : AppCompatActivity() {
 //        viewInputcusMyParcelsCount= findViewById(R.id.viewInputcusMyParcelsCount)
 //        viewInputDeliveryCount= findViewById(R.id.viewInputDeliveryCount)
 //        ratingBar= findViewById(R.id.ratingBar)
+
+            swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
 
             commentsRecyclerView= findViewById(R.id.commentsRecyclerView)
             val intent = intent

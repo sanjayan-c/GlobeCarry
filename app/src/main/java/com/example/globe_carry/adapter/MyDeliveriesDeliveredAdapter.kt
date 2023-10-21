@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.HomeItems
@@ -14,11 +13,12 @@ import com.example.globe_carry.QRscanner
 import com.example.globe_carry.R
 import com.example.globe_carry.Verification
 import com.example.globe_carry.ViewVerificationRequest
+import com.example.globe_carry.fragment.MyDeliveriesDeliveredFragment
 import com.example.globe_carry.fragment.MyDeliveriesFragment
 import com.example.globe_carry.fragment.MyDeliveriesPendingFragment
 
-class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment, private val data: List<MyDeliveryRequests>) :
-    RecyclerView.Adapter<MyDeliveriesAdapter.ViewHolder>() {
+class MyDeliveriesDeliveredAdapter(private val context: MyDeliveriesDeliveredFragment, private val data: List<MyDeliveryRequests>) :
+    RecyclerView.Adapter<MyDeliveriesDeliveredAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemNo: TextView = itemView.findViewById(R.id.homeItemNo)
@@ -29,13 +29,13 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment, priv
         val orgin: TextView = itemView.findViewById(R.id.homeItemDimensions1)
         val flightDate: TextView = itemView.findViewById(R.id.itemFlightDate1)
         val details: TextView = itemView.findViewById(R.id.homeItemDetails)
-        val buttonScan: Button = itemView.findViewById(R.id.button2)
+        val buttonScan: TextView = itemView.findViewById(R.id.button2)
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.fragment_my_deliveries_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.fragment_my_deliveries_delivered_list, parent, false)
         return ViewHolder(view)
     }
 
@@ -54,22 +54,7 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment, priv
         Log.d("Departed",item.departed.toString())
         Log.d("Reached",item.reached.toString())
 
-        holder.buttonScan.setOnClickListener {
-            // Code to execute when the TextView is clicked
-
-            // Create an Intent to start the new activity
-            val intent = Intent(context.requireContext(), QRscanner::class.java)
-
-            // Put the request ID as an extra in the Intent
-            intent.putExtra("postId", item.postId)
-            intent.putExtra("orderstatus_id", item.orderstatus_id)
-            intent.putExtra("received", item.received)
-            intent.putExtra("delivered", item.delivered)
-            // Start the new activity
-            context.startActivity(intent)
-
-            // For example, you can open a new activity or perform some other action.
-        }
+        holder.flightDate.text = item.ttlCharge.toString()
 
     }
     override fun getItemCount(): Int {

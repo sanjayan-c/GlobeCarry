@@ -23,13 +23,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <include layout="@layout/custom_toolbar"
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
                 <RelativeLayout
+                    android:layout_below="@+id/toolbar"
                     android:id="@+id/cusAccManagementHeading"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="20dp"
-                    android:paddingHorizontal="10dp"
-                    android:background="@drawable/app_bar_background">
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="20dp">
 
                     <ImageView
                         android:id="@+id/cusAccManagementBack"
@@ -37,18 +44,17 @@
                         android:layout_width="30dp"
                         android:scaleType="fitXY"
                         tools:ignore="ContentDescription"
-                        android:rotation="270"
-                        android:src="@drawable/back_img_arrow" />
+                        android:src="@drawable/baseline_arrow_circle_left_24" />
 
                     <TextView
-                        style="@style/custxtOpenSansromanbold20"
+                        style="@style/txtPoppinsmedium12_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="Account Management"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
                 </RelativeLayout>
 
                 <androidx.cardview.widget.CardView
@@ -58,7 +64,7 @@
                     app:cardElevation="20dp"
                     android:layout_below="@+id/cusAccManagementHeading"
                     android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
                     android:backgroundTint="@color/appextracolourlight">
                         <LinearLayout

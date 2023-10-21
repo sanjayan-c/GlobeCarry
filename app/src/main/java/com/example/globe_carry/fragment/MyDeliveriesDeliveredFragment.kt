@@ -9,61 +9,57 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ConnectionSQL
-import com.example.globe_carry.HomeItems
+import com.example.globe_carry.MyDeliveryRequests
 import com.example.globe_carry.R
-import com.example.globe_carry.adapter.MyParcelItemAdapter
+import com.example.globe_carry.adapter.MyDeliveriesAdapter
+import com.example.globe_carry.adapter.MyDeliveriesDeliveredAdapter
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.sql.SQLException
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
-class MyParcelsFragment : Fragment() {
+class MyDeliveriesDeliveredFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_parcels, container, false)
+        return inflater.inflate(R.layout.fragment_my_deliveries_delivered, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val userAuth = FirebaseAuth.getInstance()
         val user = userAuth.currentUser?.uid ?: ""
-        val data = mutableListOf<HomeItems>()
+        //      val data = mutableListOf<MyDeliveries>()
 
         CoroutineScope(Dispatchers.IO).launch {
             if (!isAdded) {
                 return@launch
             }
-        // Replace with your database connection code
         val cusConSQL = ConnectionSQL()
         cusConSQL.conclass { connection ->
             if (connection != null) {
                 val user = userAuth.currentUser?.uid ?: ""
 
-                val query = "SELECT * FROM AdPosts WHERE Created_by = ? AND dlvryDate < ?"
-// Assuming you want to filter posts with a delivery date earlier than the current date
-                val currentDate = getCurrentDate() // Get the current date
-                val formattedDate =
-                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate)
+                val query =
+                    "SELECT a.*, o.*, u.firstName AS firstName, u.lastName AS lastName,u.city AS cityOrgin, u.country AS countryOrgin " +
+                            "FROM AdPosts a, orderstatus o,user u " +
+                            "WHERE a.postid = o.postid AND a.Created_by = u.userId AND o.acptdTravllerId = ?";
+
                 try {
                     val preparedStatement = connection.prepareStatement(query)
                     preparedStatement.setString(1, user)
-                    preparedStatement.setString(2, formattedDate)
+
                     val resultSet = preparedStatement.executeQuery()
-                    val filteredData = mutableListOf<HomeItems>()
+                    val filteredData = mutableListOf<MyDeliveryRequests>()
 
                     while (resultSet.next()) {
                         // Parse data from the result set
@@ -71,19 +67,33 @@ class MyParcelsFragment : Fragment() {
                         val urgency = resultSet.getBoolean("urgency")
                         val category = resultSet.getString("category")
                         val content = resultSet.getString("content")
-                        val weight = resultSet.getString("weight")
-                        val value = resultSet.getFloat("value")
+                        val value = resultSet.getBigDecimal("value")
+                        val weight = resultSet.getBigDecimal("weight")
                         val dlvryAddress = resultSet.getString("dlvryAddress")
                         val city = resultSet.getString("city")
                         val country = resultSet.getString("country")
-                        val dimension = resultSet.getString("dimension")
-                        val dlvryDate = resultSet.getString("dlvryDate")
-                        val instructions = resultSet.getString("instructions")
                         val recipient = resultSet.getString("recipient")
                         val rcptContactNo = resultSet.getString("rcptContactNo")
-                        val ttlCharge = resultSet.getFloat("ttlCharge")
-                        val imageBytes = resultSet.getString("image")
+                        val dlvryDate = resultSet.getString("dlvryDate")
+                        val instructions = resultSet.getString("instructions")
+                        val ttlCharge = resultSet.getBigDecimal("ttlCharge")
+                        val dimension = resultSet.getString("dimension")
+                        val createdDate = resultSet.getString("createdDate")
                         val createdBy = resultSet.getString("Created_by")
+                        val imageBytes = resultSet.getString("image")
+
+                        val orderstatus_id = resultSet.getInt("orderstatus_id")
+                        val received = resultSet.getBoolean("received")
+                        val delivered = resultSet.getBoolean("delivered")
+                        val paid = resultSet.getBoolean("paid")
+                        val departed = resultSet.getBoolean("departed")
+                        val reached = resultSet.getBoolean("reached")
+
+                        val firstName = resultSet.getString("firstName")
+                        val lastName = resultSet.getString("lastName")
+                        val cityOrgin = resultSet.getString("cityOrgin")
+                        val countryOrgin = resultSet.getString("countryOrgin")
+
 
                         Log.d("Query ", "Query is successful")
 
@@ -91,41 +101,47 @@ class MyParcelsFragment : Fragment() {
                         Log.d("MyParcel", "urgency: $urgency")
                         Log.d("MyParcel", "category: $category")
                         Log.d("MyParcel", "content: $content")
-                        Log.d("MyParcel", "weight: $weight")
                         Log.d("MyParcel", "value: $value")
+                        Log.d("MyParcel", "weight: $weight")
                         Log.d("MyParcel", "dlvryAddress: $dlvryAddress")
                         Log.d("MyParcel", "city: $city")
                         Log.d("MyParcel", "country: $country")
-                        Log.d("MyParcel", "dimension: $dimension")
-                        Log.d("MyParcel", "dlvryDate: $dlvryDate")
                         Log.d("MyParcel", "recipient: $recipient")
                         Log.d("MyParcel", "rcptContactNo: $rcptContactNo")
-                        Log.d("MyParcel", "recipient: $recipient")
+                        Log.d("MyParcel", "dlvryDate: $dlvryDate")
                         Log.d("MyParcel", "instructions: $instructions")
                         Log.d("MyParcel", "ttlCharge: $ttlCharge")
-                        Log.d("MyParcel", "Created_by: $createdBy")
+                        Log.d("MyParcel", "dimension: $dimension")
+                        Log.d("MyParcel", "createdDate: $createdDate")
+                        Log.d("MyParcel", "createdBy: $createdBy")
+                        Log.d("MyParcel", "imageBytes: $imageBytes")
+
+                        Log.d("MyParcel", "orderstatus_id: $orderstatus_id")
+                        Log.d("MyParcel", "received: $received")
+                        Log.d("MyParcel", "delivered: $delivered")
+                        Log.d("MyParcel", "paid: $paid")
+                        Log.d("MyParcel", "departed: $departed")
+                        Log.d("MyParcel", "reached: $reached")
+
+
+                        Log.d("MyParcel", "firstName: $firstName")
+                        Log.d("MyParcel", "lastName: $lastName")
+                        Log.d("MyParcel", "cityOrgin: $cityOrgin")
+                        Log.d("MyParcel", "countryOrgin: $countryOrgin")
                         // Create a HomeItems object and add it to the data list
-                        val homeItem = HomeItems(
-                            id = postId.toString(),
-                            urgent = urgency,
-                            image = imageBytes,
-                            category = category,
-                            content = content,
-                            value = value,
-                            weight = weight.toString(),
-                            dlvryAddress = dlvryAddress,
-                            city = city,
-                            country = country,
-                            recipient = recipient,
-                            rcptContactNo = rcptContactNo,
-                            dlvryDate = dlvryDate,
-                            instructions = instructions,
-                            ttlCharge = ttlCharge,
-                            dimension = dimension,
-                            createdBy = createdBy,
-
-                            )
-
+                        val homeItem = MyDeliveryRequests(
+                            postId, urgency,
+                            category, content,
+                            value, weight,
+                            dlvryAddress, city,
+                            country, recipient,
+                            rcptContactNo, dlvryDate,
+                            instructions, ttlCharge,
+                            dimension, createdDate,
+                            createdBy, imageBytes,
+                            orderstatus_id, received, delivered, paid, departed, reached,
+                            firstName, lastName, cityOrgin, countryOrgin
+                        )
 
                         filteredData.add(homeItem)
                     }
@@ -144,20 +160,16 @@ class MyParcelsFragment : Fragment() {
             }
         }
     }
-    }
-    fun getCurrentDate(): Date {
-        val currentDate = Date() // Get the current date and time
-        Log.d("CurrentDate", currentDate.toString()) // Log the current date
-        return currentDate
 
     }
 
-    private fun updateRecyclerView(filteredData: List<HomeItems>) {
+
+    private fun updateRecyclerView(filteredData: List<MyDeliveryRequests>) {
         // Check if the fragment is attached to an activity
         if (isAdded) {
             requireActivity().runOnUiThread {
-                val recyclerView = view?.findViewById<RecyclerView>(R.id.myParcelRecyclerView)
-                val adapter = MyParcelItemAdapter(filteredData)
+                val recyclerView = view?.findViewById<RecyclerView>(R.id.MydelRecyclerView)
+                val adapter = MyDeliveriesDeliveredAdapter(this, filteredData)
                 recyclerView?.adapter = adapter
                 recyclerView?.layoutManager = LinearLayoutManager(requireContext())
             }
@@ -169,5 +181,4 @@ class MyParcelsFragment : Fragment() {
         // Cancel the coroutine when the fragment is destroyed
         CoroutineScope(Dispatchers.IO).cancel()
     }
-
 }
