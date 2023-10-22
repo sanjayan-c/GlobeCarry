@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
     <include
         layout="@layout/custom_toolbar"
         android:id="@+id/toolbar"
@@ -14,73 +13,70 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/arrowImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/baseline_arrow_circle_left_24"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            />
+        <TextView android:ellipsize="end"
+            android:id="@+id/Title"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="70dp"
+            android:layout_width="wrap_content"
+            android:singleLine="true"
+            android:text="Parecel to Deliver"
+            style="@style/txtPoppinsmedium12_1" tools:text="Parcel To Deliver"/>
 
+    </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".AddTravellerRequest"
-        android:paddingVertical="20dp">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/travellerRequestLayout"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            android:layout_marginTop="70dp">
+            android:orientation="vertical">
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ttlLayout"
                 android:orientation="horizontal">
-                <ImageView
-                    android:id="@+id/arrowImageView"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="16dp"
-                    android:src="@drawable/baseline_arrow_circle_left_24"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true"
-                    />
-                <TextView android:ellipsize="end"
-                    android:id="@+id/Title"
+                <TextView
+                    android:ellipsize="end"
+                    android:id="@+id/TxtPlace"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="70dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
                     android:layout_width="wrap_content"
+                    android:layout_below="@+id/ttlLayout"
                     android:singleLine="true"
-                    android:text="Upload Documnents"
-                    style="@style/txtPoppinsmedium12_1" tools:text="Upload Documents"/>
+                    android:text="Parcel Number :"
+                    style="@style/txtPoppinsmedium12_1" tools:text="Parcel Number : "/>
+
+                <EditText
+                    android:id="@+id/editTxtParcelNo"
+                    style="@style/txtPoppinsmedium12_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:layout_below="@id/ttlLayout"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/TxtPlace"
+                    android:layout_marginEnd="21dp"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:singleLine="true"
+                    tools:text="Parcel No : " />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/txtParcelNo"
-                style="@style/txtPoppinsmedium12_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ttlLayout"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="21dp"
-                android:ellipsize="end"
-                android:gravity="start"
-                android:singleLine="true"
-                tools:text="Parcel No : " />
-
-            <EditText
-                android:id="@+id/editTxtParcelNo"
-                style="@style/txtPoppinsmedium12_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:layout_below="@id/ttlLayout"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_toEndOf="@+id/txtParcelNo"
-                android:layout_marginEnd="21dp"
-                android:ellipsize="end"
-                android:gravity="end"
-                android:singleLine="true"
-                tools:text="Parcel No : " />
             <FrameLayout
                 android:id="@+id/frameStackvectorone"
                 android:layout_width="match_parent"
@@ -91,7 +87,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="5dp">
 
-            <View
+                <View
                     android:id="@+id/lineVectorOne"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -118,6 +114,7 @@
                     android:scaleType="fitCenter"
                     android:layout_marginStart="110dp"
                     android:src="@drawable/img_group25" tools:ignore="ContentDescription"/>
+
                 <View
                     android:id="@+id/viewEllipseThree"
                     android:layout_width="40dp"
@@ -133,25 +130,25 @@
                     android:background="@drawable/step_ball_inactive" />
             </FrameLayout>
             <TextView
-                android:id="@+id/txtODc"
-                style="@style/txtPoppinsmedium12_1"
+                android:id="@+id/txtIns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/frameStackvectorone"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="2dp"
+                android:textSize="24dp"
+                android:text="Please Upload Your Ticket's Pic : "
+                android:layout_below="@id/frameStackvectorone"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="21dp"
-                android:ellipsize="end"
-                android:gravity="start"
-                android:singleLine="true"
-                tools:text="Please Upload Selfie with your ticket : " />
+                />
 
             <LinearLayout
                 android:id="@+id/linearUpload"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtODc"
+                android:layout_below="@id/txtIns"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="12dp"
                 android:gravity="center_horizontal"
@@ -159,60 +156,53 @@
 
                 <ImageView
                     android:id="@+id/flttcktImgUpld"
-                    android:layout_width="180dp"
+                    android:layout_width="match_parent"
                     android:layout_height="180dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="4dp"
-                    android:gravity="center_horizontal"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/img_upload"
-                    tools:ignore="ContentDescription"
-                    tools:src="@drawable/img_upload" />
+                    android:layout_marginTop="10dp"
+                    android:clickable="true"
+                    android:layout_below="@id/txtODc"
+                    android:onClick="onSelectImageClick"
+                    android:src="@drawable/baseline_image_24" />
+
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/linearRowdescription"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_below="@+id/linearUpload"
-                android:layout_marginTop="10dp"
-                android:gravity="start"
-                android:orientation="horizontal">
-
+                android:orientation="horizontal"
+                android:layout_below="@id/passportImgUpld"
+                android:layout_marginTop="10dp">
                 <ImageView
                     android:id="@+id/imageImageOne"
-                    android:layout_width="160dp"
+                    android:layout_width="150dp"
                     android:layout_height="160dp"
+                    android:layout_margin="16dp"
                     android:scaleType="fitXY"
-                    tools:ignore="ContentDescription"
-                    tools:src="@drawable/flight_ticket" />
-
+                    android:src="@drawable/flight_ticket"
+                    />
                 <TextView
-                    android:id="@+id/txtDescription"
-                    android:textSize="15dp"
-                    android:gravity="fill"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="2sp"
-                    android:layout_marginTop="10sp"
-                    android:layout_weight="0.10"
+                    android:gravity="fill"
                     android:layout_marginEnd="8dp"
-                    tools:text="@string/msg_please_take_an3"/>
+                    android:text="@string/msg_please_take_an3"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="12dp"
+                    style="@style/txtPoppinsmedium12_1" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@+id/linearRowdescription">
+
+                >
 
                 <Button
                     android:id="@+id/btnCancel3"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/layout_password"
-                    android:text="Previous"
+                    android:text="Cancel"
                     android:textSize="12dp"
                     android:layout_marginStart="100dp"
                     android:textColor="@color/white"
@@ -235,6 +225,6 @@
 
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+</LinearLayout>

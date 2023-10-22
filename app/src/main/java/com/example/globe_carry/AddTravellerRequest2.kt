@@ -43,7 +43,8 @@ class AddTravellerRequest2 :AppCompatActivity() {
             intent.type = "image/*"
             startActivityForResult(intent, PICK_IMAGE_REQUEST)
         }
-
+        val postId = intent.getStringExtra("postId")
+        Log.d("AddTravellerRequest2", postId ?: "No PostId available")
         btnNext2.setOnClickListener {
             val travellerImageBase64 = convertImageToBase64(selectedImageUri)
             Log.d("AddTravellerRequest2", "Base64 Image: $travellerImageBase64")
@@ -53,8 +54,8 @@ class AddTravellerRequest2 :AppCompatActivity() {
 
             // Create an Intent to start the next activity
             val nextActivityIntent = Intent(this, AddTravellerRequest3::class.java)
-            val postId = intent.getStringExtra("postId")
-            Log.d("AddTravellerRequest2", postId ?: "No PostId available")
+
+
             // Pass the data to the next activity
 
             nextActivityIntent.putExtra("postId", postId)

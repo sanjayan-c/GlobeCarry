@@ -83,7 +83,7 @@ data class HomeItems(
 object DetailDataSingleton {
     var postId: String? = null
     var urgent: Boolean? = null
-    var image: String? = null
+   // var image: String? = null
     var category: String? = null
     var content: String? = null
     var value: Float? = null
@@ -112,5 +112,8 @@ object TicketImgSingleton {
 object TravellerImgSingleton {
     var travellerImageBase64: String? = null
     // Add other properties or methods as needed
+}
+object HomeItemImageSingleton {
+    var itemImageBase64: String? = null
 }
 

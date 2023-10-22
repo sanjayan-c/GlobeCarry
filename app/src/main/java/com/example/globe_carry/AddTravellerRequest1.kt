@@ -60,6 +60,8 @@ class AddTravellerRequest1:AppCompatActivity() {
             Log.d("AddTravellerRequest1", postId ?: "No PostId available")
 
             val intent = Intent(this, AddTravellerRequest2::class.java)
+            intent.putExtra("postId", postId)
+            Log.d("AddTravellerRequest1 Passed", "Base64 Image: $passportImageBase64")
             startActivity(intent)
         }
 

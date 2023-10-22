@@ -5,11 +5,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import java.io.ByteArrayOutputStream
+import java.sql.Connection
 import java.util.Date
 
 
@@ -118,7 +120,6 @@ class AdPostActivity : AppCompatActivity() {
             val instructions = eTxtInstructions.text.toString()
             val totalCharge =  0.01 * (800.0 * weight)+(800*0.2)
             val imageData = convertImageToBase64(selectedImageUri)
-            TxtTotalCharge.text = "Total Charge: $totalCharge"
             val currentDate = getCurrentDate()
 
             val currentUser = FirebaseAuth.getInstance().currentUser
@@ -153,11 +154,15 @@ class AdPostActivity : AppCompatActivity() {
 
                         preparedStatement.executeUpdate()
                         preparedStatement.close()
-
+                        val postId = getGeneratedPostIdFromDatabase(connection)
                         runOnUiThread {
                             // Show a success message or navigate to another screen
                             Toast.makeText(this, "Data inserted successfully", Toast.LENGTH_SHORT)
                                 .show()
+                            val qrIntent = Intent(this@AdPostActivity, QRGenerator::class.java)
+                            qrIntent.putExtra("postId", postId)
+                            Log.d("Ad Post Passed", postId ?: "No PostId available")
+                            startActivity(qrIntent)
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -174,6 +179,8 @@ class AdPostActivity : AppCompatActivity() {
                     }
                 }
             }
+
+
         }
         arrowImageView!!.setOnClickListener { // Start the CustomerAccountManagement activity
             finish()
@@ -181,6 +188,25 @@ class AdPostActivity : AppCompatActivity() {
         btnCancel!!.setOnClickListener { // Start the CustomerAccountManagement activity
             finish()
         }
+
+
+    }
+    // Function to get the generated postId from the database
+    fun getGeneratedPostIdFromDatabase(connection: Connection): String {
+        val query = "SELECT LAST_INSERT_ID() as postId"
+        val statement = connection.createStatement()
+        val resultSet = statement.executeQuery(query)
+
+        var postId: String? = null
+
+        if (resultSet.next()) {
+            postId = resultSet.getString("postId")
+        }
+
+        resultSet.close()
+        statement.close()
+
+        return postId ?: "No PostId available"
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

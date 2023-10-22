@@ -69,10 +69,10 @@ class DetailActivity:AppCompatActivity() {
         findViewById<TextView>(R.id.viewCountry).text = country
         findViewById<TextView>(R.id.viewWeight).text = weight
         // Inside your DetailActivity's `onCreate` method
-
-        val imageBase64 = intent.getStringExtra("image")
+        fetchCustomerDetails(createdBy)
+        val imageBase64 =HomeItemImageSingleton.itemImageBase64
         val imageView = findViewById<ImageView>(R.id.detailImage)
-        Log.d("Image", "ImageBase64 size: ${imageBase64?.length}")
+//        Log.d("Image", "ImageBase64 size: ${imageBase64?.length}")
 
         if (imageBase64 != null && imageBase64.isNotEmpty()) {
             // Decode the Base64 string to a ByteArray
@@ -99,7 +99,7 @@ class DetailActivity:AppCompatActivity() {
         }
 
 
-        fetchCustomerDetails(createdBy)
+
         val btnAceeptDlvry = findViewById<Button>(R.id.btnAceeptDlvry)
         btnAceeptDlvry.setOnClickListener {
             // Define the intent to start the AdPostActivity

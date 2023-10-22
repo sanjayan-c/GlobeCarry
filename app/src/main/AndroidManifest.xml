@@ -64,6 +64,11 @@
         <activity
             android:name=".AddTravellerRequest4"
             android:exported="false" />
+        <activity
+            android:name=".QRGenerator"
+            android:label="QR Generator">
+            <!-- Additional activity attributes -->
+        </activity>
     </application>
 
 </manifest>

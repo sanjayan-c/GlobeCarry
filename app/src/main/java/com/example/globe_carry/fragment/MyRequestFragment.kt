@@ -2,10 +2,10 @@ package com.example.globe_carry.fragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ConnectionSQL
@@ -18,11 +18,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class MyParcelsFragment : Fragment() {
+class MyRequestFragment :Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("Entered","Entered")
 
     }
 
@@ -46,14 +45,14 @@ class MyParcelsFragment : Fragment() {
             if (connection != null) {
                 val user = userAuth.currentUser?.uid ?: ""
 
-                val query = "SELECT * FROM AdPosts WHERE Created_by = ? "
+                val query = "SELECT * FROM AdPosts WHERE Created_by = ? AND dlvryDate < ?"
 // Assuming you want to filter posts with a delivery date earlier than the current date
                 val currentDate = getCurrentDate() // Get the current date
                 val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate)
                 try {
                     val preparedStatement = connection.prepareStatement(query)
                     preparedStatement.setString(1, user)
-                   // preparedStatement.setString(2, formattedDate)
+                    preparedStatement.setString(2, formattedDate)
                     val resultSet = preparedStatement.executeQuery()
                     val filteredData = mutableListOf<HomeItems>()
 
@@ -152,5 +151,4 @@ class MyParcelsFragment : Fragment() {
             recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         }
     }
-
 }

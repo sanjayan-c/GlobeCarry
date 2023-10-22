@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ConnectionSQL
+import com.example.globe_carry.HomeItemImageSingleton
 import com.example.globe_carry.HomeItems
 import com.example.globe_carry.R
 import com.example.globe_carry.adapter.HomeItemsAdapter
@@ -49,6 +50,7 @@ class HomeFragment : Fragment() {
 
                     // Execute the query
                     val resultSet = statement.executeQuery(query)
+                    val imageSingleton = HomeItemImageSingleton.itemImageBase64 // Retrieve the image from the singleton
 
                     while (resultSet.next()) {
                         // Parse data from the result set
@@ -69,31 +71,36 @@ class HomeFragment : Fragment() {
                         val ttlCharge = resultSet.getFloat("ttlCharge")
                         val imageBytes = resultSet.getString("image")
                         val createdBy = resultSet.getString("Created_by")
-
-                        Log.d("Query ","Query is successful")
-
-                        Log.d("PostDetail", "PostNo: $postId")
-                        Log.d("PostDetail", "urgency: $urgency")
-                        Log.d("PostDetail", "category: $category")
-                        Log.d("PostDetail", "content: $content")
-                        Log.d("PostDetail", "weight: $weight")
-                        Log.d("PostDetail", "value: $value")
-                        Log.d("PostDetail", "dlvryAddress: $dlvryAddress")
-                        Log.d("PostDetail", "city: $city")
-                        Log.d("PostDetail", "country: $country")
-                        Log.d("PostDetail", "dimension: $dimension")
-                        Log.d("PostDetail", "dlvryDate: $dlvryDate")
-                        Log.d("PostDetail", "recipient: $recipient")
-                        Log.d("PostDetail", "rcptContactNo: $rcptContactNo")
-                        Log.d("PostDetail", "recipient: $recipient")
-                        Log.d("PostDetail", "instructions: $instructions")
-                        Log.d("PostDetail", "ttlCharge: $ttlCharge")
-                        Log.d("PostDetail", "Created_by: $createdBy")
+//
+//                        Log.d("Query ","Query is successful")
+//
+//                        Log.d("Image Data", "Image from Database: $imageBytes")
+//                        Log.d("PostDetail", "PostNo: $postId")
+//                        Log.d("PostDetail", "urgency: $urgency")
+//                        Log.d("PostDetail", "category: $category")
+//                        Log.d("PostDetail", "content: $content")
+//                        Log.d("PostDetail", "weight: $weight")
+//                        Log.d("PostDetail", "value: $value")
+//                        Log.d("PostDetail", "dlvryAddress: $dlvryAddress")
+//                        Log.d("PostDetail", "city: $city")
+//                        Log.d("PostDetail", "country: $country")
+//                        Log.d("PostDetail", "dimension: $dimension")
+//                        Log.d("PostDetail", "dlvryDate: $dlvryDate")
+//                        Log.d("PostDetail", "recipient: $recipient")
+//                        Log.d("PostDetail", "rcptContactNo: $rcptContactNo")
+//                        Log.d("PostDetail", "recipient: $recipient")
+//                        Log.d("PostDetail", "instructions: $instructions")
+//                        Log.d("PostDetail", "ttlCharge: $ttlCharge")
+//                        Log.d("PostDetail", "Created_by: $createdBy")
                         // Create a HomeItems object and add it to the data list
+
+                        HomeItemImageSingleton.itemImageBase64 = imageBytes
+
                         val homeItem = HomeItems(
                             id = postId.toString(),
                             urgent = urgency,
-                            image = imageBytes,
+                            //image = imageBytes,
+                            //image = HomeItemImageSingleton.itemImageBase64,
                             category = category,
                             content = content,
                             value = value,
@@ -111,6 +118,7 @@ class HomeFragment : Fragment() {
 
                             )
 
+                       // Log.d("Image Data", "Image from Singleton: ${HomeItemImageSingleton.itemImageBase64}")
                         data.add(homeItem)
 
                     }
