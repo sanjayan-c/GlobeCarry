@@ -231,6 +231,10 @@ private fun fetchUsersWithMessages() {
         val popupMenu = PopupMenu(this, view)
         popupMenu.menuInflater.inflate(R.menu.menu, popupMenu.menu)
 
+//        <item android:id="@+id/chat" android:title="Chat"/>
+//        val chat = popupMenu.menu.findItem(R.id.chat)
+//        chat.isVisible = false
+
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.logout -> {
@@ -239,15 +243,6 @@ private fun fetchUsersWithMessages() {
                     userAuth.signOut()
                     val intent = Intent(this@ChatHistory, Login::class.java)
                     finish()
-                    startActivity(intent)
-                    true
-                }
-                // Add more menu items and their actions here
-                else -> false
-            }
-            when (item.itemId) {
-                R.id.chat -> {
-                    val intent = Intent(this@ChatHistory,ChatHistory::class.java)
                     startActivity(intent)
                     true
                 }

@@ -242,15 +242,6 @@ class CommonHome : AppCompatActivity() {
                 else -> false
             }
             when (item.itemId) {
-                R.id.chat -> {
-                    val intent = Intent(this@CommonHome,ChatHistory::class.java)
-                    startActivity(intent)
-                    true
-                }
-                // Add more menu items and their actions here
-                else -> false
-            }
-            when (item.itemId) {
                 R.id.help -> {
                     val intent = Intent(this@CommonHome,HelpCenter::class.java)
                     startActivity(intent)

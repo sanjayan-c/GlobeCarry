@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
+import android.text.TextWatcher
 import android.util.Base64
 import android.util.DisplayMetrics
 import android.util.Log
@@ -40,7 +41,7 @@ import com.google.firebase.database.FirebaseDatabase
 import java.io.ByteArrayOutputStream
 import java.sql.SQLException
 
-class CommonUserProfile : AppCompatActivity() {
+class CommonOtherUserProfile : AppCompatActivity() {
 
     private var cusAccManagementBack: ImageView? = null
     private var cusMyBookingArrowUp: ImageView? = null
@@ -53,30 +54,16 @@ class CommonUserProfile : AppCompatActivity() {
     private var cusAccountProfileImageEditFrame: FrameLayout? = null
     private var cusAccManageButton1: Button? = null
     private var cusAccManageButton2: Button? = null
-    private var editTextFirstName: EditText? = null
     private var editTextFirstName2: TextView? = null
-    private var viewInputLastName: EditText? = null
     private var viewInputLastName2: TextView? = null
-    private var viewInputNIC: EditText? = null
     private var viewInputNIC2: TextView? = null
-    private var viewInputPhoneNo: EditText? = null
     private var viewInputPhoneNo2: TextView? = null
-    private var cusAccountAddressLine1: EditText? = null
     private var cusAccountAddressLine11: TextView? = null
-    private var cusAccountAddressLine2: EditText? = null
     private var cusAccountAddressLine22: TextView? = null
-    private var cusAccountAddressLine3: EditText? = null
     private var cusAccountAddressLine33: TextView? = null
-    private var cusAccountCity1: EditText? = null
     private var cusAccountCity2: TextView? = null
-    private var cusAccountPostalCode1: EditText? = null
     private var cusAccountPostalCode2: TextView? = null
-    private var cusAccountCountry1: EditText? = null
     private var cusAccountCountry2: TextView? = null
-    private var profileEditImage: ImageView? = null
-    private var cusAccountButtons: LinearLayout? = null
-    private var btnCusUpdate: AppCompatButton? = null
-    private var btnCusCancel: AppCompatButton? = null
 
     private var cusMyHistoryArrowUp: ImageView? = null
     private var cusMyHistoryArrowUpLayout: RelativeLayout? = null
@@ -98,7 +85,15 @@ class CommonUserProfile : AppCompatActivity() {
     private lateinit var userAuth: FirebaseAuth
     private var editMode: Boolean = false
 
+    private var commentEditTextInput: EditText? = null
+    private var ratingBarInput: RatingBar? = null
+    private var updateReview: Button? = null
+
+
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
+
+    var user : String = ""
+    var userFromIntent : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,17 +125,25 @@ class CommonUserProfile : AppCompatActivity() {
 
 
         userAuth= FirebaseAuth.getInstance()
+        user = userAuth.currentUser?.uid ?: ""
+        userFromIntent = intent.getStringExtra("userFromIntent").toString()
 
         val cusConSQL = ConnectionSQL()
         cusConSQL.conclass { connection ->
             if (connection != null) {
-
+                val intent = intent
                 // Your SQL query to fetch customer details
-                val user = userAuth.currentUser?.uid ?: ""
 
-                val query = "SELECT firstName, lastName, nic, phoneNo, gmail, addressLine1, addressLine2, addressLine3, city, postalCode, country, userImage, signUpDate ,signUpTime " +
+                println("user : $user")
+                println("userFromIntent : $userFromIntent")
+                var query = "SELECT firstName, lastName, nic, phoneNo, gmail, addressLine1, addressLine2, addressLine3, city, postalCode, country, userImage, signUpDate ,signUpTime " +
                         "FROM user " +
-                        "WHERE userId = '$user' ";
+                        "WHERE userId = '$userFromIntent' ";
+//                val query = "SELECT u.*, SUM(r.ratings) AS totalRatings " +
+//                        "FROM user u, ratings r " +
+//                        "WHERE u.userId = r.ratingsToId " +
+//                        "AND u.userId = '$userFromIntent' " +
+//                        "GROUP BY u.userId"
 
                 try {
 
@@ -165,6 +168,8 @@ class CommonUserProfile : AppCompatActivity() {
                     var signUpTime: String? = null
                     var totalRatings = 0f
                     val comments = mutableListOf<CommentData>()
+                    var myComment = ""
+                    var myrating = 0f
 
                     // Iterate through the result set and log the details
                     while (resultSet.next()) {
@@ -205,7 +210,7 @@ class CommonUserProfile : AppCompatActivity() {
 
                     val query1 = "SELECT SUM(ratings)/COUNT(ratings) AS totalRatings " +
                             "FROM ratings " +
-                            "WHERE ratingsToId = '$user' " +
+                            "WHERE ratingsToId = '$userFromIntent' " +
                             "GROUP BY ratingsToId"
 
                     try {
@@ -232,7 +237,7 @@ class CommonUserProfile : AppCompatActivity() {
 
                     val query2 = "SELECT r.comments, u.userId, u.gmail " +
                             "FROM ratings r, user u " +
-                            "WHERE r.ratingsToId = '$user' AND r.ratingsFromId = u.userId "
+                            "WHERE r.ratingsToId = '$userFromIntent' AND r.ratingsFromId = u.userId "
 
                     try {
 
@@ -261,6 +266,32 @@ class CommonUserProfile : AppCompatActivity() {
                         e.printStackTrace()
                     }
 
+                    val query3 = "SELECT ratings,comments " +
+                            "FROM ratings " +
+                            "WHERE ratingsToId = '$userFromIntent' AND ratingsFromId = '$user'"
+
+                    try {
+
+                        // Create a statement
+                        val statement3 = connection.createStatement()
+
+                        // Execute the query
+                        val resultSet3 = statement3.executeQuery(query3)
+
+                        // Iterate through the result set and log the details
+                        while (resultSet3.next()) {
+                            myrating = resultSet3.getFloat("ratings")
+                            myComment = resultSet3.getString("comments") ?: ""
+                            Log.d("CustomerDetails", "myComments: $myrating")
+                            Log.d("CustomerDetails", "myComments: $myComment")
+                        }
+                        // Close the statement and result set
+                        statement3.close()
+                        resultSet3.close()
+                    } catch (e: SQLException) {
+                        Log.e("SQL Error", "SQL Exception: " + e.message)
+                        e.printStackTrace()
+                    }
 
                     runOnUiThread {
                         runningManImageView?.visibility = View.GONE
@@ -280,20 +311,151 @@ class CommonUserProfile : AppCompatActivity() {
                         cusAccountPostalCode2?.text = postalCode
                         cusAccountCountry2?.text = country
                         viewInputAccountCreated?.text = signUpDate
-                        editTextFirstName?.text = Editable.Factory.getInstance().newEditable(firstName)
-                        viewInputLastName?.text = Editable.Factory.getInstance().newEditable(lastName)
-                        viewInputNIC?.text = Editable.Factory.getInstance().newEditable(nic)
-                        viewInputPhoneNo?.text = Editable.Factory.getInstance().newEditable(phoneNo)
-                        cusAccountAddressLine1?.text = Editable.Factory.getInstance().newEditable(addressLine1)
-                        cusAccountAddressLine2?.text = Editable.Factory.getInstance().newEditable(addressLine2)
-                        cusAccountAddressLine3?.text = Editable.Factory.getInstance().newEditable(addressLine3)
-                        cusAccountCity1?.text = Editable.Factory.getInstance().newEditable(city)
-                        cusAccountPostalCode1?.text = Editable.Factory.getInstance().newEditable(postalCode)
-                        cusAccountCountry1?.text = Editable.Factory.getInstance().newEditable(country)
+                        viewInputGmail?.text = gmail
 
                         ratingBar?.rating = totalRatings
+                        // Set the retrieved values in the RatingBar and EditText
+                        ratingBarInput?.rating = myrating // Set the rating in the RatingBar
+                        commentEditTextInput?.setText(myComment) // Set the comment in the EditText
 
-                        viewInputGmail?.text = gmail
+                        val originalRating = myrating // Store the original rating
+                        val originalComment = myComment // Store the original comment
+
+                        ratingBarInput?.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+                            if (rating != originalRating || commentEditTextInput?.text.toString() != originalComment) {
+                                // Changes detected, show the "Update" button
+                                updateReview?.visibility = View.VISIBLE
+                            } else {
+                                // No changes, hide the "Update" button
+                                updateReview?.visibility = View.GONE
+                            }
+                        }
+
+                        commentEditTextInput?.addTextChangedListener(object : TextWatcher {
+                            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                            }
+
+                            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                            }
+
+                            override fun afterTextChanged(editable: Editable?) {
+                                val comment = editable.toString().trim()
+                                if (ratingBarInput?.rating != originalRating || comment != originalComment) {
+                                    // Changes detected, show the "Update" button
+                                    updateReview?.visibility = View.VISIBLE
+                                } else {
+                                    // No changes, hide the "Update" button
+                                    updateReview?.visibility = View.GONE
+                                }
+                            }
+                        })
+
+                        updateReview?.setOnClickListener {
+                            Log.d("Update", "Confirm")
+
+                            val updatedRating = ratingBarInput?.rating
+                            val updatedComment = commentEditTextInput?.text.toString().trim()
+
+                            // Check if ratings were changed or comments were changed or both are empty
+                            val ratingChanged = updatedRating != myrating || updatedComment != myComment
+                            val bothEmpty = (updatedRating == 0f || updatedRating.toString() == "0.0") && (updatedComment.isEmpty() || updatedComment == "")
+
+                            Log.d("ratingChanged", ratingChanged.toString())
+                            Log.d("bothEmpty", bothEmpty.toString())
+
+                            Log.d("updatedRating", updatedRating.toString())
+                            Log.d("updatedComment", updatedComment)
+                            Log.d("myrating", myrating.toString())
+                            Log.d("myComment", myComment)
+
+                            if (ratingChanged) {
+
+                                runOnUiThread {
+                                    setContentView(R.layout.common_user_profile_splash)
+                                }
+
+
+                                val cusConSQL2 = ConnectionSQL()
+                                cusConSQL2.conclass { connection2 ->
+                                    if (connection2 != null) {
+                                        try {
+
+                                            var query4 : String = ""
+
+
+                                            if (originalRating == 0f && originalComment.isEmpty()) {
+                                                Log.d("if", "Insert")
+                                                // No existing data found, so insert a new record
+                                                query4 = "INSERT INTO ratings (ratingsFromId, ratingsToId, ratings, comments) VALUES (?, ?, ?, ?)"
+                                                val preparedStatement = connection2.prepareStatement(query4)
+                                                preparedStatement.setString(1, user)
+                                                preparedStatement.setString(2, userFromIntent)
+                                                preparedStatement.setString(3, updatedRating.toString())
+                                                preparedStatement.setString(4,
+                                                    commentEditTextInput?.text.toString()
+                                                )
+                                                // Execute the update query
+                                                preparedStatement.executeUpdate()
+                                                preparedStatement.close()
+                                            } else {
+
+                                                // Existing data found, so update the record
+                                                if(bothEmpty){
+                                                    Log.d("if", "Delete")
+                                                    query4 = "DELETE FROM ratings " +
+                                                            "WHERE ratingsFromId = ? AND ratingsToId = ?"
+                                                    val preparedStatement =
+                                                        connection2.prepareStatement(query4)
+                                                    preparedStatement.setString(1, user)
+                                                    preparedStatement.setString(2, userFromIntent)
+                                                    // Execute the update query
+                                                    preparedStatement.executeUpdate()
+                                                    preparedStatement.close()
+                                                }else {
+                                                    Log.d("if", "Update")
+                                                    query4 = "UPDATE ratings " +
+                                                            "SET ratings = ?, comments = ? " +
+                                                            "WHERE ratingsFromId = ? AND ratingsToId = ?"
+                                                    val preparedStatement =
+                                                        connection2.prepareStatement(query4)
+                                                    preparedStatement.setString(
+                                                        1,
+                                                        updatedRating.toString()
+                                                    )
+                                                    preparedStatement.setString(2,  commentEditTextInput?.text.toString())
+                                                    preparedStatement.setString(3, user)
+                                                    preparedStatement.setString(4, userFromIntent)
+                                                    // Execute the update query
+                                                    preparedStatement.executeUpdate()
+                                                    preparedStatement.close()
+                                                }
+                                            }
+
+                                            runOnUiThread {
+                                                Log.d("btnCusUpdate", "Clicked")
+                                                recreate()
+                                            }
+                                            // Perform any UI updates or navigation as needed
+                                            // For example, show a success message or navigate to another screen
+                                        } catch (e: SQLException) {
+                                            Log.e("Update Error", "SQL Exception: ${e.message}")
+                                            e.printStackTrace()
+                                            // Handle any errors that occur during the update
+                                        } finally {
+                                            // Close the connection in the finally block to ensure it's always closed
+                                            connection2.close()
+                                        }
+                                    } else {
+                                        Log.e("Update Error", "Database connection is null")
+                                        // Handle the case where the database connection is null
+                                    }
+                                }
+                            }else{
+                                // Show a message to the user indicating that no changes were made
+                                Toast.makeText(this, "No changes to update.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
                         if (imageData != "") {
                             // Decode the Base64 string to a Bitmap
                             val decodedBytes = Base64.decode(imageData, Base64.DEFAULT)
@@ -306,17 +468,14 @@ class CommonUserProfile : AppCompatActivity() {
                             cusAccountProfileImage?.setImageResource(R.drawable.cus_image_not_found)
                         }
 
-
-
-                        cusAccManagementBack?.setOnClickListener { // Start the CustomerAccountManagement activity
-                            finish()
-                        }
-
-
                         val profileImageView = findViewById<ImageView>(R.id.profile_image)
 
                         profileImageView.setOnClickListener { view ->
                             showPopupMenu(view)
+                        }
+
+                        cusAccManagementBack?.setOnClickListener { // Start the CustomerAccountManagement activity
+                            finish()
                         }
 
                         swipeRefreshLayout?.setOnRefreshListener {
@@ -412,35 +571,8 @@ class CommonUserProfile : AppCompatActivity() {
 
                                 dialog.show()
 
-
-//                                // Create an AlertDialog
-//                                val alertDialogBuilder = AlertDialog.Builder(this)
-//
-//                                // Set the dialog message and title
-//                                alertDialogBuilder
-//                                    .setTitle("Confirmation")
-//                                    .setMessage("Are you sure you want to remove the image?")
-//
-//                                // Add a "Cancel" button
-//                                alertDialogBuilder.setNegativeButton("Cancel") { dialog, _ ->
-//                                    // Dismiss the dialog if "Cancel" is clicked
-//                                    dialog.dismiss()
-//                                }
-//
-//                                // Add a "Confirm" button
-//                                alertDialogBuilder.setPositiveButton("Confirm") { dialog, _ ->
-//                                    imageData = null.toString()
-//                                    // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
-//                                    cusAccountProfileImage?.setImageResource(R.drawable.cus_image_not_found)
-//                                    // Dismiss the dialog
-//                                    dialog.dismiss()
-//                                }
-//
-//                                // Create and show the AlertDialog
-//                                val alertDialog = alertDialogBuilder.create()
-//                                alertDialog.show()
                             }else(
-                                    Toast.makeText(this@CommonUserProfile, "No Image Found", Toast.LENGTH_SHORT,).show()
+                                    Toast.makeText(this@CommonOtherUserProfile, "No Image Found", Toast.LENGTH_SHORT,).show()
 
                                     )
                         }
@@ -469,244 +601,12 @@ class CommonUserProfile : AppCompatActivity() {
                             cusMyHistoryArrowUpLayout?.visibility=View.VISIBLE
                         }
 
-                        profileEditImage?.setOnClickListener {
-                            editMode = true
-                            cusAccountButtons?.visibility=View.VISIBLE
-                            profileEditImage?.visibility=View.GONE
-
-                            editTextFirstName2?.visibility=View.GONE
-                            viewInputLastName2?.visibility=View.GONE
-                            viewInputNIC2?.visibility=View.GONE
-                            viewInputPhoneNo2?.visibility=View.GONE
-                            cusAccountAddressLine11?.visibility=View.GONE
-                            cusAccountAddressLine22?.visibility=View.GONE
-                            cusAccountAddressLine33?.visibility=View.GONE
-                            cusAccountCity2?.visibility=View.GONE
-                            cusAccountPostalCode2?.visibility=View.GONE
-                            cusAccountCountry2?.visibility=View.GONE
-
-                            editTextFirstName?.visibility=View.VISIBLE
-                            viewInputLastName?.visibility=View.VISIBLE
-                            viewInputNIC?.visibility=View.VISIBLE
-                            viewInputPhoneNo?.visibility=View.VISIBLE
-                            cusAccountAddressLine1?.visibility=View.VISIBLE
-                            cusAccountAddressLine2?.visibility=View.VISIBLE
-                            cusAccountAddressLine3?.visibility=View.VISIBLE
-                            cusAccountCity1?.visibility=View.VISIBLE
-                            cusAccountPostalCode1?.visibility=View.VISIBLE
-                            cusAccountCountry1?.visibility=View.VISIBLE
-                        }
-                        btnCusUpdate?.setOnClickListener{
-                            Log.d("editTextFirstName?.text.toString()",editTextFirstName?.text.toString())
-                            Log.d("viewInputLastName?.text.toString()",viewInputLastName?.text.toString())
-
-                            if(editTextFirstName?.text.toString()!=""||viewInputLastName?.text.toString()!="") {
-
-                                // Create a custom dialog
-                                val dialog = Dialog(this)
-
-                                // Set the custom layout for the dialog
-                                dialog.setContentView(R.layout.profile_popup)
-
-                                // Set the width of the dialog to match the parent's width
-                                val layoutParams = WindowManager.LayoutParams()
-                                layoutParams.copyFrom(dialog.window?.attributes)
-
-                                // Get the display metrics to calculate the width
-                                val displayMetrics = DisplayMetrics()
-                                windowManager.defaultDisplay.getMetrics(displayMetrics)
-
-                                val screenWidth = displayMetrics.widthPixels
-                                val screenHeight = displayMetrics.heightPixels
-                                val isPortrait = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
-
-                                val dialogWidthPercent = if (isPortrait) 0.9 else 0.6
-                                var dialogWidth = (if (isPortrait) screenHeight else screenWidth) * dialogWidthPercent
-
-                                // Ensure the dialog width doesn't exceed the screen width
-                                if (dialogWidth > screenWidth) {
-                                    dialogWidth = screenWidth * 0.9 // Cap it at 80% of the screen width
-                                }
-
-                                // Set the calculated width to the layout parameters
-                                layoutParams.width = dialogWidth.toInt()
-
-                                dialog.window?.attributes = layoutParams
-
-                                val btnConfirmCusUpdate = dialog.findViewById<AppCompatButton>(R.id.btnConfirmCusUpdate)
-                                val btnConfirmCusCancel = dialog.findViewById<AppCompatButton>(R.id.btnConfirmCusCancel)
-
-                                btnConfirmCusCancel.setOnClickListener {
-                                    Log.d("Update","Cancel")
-                                    dialog.dismiss()
-                                }
-
-
-
-                                btnConfirmCusUpdate.setOnClickListener {
-                                    Log.d("Update","Confirm")
-//                                // Create an AlertDialog
-//                                val alertDialogBuilder = AlertDialog.Builder(this)
-//
-//                                // Set the dialog message and title
-//                                alertDialogBuilder
-//                                    .setTitle("Update Profile")
-//                                    .setMessage("Are you sure you want to update your profile?")
-//
-//                                // Add a "Cancel" button
-//                                alertDialogBuilder.setNegativeButton("Cancel") { dialog, _ ->
-//                                    // Dismiss the dialog if "Cancel" is clicked
-//                                    dialog.dismiss()
-//                                }
-//
-//                                // Add a "Confirm" button
-//                                alertDialogBuilder.setPositiveButton("Confirm") { dialog, _ ->
-                                    runOnUiThread {
-                                        setContentView(R.layout.common_user_profile_splash)
-                                    }
-
-
-                                    val cusConSQL2 = ConnectionSQL()
-                                    cusConSQL2.conclass { connection ->
-                                        if (connection != null) {
-                                            try {
-                                                val userDbRef = FirebaseDatabase.getInstance().getReference()
-                                                val userRef = userDbRef.child("user").child(user)
-
-                                                // Update the name in the database
-                                                userRef.child("name").setValue( editTextFirstName?.text.toString()+" "+ viewInputLastName?.text.toString())
-
-                                                // Update query with placeholders for binding
-                                                val query =
-                                                    "UPDATE user SET firstName = ?, lastName = ?, nic = ?, phoneNo = ?, addressLine1 = ?, addressLine2 = ?, addressLine3 = ?, city = ?, postalCode = ?, country = ?, userImage = ? WHERE userId = ?"
-
-                                                val preparedStatement =
-                                                    connection.prepareStatement(query)
-                                                preparedStatement.setString(
-                                                    1,
-                                                    editTextFirstName?.text.toString()
-                                                )
-                                                preparedStatement.setString(
-                                                    2,
-                                                    viewInputLastName?.text.toString()
-                                                )
-                                                preparedStatement.setString(
-                                                    3,
-                                                    viewInputNIC?.text.toString()
-                                                )
-                                                preparedStatement.setString(
-                                                    4,
-                                                    viewInputPhoneNo?.text.toString()
-                                                )
-                                                preparedStatement.setString(
-                                                    5,
-                                                    cusAccountAddressLine1?.text.toString()
-                                                )
-                                                preparedStatement.setString(
-                                                    6,
-                                                    cusAccountAddressLine2?.text.toString()
-                                                )
-                                                preparedStatement.setString(
-                                                    7,
-                                                    cusAccountAddressLine3?.text.toString()
-                                                )
-                                                preparedStatement.setString(
-                                                    8,
-                                                    cusAccountCity1?.text.toString()
-                                                )
-                                                preparedStatement.setString(
-                                                    9,
-                                                    cusAccountPostalCode1?.text.toString()
-                                                )
-                                                preparedStatement.setString(
-                                                    10,
-                                                    cusAccountCountry1?.text.toString()
-                                                )
-                                                preparedStatement.setString(11, imageData)
-                                                preparedStatement.setString(12, user)
-
-                                                // Execute the update query
-                                                preparedStatement.executeUpdate()
-                                                preparedStatement.close()
-
-                                                runOnUiThread {
-                                                    Log.d("btnCusUpdate", "Clicked")
-                                                    recreate()
-                                                }
-                                                // Perform any UI updates or navigation as needed
-                                                // For example, show a success message or navigate to another screen
-                                            } catch (e: SQLException) {
-                                                Log.e("Update Error", "SQL Exception: ${e.message}")
-                                                e.printStackTrace()
-                                                // Handle any errors that occur during the update
-                                            } finally {
-                                                // Close the connection in the finally block to ensure it's always closed
-                                                connection.close()
-                                            }
-                                        } else {
-                                            Log.e("Update Error", "Database connection is null")
-                                            // Handle the case where the database connection is null
-                                        }
-                                    }
-
-                                    // Dismiss the dialog
-                                    dialog.dismiss()
-                                }
-                                dialog.show()
-//                                // Create and show the AlertDialog
-//                                val alertDialog = alertDialogBuilder.create()
-//                                alertDialog.show()
-                            }else{
-                                val blinkAnimation = AnimationUtils.loadAnimation(this, R.anim.blink_message_box)
-                                editTextFirstName?.background = ContextCompat.getDrawable(this, R.drawable.cus_profile_inputbox_border)
-                                viewInputLastName?.background = ContextCompat.getDrawable(this, R.drawable.cus_profile_inputbox_border)
-                                editTextFirstName?.startAnimation(blinkAnimation)
-                                viewInputLastName?.startAnimation(blinkAnimation)
-                                // Create a Handler to reset the messageBox after 2 seconds
-                                val handler = Handler()
-                                handler.postDelayed({
-                                    editTextFirstName?.background = ContextCompat.getDrawable(this, R.drawable.cus_profile_inputbox_border)
-                                    viewInputLastName?.background = ContextCompat.getDrawable(this, R.drawable.cus_profile_inputbox_border)
-                                }, 2000)
-                                Toast.makeText(
-                                    this@CommonUserProfile,
-                                    "Name cannot be empty",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-
-                        }
-
-
-                        btnCusCancel?.setOnClickListener {
-                            Log.d("btnCusCancel", "Clicked")
-                            recreate()
-//            cusAccountButtons?.visibility=View.GONE
-//            profileEditImage?.visibility=View.VISIBLE
-//            editTextFirstName?.visibility=View.GONE
-//            viewInputLastName?.visibility=View.GONE
-//            viewInputNIC?.visibility=View.GONE
-//            viewInputPhoneNo?.visibility=View.GONE
-//            editTextFirstName2?.visibility=View.VISIBLE
-//            viewInputLastName2?.visibility=View.VISIBLE
-//            viewInputNIC2?.visibility=View.VISIBLE
-//            viewInputPhoneNo2?.visibility=View.VISIBLE
-                        }
-
-                        //val comments = listOf("Comment 1", "Comment 2", "Comment 3", "Comment 4") // Replace with your comment data
                         if (comments.isEmpty()) {
                             Log.d("CustomerDetails", "No comments found.")
                             var comment = "No comments yet"
                             val commentItem = CommentData(comment,"","")
                             comments.add(commentItem)
                         }
-
-                        for (commentData in comments) {
-                            Log.d("CommentList", "Comment: ${commentData.comment}")
-                            Log.d("CommentList", "Comment Gmail: ${commentData.commentGmail}")
-                            Log.d("CommentList", "Comment User: ${commentData.commentId}")
-                        }
-
                         val commentAdapter = CommentAdapter(this, comments)
                         commentsRecyclerView?.adapter = commentAdapter
                     }
@@ -762,7 +662,7 @@ class CommonUserProfile : AppCompatActivity() {
     }
     private fun switchToCustomerHomeLayout() {
         runOnUiThread {
-            setContentView(R.layout.activity_common_user_profile)
+            setContentView(R.layout.activity_common_other_user_profile)
 
             cusAccManagementBack = findViewById(R.id.cusAccManagementBack)
             cusMyBookingArrowUp= findViewById(R.id.cusMyBookingArrowUp)
@@ -776,32 +676,18 @@ class CommonUserProfile : AppCompatActivity() {
             cusAccManageButton1= findViewById(R.id.cusAccManageButton1)
 
             cusAccManageButton2= findViewById(R.id.cusAccManageButton2)
-            editTextFirstName= findViewById(R.id.editTextFirstName)
             editTextFirstName2= findViewById(R.id.editTextFirstName2)
-            viewInputLastName= findViewById(R.id.viewInputLastName)
             viewInputLastName2= findViewById(R.id.viewInputLastName2)
-            viewInputNIC= findViewById(R.id.viewInputNIC)
             viewInputNIC2= findViewById(R.id.viewInputNIC2)
-            viewInputPhoneNo= findViewById(R.id.viewInputPhoneNo)
             viewInputPhoneNo2= findViewById(R.id.viewInputPhoneNo2)
 
-            cusAccountAddressLine1= findViewById(R.id.cusAccountAddressLine1)
             cusAccountAddressLine11= findViewById(R.id.cusAccountAddressLine11)
-            cusAccountAddressLine2= findViewById(R.id.cusAccountAddressLine2)
             cusAccountAddressLine22= findViewById(R.id.cusAccountAddressLine22)
-            cusAccountAddressLine3= findViewById(R.id.cusAccountAddressLine3)
             cusAccountAddressLine33= findViewById(R.id.cusAccountAddressLine33)
-            cusAccountCity1= findViewById(R.id.cusAccountCity1)
             cusAccountCity2= findViewById(R.id.cusAccountCity2)
-            cusAccountPostalCode1= findViewById(R.id.cusAccountPostalCode1)
             cusAccountPostalCode2= findViewById(R.id.cusAccountPostalCode2)
-            cusAccountCountry1= findViewById(R.id.cusAccountCountry1)
             cusAccountCountry2= findViewById(R.id.cusAccountCountry2)
 
-            profileEditImage= findViewById(R.id.profileEditImage)
-            cusAccountButtons= findViewById(R.id.cusAccountButtons)
-            btnCusUpdate= findViewById(R.id.btnCusUpdate)
-            btnCusCancel= findViewById(R.id.btnCusCancel)
             cusMyHistoryArrowUp= findViewById(R.id.cusMyHistoryArrowUp)
             cusMyHistoryArrowUpLayout= findViewById(R.id.cusMyHistoryArrowUpLayout)
             cusMyHistoryArrowDown= findViewById(R.id.cusMyHistoryArrowDown)
@@ -816,13 +702,16 @@ class CommonUserProfile : AppCompatActivity() {
 
             swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
 
-            commentsRecyclerView= findViewById(R.id.commentsRecyclerView)
+            ratingBarInput= findViewById(R.id.ratingBarInput)
+            commentEditTextInput= findViewById(R.id.commentEditTextInput)
+            updateReview= findViewById(R.id.updateReview)
 
+            commentsRecyclerView= findViewById(R.id.commentsRecyclerView)
         }
     }
 
     private fun showPopupMenu(view: View) {
-        val popupMenu = androidx.appcompat.widget.PopupMenu(this, view)
+        val popupMenu = PopupMenu(this, view)
         popupMenu.menuInflater.inflate(R.menu.menu, popupMenu.menu)
 
         popupMenu.setOnMenuItemClickListener { item ->
@@ -831,7 +720,7 @@ class CommonUserProfile : AppCompatActivity() {
                     // Perform the logout action
                     userAuth= FirebaseAuth.getInstance()
                     userAuth.signOut()
-                    val intent = Intent(this@CommonUserProfile, Login::class.java)
+                    val intent = Intent(this@CommonOtherUserProfile, Login::class.java)
                     finish()
                     startActivity(intent)
                     true
@@ -841,7 +730,7 @@ class CommonUserProfile : AppCompatActivity() {
             }
             when (item.itemId) {
                 R.id.help -> {
-                    val intent = Intent(this@CommonUserProfile,HelpCenter::class.java)
+                    val intent = Intent(this@CommonOtherUserProfile,HelpCenter::class.java)
                     startActivity(intent)
                     true
                 }
@@ -851,7 +740,7 @@ class CommonUserProfile : AppCompatActivity() {
             when (item.itemId) {
 
                 R.id.profile -> {
-                    val intent = Intent(this@CommonUserProfile, CommonUserProfile::class.java)
+                    val intent = Intent(this@CommonOtherUserProfile, CommonUserProfile::class.java)
                     startActivity(intent)
                     true
                 }

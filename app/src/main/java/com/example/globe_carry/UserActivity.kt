@@ -114,15 +114,7 @@ class UserActivity : AppCompatActivity() {
                 // Add more menu items and their actions here
                 else -> false
             }
-            when (item.itemId) {
-                R.id.chat -> {
-                    val intent = Intent(this@UserActivity,ChatHistory::class.java)
-                    startActivity(intent)
-                    true
-                }
-                // Add more menu items and their actions here
-                else -> false
-            }
+
             when (item.itemId) {
                 R.id.help -> {
                     val intent = Intent(this@UserActivity,HelpCenter::class.java)

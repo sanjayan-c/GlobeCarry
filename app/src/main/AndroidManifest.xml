@@ -19,6 +19,9 @@
             android:name=".CommonUserProfile"
             android:exported="false" />
         <activity
+            android:name=".CommonOtherUserProfile"
+            android:exported="false" />
+        <activity
             android:name=".CommonHome"
             android:exported="false" />
         <activity

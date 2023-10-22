@@ -52,15 +52,27 @@ class ChatActivity : AppCompatActivity() {
         barTextView.text = name
 
         barTextView.setOnClickListener {
-            val intent =
-                Intent(this@ChatActivity, CommonUserProfile::class.java)
-            intent.putExtra("userFromIntent", receiverUid)
-            startActivity(intent)
+            userDbRef= FirebaseDatabase.getInstance().reference
+            userDbRef.child("user").child(receiverUid!!).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val userType = dataSnapshot.child("type").getValue(String::class.java)
+                    if (userType == "user") {
+                        // This is a user Proceed with the login
+                        val intent = Intent(this@ChatActivity, CommonOtherUserProfile::class.java)
+                        intent.putExtra("userFromIntent", receiverUid)
+                        startActivity(intent)
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle error
+                }
+            })
+
         }
         cusAccManagementBack.setOnClickListener {
-            val intent =
-                Intent(this@ChatActivity, ChatHistory::class.java)
-            startActivity(intent)
+            finish()
         }
 
         val senderUid = FirebaseAuth.getInstance().currentUser?.uid
@@ -202,8 +214,8 @@ class ChatActivity : AppCompatActivity() {
                 else -> false
             }
             when (item.itemId) {
-                R.id.chat -> {
-                    val intent = Intent(this@ChatActivity,ChatHistory::class.java)
+                R.id.help -> {
+                    val intent = Intent(this@ChatActivity,HelpCenter::class.java)
                     startActivity(intent)
                     true
                 }
@@ -211,8 +223,9 @@ class ChatActivity : AppCompatActivity() {
                 else -> false
             }
             when (item.itemId) {
-                R.id.help -> {
-                    val intent = Intent(this@ChatActivity,HelpCenter::class.java)
+
+                R.id.profile -> {
+                    val intent = Intent(this@ChatActivity, CommonUserProfile::class.java)
                     startActivity(intent)
                     true
                 }

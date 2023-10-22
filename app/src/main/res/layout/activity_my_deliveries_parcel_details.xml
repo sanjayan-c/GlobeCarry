@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CommonUserProfile"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".DetailActivity">
+        <include layout="@layout/custom_toolbar"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <RelativeLayout
+            android:layout_below="@+id/toolbar"
+            android:id="@+id/cusAccManagementHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp">
+
+            <ImageView
+                android:id="@+id/arrowImageView"
+                android:layout_height="30dp"
+                android:layout_width="30dp"
+                android:scaleType="fitXY"
+                tools:ignore="ContentDescription"
+                android:src="@drawable/baseline_arrow_circle_left_24" />
+
+            <TextView
+                android:id="@+id/detailName"
+                style="@style/txtPoppinsmedium12_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="Parcel Details"
+                android:textSize="18sp" />
+        </RelativeLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/commentFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="20dp"
+                android:layout_marginVertical="10dp"
+                android:paddingVertical="10dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_gravity="center_horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <RelativeLayout
+                        android:id="@+id/cusMyBookingArrowUpLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+
+                        <TextView
+                            style="@style/custxtOpenSansromanbold20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center_horizontal"
+                            android:text="Parcel Details"
+                            android:textSize="18sp" />
+                        <ImageView
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:layout_alignParentEnd="true"
+                            android:id="@+id/cusMyBookingArrowUp"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_width="wrap_content"
+                            android:paddingHorizontal="20dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/cus_mybookings_expand_arrow" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/cusMyBookingArrowDownLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/custxtOpenSansromanbold20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center_horizontal"
+                            android:text="Parcel Details"
+                            android:textSize="18sp" />
+                        <ImageView
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:layout_alignParentEnd="true"
+                            android:id="@+id/cusMyBookingArrowDown"
+                            android:layout_height="30dp"
+                            android:rotation="180"
+                            android:layout_marginEnd="6dp"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:paddingHorizontal="20dp"                                android:src="@drawable/cus_mybookings_expand_arrow" />
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="10dp"
+                        android:orientation="vertical">
+
+
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardImage"
+                            android:layout_width="250dp"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center"
+                            app:cardCornerRadius="10dp"
+                            android:layout_marginTop="10dp"
+                            app:cardElevation="8dp">
+
+                            <ImageView
+                                android:id="@+id/detailImage"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/baseline_image_24" />
+                        </androidx.cardview.widget.CardView>
+
+                        <TextView
+                            android:id="@+id/viewTxtUrgent"
+                            style="@style/txtPoppinsmedium12_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="30dp"
+                            android:text="Duration:"
+                            android:textColor="@color/red"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            tools:text="Duration" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:paddingVertical="5dp"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:text="Charge :"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="Charge :" />
+                            <TextView
+                                android:id="@+id/viewChrge"
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:paddingVertical="5dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:text="Name:"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="Name :" />
+
+                            <TextView
+                                android:id="@+id/viewCusName"
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                tools:text="" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:paddingVertical="5dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:text="Contact No :"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/viewCusNum"
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                tools:text="" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:paddingVertical="5dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:text="Deliver Before :"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="Deliver Before :" />
+
+                            <TextView
+                                android:id="@+id/viewdlvrydate"
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                tools:text="" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:text="Category :"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="Category :" />
+
+                            <TextView
+                                android:id="@+id/viewCategory"
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                tools:text="" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:text="Content :"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="Content :" />
+
+                            <TextView
+                                android:id="@+id/viewContent"
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                tools:text="" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:text="Value :"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="Value :" />
+
+                            <TextView
+                                android:id="@+id/viewValue"
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                tools:text="" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_weight="3"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Weight :"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="Weight :" />
+
+                            <TextView
+                                android:id="@+id/viewWeight"
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                tools:text="" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:text="Dimension :"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="Dimension :" />
+
+                            <TextView
+                                android:id="@+id/viewDimension"
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                tools:text="" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="5dp"
+                            android:orientation="horizontal">
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="40dp"
+                                android:gravity="center_vertical"
+                                android:text="Delivery Address :"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="Delivery Address :" />
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:paddingVertical="5dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/viewdlvryAddrs"
+                                    style="@style/txtPoppinsmedium12_1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:textSize="16sp"
+                                    tools:text="glgfkll;kl" />
+                                <TextView
+                                    android:id="@+id/viewdlvryAddrs2"
+                                    style="@style/txtPoppinsmedium12_1"
+                                    android:layout_width="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:layout_height="40dp"
+                                    android:textSize="16sp"
+                                    tools:text="glgfkll;kl" />
+                                <TextView
+                                    android:id="@+id/viewCity"
+                                    style="@style/txtPoppinsmedium12_1"
+                                    android:layout_width="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:layout_height="40dp"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/viewCountry"
+                                    style="@style/txtPoppinsmedium12_1"
+                                    android:layout_width="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:layout_height="40dp"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:text="Receptient :"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="Receptient :" />
+
+                            <TextView
+                                android:id="@+id/viewRecName"
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                tools:text="" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:text="Receptient No :"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/viewRecNum"
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                tools:text="" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="5dp"
+                            android:layout_marginBottom="20dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="40dp"
+                                android:text="Special Instructions :"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="Special Instructions :" />
+
+                            <TextView
+                                android:id="@+id/viewSpclIns"
+                                style="@style/txtPoppinsmedium12_1"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                tools:text="" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </ScrollView>
+    </LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

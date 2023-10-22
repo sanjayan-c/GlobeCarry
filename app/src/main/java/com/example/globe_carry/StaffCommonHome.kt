@@ -136,13 +136,16 @@ class StaffCommonHome : AppCompatActivity() {
         val popupMenu = PopupMenu(this, view)
         popupMenu.menuInflater.inflate(R.menu.menu, popupMenu.menu)
 
+        val help = popupMenu.menu.findItem(R.id.help)
+        help.isVisible = false
+
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.logout -> {
                     // Perform the logout action
                     userAuth= FirebaseAuth.getInstance()
                     userAuth.signOut()
-                    val intent = Intent(this@StaffCommonHome, Login::class.java)
+                    val intent = Intent(this, Login::class.java)
                     finish()
                     startActivity(intent)
                     true
@@ -150,18 +153,11 @@ class StaffCommonHome : AppCompatActivity() {
                 // Add more menu items and their actions here
                 else -> false
             }
+
             when (item.itemId) {
-                R.id.chat -> {
-                    val intent = Intent(this@StaffCommonHome,ChatHistory::class.java)
-                    startActivity(intent)
-                    true
-                }
-                // Add more menu items and their actions here
-                else -> false
-            }
-            when (item.itemId) {
-                R.id.help -> {
-                    val intent = Intent(this@StaffCommonHome,HelpCenter::class.java)
+
+                R.id.profile -> {
+                    val intent = Intent(this, CommonUserProfile::class.java)
                     startActivity(intent)
                     true
                 }
@@ -172,6 +168,7 @@ class StaffCommonHome : AppCompatActivity() {
 
         popupMenu.show()
     }
+
 
     private fun setFragment(fragment: Fragment) {
         val fragmentManager: FragmentManager = supportFragmentManager

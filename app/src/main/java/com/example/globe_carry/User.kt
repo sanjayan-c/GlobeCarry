@@ -159,3 +159,8 @@ data class MyDeliveryRequests(
     var cityOrgin: String? = null,
     var countryOrgin: String? = null
 )
+data class CommentData(
+    var comment: String = "",
+    var commentGmail: String = "",
+    var commentId: String = ""
+)
