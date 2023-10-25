@@ -22,6 +22,11 @@
             android:name=".CommonOtherUserProfile"
             android:exported="false" />
         <activity
+            android:name=".MyDeliveriesFullView"
+            android:exported="false" >
+
+        </activity>
+        <activity
             android:name=".CommonHome"
             android:exported="false" />
         <activity

@@ -45,6 +45,7 @@
 
             <TextView
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:id="@+id/itemSender"
                 android:layout_below="@+id/homeItemNo"
                 android:layout_width="wrap_content"
@@ -54,7 +55,7 @@
                 android:gravity="start"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:text="Name" />
 
             <TextView
@@ -74,8 +75,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-
                 android:layout_below="@+id/itemSender"
+                android:layout_marginBottom="5dp"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:text="Type" />
@@ -119,7 +120,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingEnd="40dp"
                 android:textSize="14sp"
+                android:textColor="@color/black"
                 android:layout_below="@+id/itemFlightDate"
                 android:text="Details >" />
 
@@ -132,8 +135,7 @@
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:text="Earned : " />
+                android:layout_centerVertical="true"/>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -60,16 +60,14 @@
                     android:id="@+id/commentFrame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardElevation="20dp"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
+                    app:cardElevation="20dp"
                     android:layout_below="@+id/cusAccManagementHeading"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_gravity="center_horizontal"
-                    android:layout_centerHorizontal="true"
-                    android:backgroundTint="@color/appextracolourlight">
+                    android:layout_centerHorizontal="true">
                     <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
@@ -98,7 +96,6 @@
                                 android:scaleY="0.5"
                                 android:progressTint="@color/appcolour"
                                 android:progressTintMode="src_atop"
-                                android:background="@color/appextracolourlight"
                                 android:gravity="center"
                                 android:layout_gravity="end" />
                         </LinearLayout>
@@ -133,8 +130,7 @@
                     app:cardElevation="20dp"
                     android:layout_below="@+id/commentFrame"
                     android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="20dp"
-                    android:backgroundTint="@color/appextracolourlight">
+                    android:layout_marginTop="20dp">
                         <LinearLayout
                             android:id="@+id/cusMyBookingArrowLayout"
                             android:orientation="vertical"
@@ -195,7 +191,11 @@
                                 android:paddingHorizontal="20dp"                                android:src="@drawable/cus_mybookings_expand_arrow" />
                         </RelativeLayout>
 
-
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/black"
+                                android:layout_marginHorizontal="10dp"/>
                     <LinearLayout
                         android:id="@+id/profileContent"
                         android:layout_width="match_parent"
@@ -212,8 +212,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:backgroundTint="@color/appextracolourlight">
+                            android:layout_marginBottom="20dp">
 
                             <ImageView
                                 android:id="@+id/cusAccountProfileImage"
@@ -544,8 +543,7 @@
                     android:layout_below="@+id/editableProfile"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="40dp"
-                    android:backgroundTint="@color/appextracolourlight">
+                    android:layout_marginBottom="40dp">
                     <LinearLayout
                         android:id="@+id/cusMyHistoryArrowLayout"
                         android:orientation="vertical"
@@ -604,6 +602,11 @@
                                 android:layout_width="wrap_content"
                                 android:paddingHorizontal="20dp"                                android:src="@drawable/cus_mybookings_expand_arrow" />
                         </RelativeLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/black"
+                            android:layout_marginHorizontal="10dp"/>
                         <LinearLayout
                             android:id="@+id/myHistoryContent"
                             android:layout_width="match_parent"
@@ -759,7 +762,6 @@
                                         android:scaleY="0.5"
                                         android:progressTint="@color/appcolour"
                                         android:progressTintMode="src_atop"
-                                        android:background="@color/appextracolourlight"
                                         android:gravity="center_vertical"
                                         android:layout_gravity="center"/>
                                 </LinearLayout>

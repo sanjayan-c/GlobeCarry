@@ -16,6 +16,7 @@ import android.text.Editable
 import android.util.Base64
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -294,6 +295,7 @@ class CommonUserProfile : AppCompatActivity() {
                         ratingBar?.rating = totalRatings
 
                         viewInputGmail?.text = gmail
+
                         if (imageData != "") {
                             // Decode the Base64 string to a Bitmap
                             val decodedBytes = Base64.decode(imageData, Base64.DEFAULT)
@@ -305,6 +307,27 @@ class CommonUserProfile : AppCompatActivity() {
                             // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
                             cusAccountProfileImage?.setImageResource(R.drawable.cus_image_not_found)
                         }
+
+
+//                        cusAccountProfileImage?.setOnClickListener {
+//
+//                            val decodedBytes = Base64.decode(imageData, Base64.DEFAULT)
+//                            val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+//
+//                            // Inflate the dialog layout
+//                            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_large_image, null)
+//
+//                            // Find the ImageView in the dialog layout
+//                            val largeImageView = dialogView.findViewById<ImageView>(R.id.largeImageView)
+//
+//                            // Set the image to the larger ImageView
+//                            largeImageView.setImageBitmap(decodedBitmap)
+//                            // Create and show the dialog
+//                            val builder = AlertDialog.Builder(this)
+//                            builder.setView(dialogView)
+//                            val dialog = builder.create()
+//                            dialog.show()
+//                        }
 
 
 
@@ -342,6 +365,31 @@ class CommonUserProfile : AppCompatActivity() {
                                     // Hide the edit frame
                                     cusAccountProfileImageEditFrame?.visibility = View.GONE
                                 }
+                            }else{
+                                if (imageData != "") {
+                                    val decodedBytes = Base64.decode(imageData, Base64.DEFAULT)
+                                    val decodedBitmap = BitmapFactory.decodeByteArray(
+                                        decodedBytes,
+                                        0,
+                                        decodedBytes.size
+                                    )
+
+                                    // Inflate the dialog layout
+                                    val dialogView = LayoutInflater.from(this)
+                                        .inflate(R.layout.dialog_large_image, null)
+
+                                    // Find the ImageView in the dialog layout
+                                    val largeImageView =
+                                        dialogView.findViewById<ImageView>(R.id.largeImageView)
+
+                                    // Set the image to the larger ImageView
+                                    largeImageView.setImageBitmap(decodedBitmap)
+                                    // Create and show the dialog
+                                    val builder = AlertDialog.Builder(this)
+                                    builder.setView(dialogView)
+                                    val dialog = builder.create()
+                                    dialog.show()
+                                }
                             }
                         }
 
@@ -353,7 +401,7 @@ class CommonUserProfile : AppCompatActivity() {
                         cusAccManageButton2?.setOnClickListener {
                             if(imageData!="") {
                                 // Set ImageDataSingleton.imageData to null
-                                imageData = null.toString()
+                                imageData = ""
 
                                 // Create a custom dialog
                                 val dialog = Dialog(this)
@@ -403,7 +451,7 @@ class CommonUserProfile : AppCompatActivity() {
 
                                 btnConfirmCusUpdate.setOnClickListener {
                                     Log.d("Photo","Confirm")
-                                    imageData = null.toString()
+                                    imageData = ""
                                     // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
                                     cusAccountProfileImage?.setImageResource(R.drawable.cus_image_not_found)
                                     // Dismiss the dialog

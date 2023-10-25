@@ -65,8 +65,7 @@
                     android:layout_below="@+id/cusAccManagementHeading"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:backgroundTint="@color/appextracolourlight">
+                    android:layout_marginBottom="20dp">
                         <LinearLayout
                             android:id="@+id/cusMyBookingArrowLayout"
                             android:orientation="vertical"
@@ -126,7 +125,11 @@
                                 android:layout_width="wrap_content"
                                 android:paddingHorizontal="20dp"                                android:src="@drawable/cus_mybookings_expand_arrow" />
                         </RelativeLayout>
-
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/black"
+                                android:layout_marginHorizontal="10dp"/>
 
                     <LinearLayout
                         android:id="@+id/profileContent"
@@ -143,8 +146,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:backgroundTint="@color/appextracolourlight">
+                            android:layout_marginBottom="20dp">
 
                             <ImageView
                                 android:id="@+id/cusAccountProfileImage"
@@ -350,19 +352,7 @@
                                 android:visibility="gone"
                                 android:gravity="center_vertical"
                                 android:layout_gravity="center_vertical"/>
-                            <TextView
-                                android:id="@+id/viewInputPhoneNo2"
-                                android:layout_height="40dp"
-                                android:layout_width="0dp"
-                                android:layout_weight="0.7"
-                                android:textSize="16sp"
-                                android:paddingStart="15dp"
-                                android:paddingEnd="15dp"
-                                android:hint="-"
-                                android:textColorHint="@color/black"
-                                android:inputType="text"
-                                android:gravity="center_vertical"
-                                android:layout_gravity="center_vertical"/>
+
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/cusAccountAddressLine1Layout"
@@ -471,7 +461,21 @@
                                 android:inputType="text"
                                 android:gravity="center_vertical"
                                 android:layout_gravity="center_vertical"/>
-                        </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/viewInputPhoneNo2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="40dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="0.7"
+                                    android:gravity="center_vertical"
+                                    android:hint="-"
+                                    android:inputType="text"
+                                    android:paddingStart="15dp"
+                                    android:paddingEnd="15dp"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/cusAccountCityLayout"
@@ -623,7 +627,10 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignParentBottom="true"
                                 android:layout_centerVertical="true"
-                                android:layout_margin="10dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="10dp"
                                 android:src="@drawable/edit_profile" />
 
                             <LinearLayout
@@ -671,8 +678,7 @@
                     android:layout_below="@+id/editableProfile"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="40dp"
-                    android:backgroundTint="@color/appextracolourlight">
+                    android:layout_marginBottom="40dp">
                     <LinearLayout
                         android:id="@+id/cusMyHistoryArrowLayout"
                         android:orientation="vertical"
@@ -731,6 +737,11 @@
                                 android:layout_width="wrap_content"
                                 android:paddingHorizontal="20dp"                                android:src="@drawable/cus_mybookings_expand_arrow" />
                         </RelativeLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/black"
+                            android:layout_marginHorizontal="10dp"/>
                         <LinearLayout
                             android:id="@+id/myHistoryContent"
                             android:layout_width="match_parent"
@@ -883,6 +894,8 @@
                                         android:stepSize="0.1"
                                         android:scaleX="0.4"
                                         android:scaleY="0.4"
+                                        android:progressTint="@color/appcolour"
+                                        android:progressTintMode="src_atop"
                                         android:gravity="center_vertical"
                                         android:layout_gravity="center_vertical"/>
                                 </LinearLayout>

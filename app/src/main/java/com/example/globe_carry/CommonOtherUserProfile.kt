@@ -17,6 +17,7 @@ import android.text.TextWatcher
 import android.util.Base64
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -473,6 +474,36 @@ class CommonOtherUserProfile : AppCompatActivity() {
                         profileImageView.setOnClickListener { view ->
                             showPopupMenu(view)
                         }
+
+
+                        cusAccountProfileImage?.setOnClickListener {
+                            if (imageData != "") {
+                                val decodedBytes = Base64.decode(imageData, Base64.DEFAULT)
+                                val decodedBitmap = BitmapFactory.decodeByteArray(
+                                    decodedBytes,
+                                    0,
+                                    decodedBytes.size
+                                )
+
+                                // Inflate the dialog layout
+                                val dialogView = LayoutInflater.from(this)
+                                    .inflate(R.layout.dialog_large_image, null)
+
+                                // Find the ImageView in the dialog layout
+                                val largeImageView =
+                                    dialogView.findViewById<ImageView>(R.id.largeImageView)
+
+                                // Set the image to the larger ImageView
+                                largeImageView.setImageBitmap(decodedBitmap)
+                                // Create and show the dialog
+                                val builder = AlertDialog.Builder(this)
+                                builder.setView(dialogView)
+                                val dialog = builder.create()
+                                dialog.show()
+                            }
+                        }
+
+
 
                         cusAccManagementBack?.setOnClickListener { // Start the CustomerAccountManagement activity
                             finish()

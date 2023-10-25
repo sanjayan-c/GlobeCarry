@@ -1,6 +1,8 @@
 package com.example.globe_carry.adapter
 
 import android.content.Intent
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.HomeItems
+import com.example.globe_carry.MyDeliveriesFullView
 import com.example.globe_carry.MyDeliveryRequests
 import com.example.globe_carry.QRscanner
 import com.example.globe_carry.R
@@ -40,13 +43,24 @@ class MyDeliveriesDeliveredAdapter(private val context: MyDeliveriesDeliveredFra
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        val registerString = "Details >"
+        val mSpannableString = SpannableString(registerString)
+        mSpannableString.setSpan(UnderlineSpan(), 0, mSpannableString.length, 0)
+        holder.details.text = mSpannableString
+
         val item = data[position]
         holder.itemNo.text = item.postId.toString()
-        holder.toCountry.text = "${item.city} , ${item.country}"
-        holder.sender.text = item.createdBy
+        val location = "${item.city} , ${item.country}"
+        holder.toCountry.text = location
+        val name = item.firstName+" "+item.lastName
+        holder.sender.text = name
         holder.type.text = item.category
-        holder.orgin.text = "${item.cityOrgin} , ${item.countryOrgin}"
+        val orginLocation =  "${item.cityOrgin} , ${item.countryOrgin}"
+        holder.orgin.text = item.orgin
         holder.flightDate.text = item.createdDate
+        val text = "Earned : "+item.ttlCharge.toString()
+        holder.buttonScan.text = text
 
         Log.d("Paid",item.paid.toString())
         Log.d("Received",item.received.toString())
@@ -54,7 +68,13 @@ class MyDeliveriesDeliveredAdapter(private val context: MyDeliveriesDeliveredFra
         Log.d("Departed",item.departed.toString())
         Log.d("Reached",item.reached.toString())
 
-        holder.flightDate.text = item.ttlCharge.toString()
+        holder.details.setOnClickListener {
+            val intent = Intent(context.requireContext(), MyDeliveriesFullView::class.java)
+            intent.putExtra("postId", item.postId)
+            intent.putExtra("orderstatus_id", item.orderstatus_id)
+            intent.putExtra("fromDeliveredAdapter", true)
+            context.startActivity(intent)
+        }
 
     }
     override fun getItemCount(): Int {

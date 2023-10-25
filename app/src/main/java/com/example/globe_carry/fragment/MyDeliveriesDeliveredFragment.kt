@@ -1,11 +1,14 @@
 package com.example.globe_carry.fragment
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ConnectionSQL
@@ -18,12 +21,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.sql.SQLException
 
 class MyDeliveriesDeliveredFragment : Fragment() {
 
 
-
+    var translationAnimator : ObjectAnimator?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +44,33 @@ class MyDeliveriesDeliveredFragment : Fragment() {
         val user = userAuth.currentUser?.uid ?: ""
         //      val data = mutableListOf<MyDeliveries>()
 
+
+        val runningManImageView = view.findViewById<ImageView>(R.id.runningManImageView1)
+        val cusWalletProgressBarLayout = view.findViewById<FrameLayout>(R.id.cusWalletProgressBarLayout)
+        cusWalletProgressBarLayout.visibility = View.VISIBLE
+
+        // Calculate the width of the screen for animation bounds
+        val screenWidth = resources.displayMetrics.widthPixels
+
+        // Create an ObjectAnimator to animate translation from left to right
+        translationAnimator = ObjectAnimator.ofFloat(
+            runningManImageView,
+            "translationX",
+            -screenWidth.toFloat(),
+            screenWidth.toFloat()
+        )
+
+        // Set the animator duration
+        translationAnimator?.duration = 2000  // Adjust the duration as needed
+
+        // Set the repeat mode to reverse for back-and-forth animation
+        translationAnimator?.repeatMode = ObjectAnimator.RESTART
+        translationAnimator?.repeatCount = ObjectAnimator.INFINITE
+
+        // Start the animation
+        translationAnimator?.start()
+
+
         CoroutineScope(Dispatchers.IO).launch {
             if (!isAdded) {
                 return@launch
@@ -50,9 +81,9 @@ class MyDeliveriesDeliveredFragment : Fragment() {
                 val user = userAuth.currentUser?.uid ?: ""
 
                 val query =
-                    "SELECT a.*, o.*, u.firstName AS firstName, u.lastName AS lastName,u.city AS cityOrgin, u.country AS countryOrgin " +
-                            "FROM AdPosts a, orderstatus o,user u " +
-                            "WHERE a.postid = o.postid AND a.Created_by = u.userId AND o.acptdTravllerId = ?";
+                    "SELECT a.*, o.*, u.firstName AS firstName, u.lastName AS lastName, u.phoneNo as phoneNo, u.city AS cityOrgin, u.country AS countryOrgin, v.*, u2.firstName AS myFirstName, u2.lastName AS myLastName " +
+                            "FROM AdPosts a, orderstatus o, user u, verification v, user u2 " +
+                            "WHERE a.postid = o.postid AND a.Created_by = u.userId AND v.Postid = o.postid AND v.TravellerID = o.acptdTravllerId AND o.acptdTravllerId = u2.userId AND o.delivered = TRUE AND o.acptdTravllerId = ?";
 
                 try {
                     val preparedStatement = connection.prepareStatement(query)
@@ -65,22 +96,22 @@ class MyDeliveriesDeliveredFragment : Fragment() {
                         // Parse data from the result set
                         val postId = resultSet.getInt("postid")
                         val urgency = resultSet.getBoolean("urgency")
-                        val category = resultSet.getString("category")
-                        val content = resultSet.getString("content")
-                        val value = resultSet.getBigDecimal("value")
-                        val weight = resultSet.getBigDecimal("weight")
-                        val dlvryAddress = resultSet.getString("dlvryAddress")
-                        val city = resultSet.getString("city")
-                        val country = resultSet.getString("country")
-                        val recipient = resultSet.getString("recipient")
-                        val rcptContactNo = resultSet.getString("rcptContactNo")
-                        val dlvryDate = resultSet.getString("dlvryDate")
-                        val instructions = resultSet.getString("instructions")
+                        val category = resultSet.getString("category") ?: ""
+                        val content = resultSet.getString("content") ?: ""
+                        val value = resultSet.getBigDecimal("value") ?: BigDecimal.ZERO
+                        val weight = resultSet.getBigDecimal("weight") ?: BigDecimal.ZERO
+                        val dlvryAddress = resultSet.getString("dlvryAddress") ?: ""
+                        val city = resultSet.getString("city") ?: ""
+                        val country = resultSet.getString("country") ?: ""
+                        val recipient = resultSet.getString("recipient") ?: ""
+                        val rcptContactNo = resultSet.getString("rcptContactNo") ?: ""
+                        val dlvryDate = resultSet.getString("dlvryDate") ?: ""
+                        val instructions = resultSet.getString("instructions") ?: ""
                         val ttlCharge = resultSet.getBigDecimal("ttlCharge")
-                        val dimension = resultSet.getString("dimension")
-                        val createdDate = resultSet.getString("createdDate")
-                        val createdBy = resultSet.getString("Created_by")
-                        val imageBytes = resultSet.getString("image")
+                        val dimension = resultSet.getString("dimension") ?: ""
+                        val createdDate = resultSet.getString("createdDate") ?: ""
+                        val createdBy = resultSet.getString("Created_by") ?: ""
+//                       val imageBytes = resultSet.getString("image")
 
                         val orderstatus_id = resultSet.getInt("orderstatus_id")
                         val received = resultSet.getBoolean("received")
@@ -89,11 +120,21 @@ class MyDeliveriesDeliveredFragment : Fragment() {
                         val departed = resultSet.getBoolean("departed")
                         val reached = resultSet.getBoolean("reached")
 
-                        val firstName = resultSet.getString("firstName")
-                        val lastName = resultSet.getString("lastName")
-                        val cityOrgin = resultSet.getString("cityOrgin")
-                        val countryOrgin = resultSet.getString("countryOrgin")
+                        val firstName = resultSet.getString("firstName") ?: ""
+                        val lastName = resultSet.getString("lastName") ?: ""
+                        val phoneNo = resultSet.getString("phoneNo") ?: ""
+                        val cityOrgin = resultSet.getString("cityOrgin") ?: ""
+                        val countryOrgin = resultSet.getString("countryOrgin") ?: ""
 
+                        val flightDate = resultSet.getString("FlightDate") ?: ""
+                        val passport = resultSet.getString("passport") ?: ""
+                        val orgin = resultSet.getString("orgin") ?: ""
+//                        val passportImage = resultSet.getString("PassportImage")
+//                        val ticketImage = resultSet.getString("TicketImage")
+//                        val travellerImage = resultSet.getString("TravellerImage")
+
+                        val myFirstName = resultSet.getString("myFirstName") ?: ""
+                        val myLastName = resultSet.getString("myLastName") ?: ""
 
                         Log.d("Query ", "Query is successful")
 
@@ -114,7 +155,7 @@ class MyDeliveriesDeliveredFragment : Fragment() {
                         Log.d("MyParcel", "dimension: $dimension")
                         Log.d("MyParcel", "createdDate: $createdDate")
                         Log.d("MyParcel", "createdBy: $createdBy")
-                        Log.d("MyParcel", "imageBytes: $imageBytes")
+//                        Log.d("MyParcel", "imageBytes: $imageBytes")
 
                         Log.d("MyParcel", "orderstatus_id: $orderstatus_id")
                         Log.d("MyParcel", "received: $received")
@@ -126,8 +167,20 @@ class MyDeliveriesDeliveredFragment : Fragment() {
 
                         Log.d("MyParcel", "firstName: $firstName")
                         Log.d("MyParcel", "lastName: $lastName")
+                        Log.d("MyParcel", "phoneNo: $phoneNo")
                         Log.d("MyParcel", "cityOrgin: $cityOrgin")
                         Log.d("MyParcel", "countryOrgin: $countryOrgin")
+
+                        Log.d("MyParcel", "flightDate: $flightDate")
+                        Log.d("MyParcel", "passport: $passport")
+                        Log.d("MyParcel", "orgin: $orgin")
+//                        Log.d("MyParcel", "passportImage: $passportImage")
+//                        Log.d("MyParcel", "ticketImage: $ticketImage")
+//                        Log.d("MyParcel", "travellerImage: $travellerImage")
+
+                        Log.d("MyParcel", "myFirstName: $myFirstName")
+                        Log.d("MyParcel", "myLastNamen: $myLastName")
+
                         // Create a HomeItems object and add it to the data list
                         val homeItem = MyDeliveryRequests(
                             postId, urgency,
@@ -138,9 +191,11 @@ class MyDeliveriesDeliveredFragment : Fragment() {
                             rcptContactNo, dlvryDate,
                             instructions, ttlCharge,
                             dimension, createdDate,
-                            createdBy, imageBytes,
+                            createdBy, "",
                             orderstatus_id, received, delivered, paid, departed, reached,
-                            firstName, lastName, cityOrgin, countryOrgin
+                            firstName, lastName, phoneNo, cityOrgin, countryOrgin,
+                            flightDate, passport, orgin, "", "", "",
+                            myFirstName, myLastName
                         )
 
                         filteredData.add(homeItem)
@@ -172,6 +227,9 @@ class MyDeliveriesDeliveredFragment : Fragment() {
                 val adapter = MyDeliveriesDeliveredAdapter(this, filteredData)
                 recyclerView?.adapter = adapter
                 recyclerView?.layoutManager = LinearLayoutManager(requireContext())
+                val cusWalletProgressBarLayout = view?.findViewById<FrameLayout>(R.id.cusWalletProgressBarLayout)
+                cusWalletProgressBarLayout?.visibility = View.GONE
+                translationAnimator?.cancel()
             }
         }
     }
