@@ -15,6 +15,8 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ConnectionSQL
 import com.example.globe_carry.HomeItems
@@ -22,13 +24,15 @@ import com.example.globe_carry.MyDeliveriesFullView
 import com.example.globe_carry.MyDeliveryRequests
 import com.example.globe_carry.QRscanner
 import com.example.globe_carry.R
-import com.example.globe_carry.SingletonMyDeliveryRequests
 import com.example.globe_carry.Verification
 import com.example.globe_carry.ViewVerificationRequest
 import com.example.globe_carry.fragment.MyDeliveriesFragment
 import com.example.globe_carry.fragment.MyDeliveriesPendingFragment
 import java.math.BigDecimal
 import java.sql.SQLException
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment,
                           private val data: List<MyDeliveryRequests>,
@@ -46,6 +50,7 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment,
         val flightDate: TextView = itemView.findViewById(R.id.itemFlightDate1)
         val details: TextView = itemView.findViewById(R.id.homeItemDetails)
         val buttonScan: TextView = itemView.findViewById(R.id.button2)
+        val urgency: TextView = itemView.findViewById(R.id.urgency)
 
     }
 
@@ -72,7 +77,23 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment,
         holder.type.text = item.category
         val orginLocation =  "${item.cityOrgin} , ${item.countryOrgin}"
         holder.orgin.text = item.orgin
-        holder.flightDate.text = item.createdDate
+
+        val today = LocalDate.now()
+        val flightDate = LocalDate.parse(item.flightDate)
+
+        if (flightDate == today) {
+            holder.flightDate.text = "Today"
+            holder.flightDate.setTextColor(ContextCompat.getColor(context.requireContext(), R.color.red))
+        } else if (flightDate.isBefore(today)) {
+            holder.flightDate.text = item.flightDate
+            holder.flightDate.setTextColor(ContextCompat.getColor(context.requireContext(), R.color.red))
+        } else {
+            holder.flightDate.text = item.flightDate
+        }
+
+        if (item.urgency!!){
+            holder.urgency.visibility = View.VISIBLE
+        }
 
         Log.d("Paid",item.paid.toString())
         Log.d("Received",item.received.toString())
@@ -205,12 +226,17 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment,
                         try {
                             // Update query with placeholders for binding
                             val query2 =
-                                "UPDATE orderstatus SET reached = ? WHERE orderstatus_id = ?"
+                                "UPDATE orderstatus SET reached = ?, orderReachedDate = ?, orderReachedTime = ? WHERE orderstatus_id = ?"
 
-                            val preparedStatement2 = connection2.prepareStatement(query2)
+                            val preparedStatement2 =
+                                connection2.prepareStatement(query2)
+
+                            val (currentDate, currentTime) = getCurrentDateTime()
 
                             preparedStatement2.setBoolean(1, true)
-                            preparedStatement2.setInt(2, item.orderstatus_id)
+                            preparedStatement2.setString(2, currentDate)
+                            preparedStatement2.setString(3, currentTime)
+                            preparedStatement2.setInt(4, item.orderstatus_id)
 
                             // Execute the update query
                             preparedStatement2.executeUpdate()
@@ -291,12 +317,15 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment,
                             try {
                                 // Update query with placeholders for binding
                                 val query2 =
-                                    "UPDATE orderstatus SET departed = ? WHERE orderstatus_id = ?"
+                                    "UPDATE orderstatus SET departed = ?, orderDepartedDate = ?, orderDepartedTime = ? WHERE orderstatus_id = ?"
 
-                                val preparedStatement2 = connection2.prepareStatement(query2)
-
+                                val preparedStatement2 =
+                                    connection2.prepareStatement(query2)
+                                val (currentDate, currentTime) = getCurrentDateTime()
                                 preparedStatement2.setBoolean(1, true)
-                                preparedStatement2.setInt(2, item.orderstatus_id)
+                                preparedStatement2.setString(2, currentDate)
+                                preparedStatement2.setString(3, currentTime)
+                                preparedStatement2.setInt(4, item.orderstatus_id)
 
                                 // Execute the update query
                                 preparedStatement2.executeUpdate()
@@ -441,4 +470,13 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment,
     override fun getItemCount(): Int {
         return data.size
     }
+    fun getCurrentDateTime(): Pair<String, String> {
+        val currentDateTime = LocalDateTime.now()
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+        val currentDate = currentDateTime.format(dateFormatter)
+        val currentTime = currentDateTime.format(timeFormatter)
+        return Pair(currentDate, currentTime)
+    }
+
 }

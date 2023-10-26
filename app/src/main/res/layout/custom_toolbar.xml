@@ -57,6 +57,7 @@
             android:background="@drawable/search_tool_bar"
             android:layout_marginHorizontal="30dp">
             <EditText
+                android:id="@+id/searchBarText"
                 android:layout_width="0dp"
                 android:layout_weight="10"
                 android:gravity="start"

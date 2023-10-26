@@ -9,8 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.globe_carry.CommonHome
 import com.example.globe_carry.ConnectionSQL
 import com.example.globe_carry.MyDeliveryRequests
 import com.example.globe_carry.R
@@ -26,7 +29,7 @@ import java.sql.SQLException
 
 class MyDeliveriesDeliveredFragment : Fragment() {
 
-
+    private val filteredData = mutableListOf<MyDeliveryRequests>()
     var translationAnimator : ObjectAnimator?= null
 
     override fun onCreateView(
@@ -40,10 +43,24 @@ class MyDeliveriesDeliveredFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        filteredData.clear()
+
         val userAuth = FirebaseAuth.getInstance()
         val user = userAuth.currentUser?.uid ?: ""
         //      val data = mutableListOf<MyDeliveries>()
 
+        // Access the parent activity
+        val parentActivity = activity
+
+        if (parentActivity is CommonHome) {
+            // Cast the activity to your specific activity type if needed
+            val myActivity = parentActivity as CommonHome
+
+            // Now, you can access views in the activity's layout
+            val someView = myActivity.findViewById<LinearLayout>(R.id.toolBarSearchBar)
+            someView.visibility = View.GONE
+            // Do something with the view
+        }
 
         val runningManImageView = view.findViewById<ImageView>(R.id.runningManImageView1)
         val cusWalletProgressBarLayout = view.findViewById<FrameLayout>(R.id.cusWalletProgressBarLayout)
@@ -90,7 +107,6 @@ class MyDeliveriesDeliveredFragment : Fragment() {
                     preparedStatement.setString(1, user)
 
                     val resultSet = preparedStatement.executeQuery()
-                    val filteredData = mutableListOf<MyDeliveryRequests>()
 
                     while (resultSet.next()) {
                         // Parse data from the result set
@@ -119,6 +135,17 @@ class MyDeliveriesDeliveredFragment : Fragment() {
                         val paid = resultSet.getBoolean("paid")
                         val departed = resultSet.getBoolean("departed")
                         val reached = resultSet.getBoolean("reached")
+                        val orderStartedDate = resultSet.getString("orderStartedDate") ?: ""
+                        val orderStartedTime = resultSet.getString("orderStartedTime") ?: ""
+                        val orderCompletedDate = resultSet.getString("orderCompletedDate") ?: ""
+                        val orderCompletedTime = resultSet.getString("orderCompletedTime") ?: ""
+                        val orderReceivedDate = resultSet.getString("orderReceivedDate") ?: ""
+                        val orderReceivedTime = resultSet.getString("orderReceivedTime") ?: ""
+                        val orderDepartedDate = resultSet.getString("orderDepartedDate") ?: ""
+                        val orderDepartedTime = resultSet.getString("orderDepartedTime") ?: ""
+                        val orderReachedDate = resultSet.getString("orderReachedDate") ?: ""
+                        val orderReachedTime = resultSet.getString("orderReachedTime") ?: ""
+
 
                         val firstName = resultSet.getString("firstName") ?: ""
                         val lastName = resultSet.getString("lastName") ?: ""
@@ -129,9 +156,6 @@ class MyDeliveriesDeliveredFragment : Fragment() {
                         val flightDate = resultSet.getString("FlightDate") ?: ""
                         val passport = resultSet.getString("passport") ?: ""
                         val orgin = resultSet.getString("orgin") ?: ""
-//                        val passportImage = resultSet.getString("PassportImage")
-//                        val ticketImage = resultSet.getString("TicketImage")
-//                        val travellerImage = resultSet.getString("TravellerImage")
 
                         val myFirstName = resultSet.getString("myFirstName") ?: ""
                         val myLastName = resultSet.getString("myLastName") ?: ""
@@ -155,7 +179,6 @@ class MyDeliveriesDeliveredFragment : Fragment() {
                         Log.d("MyParcel", "dimension: $dimension")
                         Log.d("MyParcel", "createdDate: $createdDate")
                         Log.d("MyParcel", "createdBy: $createdBy")
-//                        Log.d("MyParcel", "imageBytes: $imageBytes")
 
                         Log.d("MyParcel", "orderstatus_id: $orderstatus_id")
                         Log.d("MyParcel", "received: $received")
@@ -174,9 +197,6 @@ class MyDeliveriesDeliveredFragment : Fragment() {
                         Log.d("MyParcel", "flightDate: $flightDate")
                         Log.d("MyParcel", "passport: $passport")
                         Log.d("MyParcel", "orgin: $orgin")
-//                        Log.d("MyParcel", "passportImage: $passportImage")
-//                        Log.d("MyParcel", "ticketImage: $ticketImage")
-//                        Log.d("MyParcel", "travellerImage: $travellerImage")
 
                         Log.d("MyParcel", "myFirstName: $myFirstName")
                         Log.d("MyParcel", "myLastNamen: $myLastName")
@@ -193,6 +213,7 @@ class MyDeliveriesDeliveredFragment : Fragment() {
                             dimension, createdDate,
                             createdBy, "",
                             orderstatus_id, received, delivered, paid, departed, reached,
+                            orderStartedDate,orderStartedTime,orderCompletedDate,orderCompletedTime,orderReceivedDate,orderReceivedTime,orderDepartedDate,orderDepartedTime,orderReachedDate,orderReachedTime,
                             firstName, lastName, phoneNo, cityOrgin, countryOrgin,
                             flightDate, passport, orgin, "", "", "",
                             myFirstName, myLastName
@@ -203,7 +224,38 @@ class MyDeliveriesDeliveredFragment : Fragment() {
 
                     resultSet.close()
                     preparedStatement.close()
-                    updateRecyclerView(filteredData) // Pass filteredData here
+
+                    if (filteredData.isEmpty()) {
+                        if (isAdded) {
+                            requireActivity().runOnUiThread {
+                                cusWalletProgressBarLayout?.visibility = View.GONE
+                                translationAnimator?.cancel()
+                                val cusNothingTextLayout =
+                                    view.findViewById<FrameLayout>(R.id.cusNothingTextLayout)
+                                cusNothingTextLayout.visibility = View.VISIBLE
+                            }
+                        }
+                    } else {
+                        val sortedData = filteredData.sortedWith(compareByDescending<MyDeliveryRequests> { it.orderCompletedDate }.thenByDescending { it.orderCompletedTime })
+                        updateRecyclerView(sortedData)
+
+                        val searchView = view.findViewById<SearchView>(R.id.searchBarText)
+
+                        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                            override fun onQueryTextSubmit(query: String?): Boolean {
+                                // Handle query submission (optional)
+                                return false
+                            }
+
+                            override fun onQueryTextChange(newText: String?): Boolean {
+                                // Handle query text changes
+                                val filteredData = filterData(newText)
+                                val sortedData2 = filteredData.sortedBy { it.flightDate }
+                                updateRecyclerView(sortedData2)
+                                return true
+                            }
+                        })
+                    }
 
                 } catch (e: SQLException) {
                     Log.e("SQL Error", "SQL Exception: " + e.message)
@@ -238,5 +290,16 @@ class MyDeliveriesDeliveredFragment : Fragment() {
 
         // Cancel the coroutine when the fragment is destroyed
         CoroutineScope(Dispatchers.IO).cancel()
+    }
+
+    private fun filterData(query: String?): List<MyDeliveryRequests> {
+        if (query.isNullOrBlank()) {
+            return filteredData // If the query is empty, return all data
+        } else {
+            val lowerCaseQuery = query.toLowerCase()
+            return filteredData.filter { item ->
+                (item.city?.contains(lowerCaseQuery, ignoreCase = true) ?: false) || (item.country?.contains(lowerCaseQuery, ignoreCase = true) ?: false) || (item.flightDate?.contains(lowerCaseQuery, ignoreCase = true) ?: false)  || (item.firstName?.contains(lowerCaseQuery, ignoreCase = true) ?: false) || (item.lastName?.contains(lowerCaseQuery, ignoreCase = true) ?: false)
+            }
+        }
     }
 }

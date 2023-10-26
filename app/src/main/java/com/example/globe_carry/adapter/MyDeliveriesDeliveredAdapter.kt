@@ -33,6 +33,7 @@ class MyDeliveriesDeliveredAdapter(private val context: MyDeliveriesDeliveredFra
         val flightDate: TextView = itemView.findViewById(R.id.itemFlightDate1)
         val details: TextView = itemView.findViewById(R.id.homeItemDetails)
         val buttonScan: TextView = itemView.findViewById(R.id.button2)
+        val completed: TextView = itemView.findViewById(R.id.completed)
 
     }
 
@@ -58,9 +59,11 @@ class MyDeliveriesDeliveredAdapter(private val context: MyDeliveriesDeliveredFra
         holder.type.text = item.category
         val orginLocation =  "${item.cityOrgin} , ${item.countryOrgin}"
         holder.orgin.text = item.orgin
-        holder.flightDate.text = item.createdDate
+        holder.flightDate.text = item.flightDate
         val text = "Earned : "+item.ttlCharge.toString()
         holder.buttonScan.text = text
+        val completed = "Completed On : "+item.orderCompletedDate+"  "+item.orderCompletedTime
+        holder.completed.text = completed
 
         Log.d("Paid",item.paid.toString())
         Log.d("Received",item.received.toString())

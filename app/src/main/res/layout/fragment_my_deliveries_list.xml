@@ -112,8 +112,7 @@
                 android:layout_toEndOf="@+id/itemFlightDate"
                 android:layout_alignTop="@+id/itemFlightDate"
                 android:textColor="@color/black"
-                android:textSize="14sp"
-                android:text="LKR 150" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/homeItemDetails"
@@ -136,6 +135,20 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/cus_button_update"/>
+            <TextView
+                android:id="@+id/urgency"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:paddingVertical="2dp"
+                android:paddingHorizontal="5dp"
+                android:gravity="center"
+                android:background="@color/red"
+                android:textSize="14sp"
+                android:text="Urgent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"/>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

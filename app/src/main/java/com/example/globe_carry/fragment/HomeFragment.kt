@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.globe_carry.CommonHome
 import com.example.globe_carry.ConnectionSQL
 import com.example.globe_carry.HomeItems
 import com.example.globe_carry.R
@@ -33,6 +35,20 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Access the parent activity
+        val parentActivity = activity
+
+        if (parentActivity is CommonHome) {
+            // Cast the activity to your specific activity type if needed
+            val myActivity = parentActivity as CommonHome
+
+            // Now, you can access views in the activity's layout
+            val someView = myActivity.findViewById<LinearLayout>(R.id.toolBarSearchBar)
+            someView.visibility = View.VISIBLE
+            // Do something with the view
+        }
+
 
         // Initialize the RecyclerView
         CoroutineScope(Dispatchers.IO).launch {

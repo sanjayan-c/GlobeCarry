@@ -1,11 +1,17 @@
 package com.example.globe_carry
 
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -30,6 +36,7 @@ class QRscanner : AppCompatActivity() {
     private var received: Boolean = false
     private var delivered: Boolean = false
     private var insideClass: Boolean = false
+    private var over: Boolean = false
 
     private val cusConSQL = ConnectionSQL()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,33 +102,27 @@ class QRscanner : AppCompatActivity() {
                 try {
                     // Update query with placeholders for binding
                     val query: String
-                    val preparedStatement : PreparedStatement
                     val user=userAuth.currentUser?.uid
                     if(!received){
                        query= "UPDATE orderstatus " +
-                                "SET received = TRUE " +
+                                "SET received = TRUE, orderReceivedDate = ?, orderReceivedTime = ? " +
                                 "WHERE acptdTravllerId = ? " +
                                 "AND postId = ?"
 
-                        preparedStatement = connection.prepareStatement(query)
-                        // Bind the values to the placeholders
-                        preparedStatement.setString(1, user)
-                        preparedStatement.setString(2, postId)
                     }else{
-                        val (currentDate, currentTime) = getCurrentDateTime()
                         query="UPDATE orderstatus " +
                                 "SET delivered = TRUE, orderCompletedDate = ?, orderCompletedTime = ? " +
                                 "WHERE acptdTravllerId = ? " +
                                 "AND postId = ?"
-
-                        preparedStatement = connection.prepareStatement(query)
-                        // Bind the values to the placeholders
-                        preparedStatement.setString(1, currentDate)
-                        preparedStatement.setString(2, currentTime)
-                        preparedStatement.setString(3, user)
-                        preparedStatement.setString(4, postId)
+                        over = true
                     }
-
+                    val (currentDate, currentTime) = getCurrentDateTime()
+                    val preparedStatement = connection.prepareStatement(query)
+                    // Bind the values to the placeholders
+                    preparedStatement.setString(1, currentDate)
+                    preparedStatement.setString(2, currentTime)
+                    preparedStatement.setString(3, user)
+                    preparedStatement.setString(4, postId)
 
 
                     // Execute the insert query
@@ -130,23 +131,25 @@ class QRscanner : AppCompatActivity() {
                     if (rowsAffected > 0) {
                         // Insert successful
                         println("Data inserted successfully.")
+
+                        if(over) {
+                            Log.e("showCelebrationPopup", "showCelebrationPopup")
+                            runOnUiThread {
+                                showCelebrationPopup()
+                                Handler().postDelayed({
+                                    startNextActivity()
+                                }, 2000)
+                            }
+                        }else{
+                            startNextActivity()
+                        }
+
+
                     } else {
                         // Insert failed
                         println("Failed to insert data.")
                     }
-                    if(insideClass){
-                        val intent = Intent(this, MyDeliveriesFullView::class.java)
-                        intent.putExtra("postId", poId)
-                        intent.putExtra("orderstatus_id", orderstatus_id)
-                        Log.e("Update Error", poId.toString())
-                        Log.e("Update Error", orderstatus_id.toString())
 
-                        startActivity(intent)
-                    }else {
-                        val intent = Intent(this, CommonHome::class.java)
-                        intent.putExtra("FRAGMENT_TO_SHOW", "MyDeliveriesFragment")
-                        startActivity(intent)
-                    }
                 // Perform any UI updates or navigation as needed
                     // For example, show a success message or navigate to another screen
                 } catch (e: SQLException) {
@@ -170,6 +173,48 @@ class QRscanner : AppCompatActivity() {
         val currentDate = currentDateTime.format(dateFormatter)
         val currentTime = currentDateTime.format(timeFormatter)
         return Pair(currentDate, currentTime)
+    }
+
+    private fun showCelebrationPopup() {
+        val dialog = Dialog(this)
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.confetti_popup)
+
+        // Get the window attributes
+        val window = dialog.window
+
+        // Set width and height to cover the screen
+        window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+
+        val imageView = dialog.findViewById<ImageView>(R.id.celebrationImage)
+        // Set the pivot point to the center of the ImageView
+        imageView.pivotX = imageView.width / 2f
+        imageView.pivotY = imageView.height / 2f
+
+        val scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.scale_up)
+        imageView.startAnimation(scaleAnimation)
+
+        dialog.show()
+    }
+
+    private fun startNextActivity() {
+        if (insideClass) {
+            val intent = Intent(this, MyDeliveriesFullView::class.java)
+            intent.putExtra("postId", poId)
+            intent.putExtra("orderstatus_id", orderstatus_id)
+            Log.e("Update Error", poId.toString())
+            Log.e("Update Error", orderstatus_id.toString())
+
+            startActivity(intent)
+        } else {
+            val intent = Intent(this, CommonHome::class.java)
+            intent.putExtra("FRAGMENT_TO_SHOW", "MyDeliveriesFragment")
+            startActivity(intent)
+        }
     }
 
 }

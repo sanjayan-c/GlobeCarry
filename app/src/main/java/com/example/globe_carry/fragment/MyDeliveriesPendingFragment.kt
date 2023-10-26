@@ -11,10 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.SearchView
+import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.globe_carry.CommonHome
 import com.example.globe_carry.ConnectionSQL
 import com.example.globe_carry.HomeItems
 import com.example.globe_carry.MyDeliveryRequests
@@ -35,7 +39,9 @@ import java.util.Locale
 
 class MyDeliveriesPendingFragment : Fragment() {
 
-    var translationAnimator : ObjectAnimator?= null
+    private var translationAnimator : ObjectAnimator?= null
+    private val filteredData = mutableListOf<MyDeliveryRequests>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,9 +53,23 @@ class MyDeliveriesPendingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        filteredData.clear()
+
         val userAuth = FirebaseAuth.getInstance()
         val user = userAuth.currentUser?.uid ?: ""
-        //      val data = mutableListOf<MyDeliveries>()
+
+        // Access the parent activity
+        val parentActivity = activity
+
+        if (parentActivity is CommonHome) {
+            // Cast the activity to your specific activity type if needed
+            val myActivity = parentActivity as CommonHome
+
+            // Now, you can access views in the activity's layout
+            val someView = myActivity.findViewById<LinearLayout>(R.id.toolBarSearchBar)
+            someView.visibility = View.GONE
+            // Do something with the view
+        }
 
         val runningManImageView = view.findViewById<ImageView>(R.id.runningManImageView1)
         val cusWalletProgressBarLayout = view.findViewById<FrameLayout>(R.id.cusWalletProgressBarLayout)
@@ -96,7 +116,6 @@ class MyDeliveriesPendingFragment : Fragment() {
                     preparedStatement.setString(1, user)
 
                     val resultSet = preparedStatement.executeQuery()
-                    val filteredData = mutableListOf<MyDeliveryRequests>()
 
                     while (resultSet.next()) {
                         // Parse data from the result set
@@ -117,7 +136,6 @@ class MyDeliveriesPendingFragment : Fragment() {
                         val dimension = resultSet.getString("dimension") ?: ""
                         val createdDate = resultSet.getString("createdDate") ?: ""
                         val createdBy = resultSet.getString("Created_by") ?: ""
-//                       val imageBytes = resultSet.getString("image")
 
                         val orderstatus_id = resultSet.getInt("orderstatus_id")
                         val received = resultSet.getBoolean("received")
@@ -135,9 +153,6 @@ class MyDeliveriesPendingFragment : Fragment() {
                         val flightDate = resultSet.getString("FlightDate") ?: ""
                         val passport = resultSet.getString("passport") ?: ""
                         val orgin = resultSet.getString("orgin") ?: ""
-//                        val passportImage = resultSet.getString("PassportImage")
-//                        val ticketImage = resultSet.getString("TicketImage")
-//                        val travellerImage = resultSet.getString("TravellerImage")
 
                         val myFirstName = resultSet.getString("myFirstName") ?: ""
                         val myLastName = resultSet.getString("myLastName") ?: ""
@@ -199,6 +214,7 @@ class MyDeliveriesPendingFragment : Fragment() {
                             dimension, createdDate,
                             createdBy, "",
                             orderstatus_id, received, delivered, paid, departed, reached,
+                            "","","","","","","","","","",
                             firstName, lastName, phoneNo, cityOrgin, countryOrgin,
                             flightDate, passport, orgin, "", "", "",
                             myFirstName, myLastName
@@ -209,9 +225,39 @@ class MyDeliveriesPendingFragment : Fragment() {
 
                     resultSet.close()
                     preparedStatement.close()
-                    // Sort the filteredData list by flightDate
-                    val sortedData = filteredData.sortedByDescending { it.flightDate }
-                    updateRecyclerView(sortedData)
+
+                    if (filteredData.isEmpty()) {
+                        if (isAdded) {
+                            requireActivity().runOnUiThread {
+                                cusWalletProgressBarLayout?.visibility = View.GONE
+                                translationAnimator?.cancel()
+                                val cusNothingTextLayout =
+                                    view.findViewById<FrameLayout>(R.id.cusNothingTextLayout)
+                                cusNothingTextLayout.visibility = View.VISIBLE
+                            }
+                        }
+                    } else {
+                        // Sort the filteredData list by flightDate
+                        val sortedData = filteredData.sortedBy { it.flightDate }
+                        updateRecyclerView(sortedData)
+
+                        val searchView = view.findViewById<SearchView>(R.id.searchBarText)
+
+                        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                            override fun onQueryTextSubmit(query: String?): Boolean {
+                                // Handle query submission (optional)
+                                return false
+                            }
+
+                            override fun onQueryTextChange(newText: String?): Boolean {
+                                // Handle query text changes
+                                val filteredData = filterData(newText)
+                                val sortedData2 = filteredData.sortedBy { it.flightDate }
+                                updateRecyclerView(sortedData2)
+                                return true
+                            }
+                        })
+                    }
                 } catch (e: SQLException) {
                     Log.e("SQL Error", "SQL Exception: " + e.message)
                     e.printStackTrace()
@@ -237,6 +283,7 @@ class MyDeliveriesPendingFragment : Fragment() {
                 val cusWalletProgressBarLayout = view?.findViewById<FrameLayout>(R.id.cusWalletProgressBarLayout)
                 cusWalletProgressBarLayout?.visibility = View.GONE
                 translationAnimator?.cancel()
+
             }
         }
     }
@@ -246,5 +293,16 @@ class MyDeliveriesPendingFragment : Fragment() {
         // Cancel the coroutine when the fragment is destroyed
         CoroutineScope(Dispatchers.IO).cancel()
     }
+    private fun filterData(query: String?): List<MyDeliveryRequests> {
+        if (query.isNullOrBlank()) {
+            return filteredData // If the query is empty, return all data
+        } else {
+            val lowerCaseQuery = query.toLowerCase()
+            return filteredData.filter { item ->
+                (item.city?.contains(lowerCaseQuery, ignoreCase = true) ?: false) || (item.country?.contains(lowerCaseQuery, ignoreCase = true) ?: false) || (item.flightDate?.contains(lowerCaseQuery, ignoreCase = true) ?: false) || (item.firstName?.contains(lowerCaseQuery, ignoreCase = true) ?: false) || (item.lastName?.contains(lowerCaseQuery, ignoreCase = true) ?: false)
+            }
+        }
+    }
+
 
 }

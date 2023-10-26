@@ -8,6 +8,8 @@ import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Base64
 import android.util.DisplayMetrics
 import android.util.Log
@@ -53,6 +55,7 @@ class MyDeliveriesFullView : AppCompatActivity() {
     private var departedImageLine : View? = null
     private var arrivedImageLine : View? = null
 
+    private var paymentImageButton: TextView? = null
     private var receivedImageButton : Button? = null
     private var departedImageButton : Button? = null
     private var arrivedImageButton : Button? = null
@@ -154,7 +157,18 @@ class MyDeliveriesFullView : AppCompatActivity() {
         var paid : Boolean ?=false
         var departed : Boolean ?=false
         var reached : Boolean ?=false
+        var orderStartedDate : String ?= null
+        var orderStartedTime : String ?= null
+        var orderCompletedDate : String ?= null
+        var orderCompletedTime : String ?= null
+        var orderReceivedDate : String ?= null
+        var orderReceivedTime : String ?= null
+        var orderDepartedDate : String ?= null
+        var orderDepartedTime : String ?= null
+        var orderReachedDate : String ?= null
+        var orderReachedTime : String ?= null
 
+        var sentBy : String ?= null
         var firstName : String ?= null
         var lastName : String ?= null
         var phoneNo : String ?= null
@@ -177,7 +191,7 @@ class MyDeliveriesFullView : AppCompatActivity() {
                 val user = userAuth.currentUser?.uid ?: ""
 
                 val query =
-                    "SELECT a.*, o.*, u.firstName AS firstName, u.lastName AS lastName, u.phoneNo as phoneNo, u.city AS cityOrgin, u.country AS countryOrgin, v.*, u2.firstName AS myFirstName, u2.lastName AS myLastName " +
+                    "SELECT a.*, o.*, u.userId AS sentBy, u.firstName AS firstName, u.lastName AS lastName, u.phoneNo as phoneNo, u.city AS cityOrgin, u.country AS countryOrgin, v.*, u2.firstName AS myFirstName, u2.lastName AS myLastName " +
                             "FROM AdPosts a, orderstatus o, user u, verification v, user u2 " +
                             "WHERE a.postid = o.postid AND o.postid = ? AND a.Created_by = u.userId AND v.Postid = o.postid AND v.TravellerID = o.acptdTravllerId AND o.acptdTravllerId = u2.userId AND o.acptdTravllerId = ?";
 
@@ -215,7 +229,18 @@ class MyDeliveriesFullView : AppCompatActivity() {
                         paid = resultSet.getBoolean("paid")
                         departed = resultSet.getBoolean("departed")
                         reached = resultSet.getBoolean("reached")
+                        orderStartedDate = resultSet.getString("orderStartedDate") ?: ""
+                        orderStartedTime = resultSet.getString("orderStartedTime") ?: ""
+                        orderCompletedDate = resultSet.getString("orderCompletedDate") ?: ""
+                        orderCompletedTime = resultSet.getString("orderCompletedTime") ?: ""
+                        orderReceivedDate = resultSet.getString("orderReceivedDate") ?: ""
+                        orderReceivedTime = resultSet.getString("orderReceivedTime") ?: ""
+                        orderDepartedDate = resultSet.getString("orderDepartedDate") ?: ""
+                        orderDepartedTime = resultSet.getString("orderDepartedTime") ?: ""
+                        orderReachedDate = resultSet.getString("orderReachedDate") ?: ""
+                        orderReachedTime = resultSet.getString("orderReachedTime") ?: ""
 
+                        sentBy = resultSet.getString("sentBy") ?: ""
                         firstName = resultSet.getString("firstName") ?: ""
                         lastName = resultSet.getString("lastName") ?: ""
                         phoneNo = resultSet.getString("phoneNo") ?: ""
@@ -260,7 +285,7 @@ class MyDeliveriesFullView : AppCompatActivity() {
                         Log.d("MyParcel", "departed: $departed")
                         Log.d("MyParcel", "reached: $reached")
 
-
+                        Log.d("MyParcel", "sentBy: $sentBy")
                         Log.d("MyParcel", "firstName: $firstName")
                         Log.d("MyParcel", "lastName: $lastName")
                         Log.d("MyParcel", "phoneNo: $phoneNo")
@@ -335,7 +360,10 @@ class MyDeliveriesFullView : AppCompatActivity() {
                         }
 
                         val name = "$firstName $lastName"
-                        viewCusName?.text = name
+                        val nameString = name
+                        val mSpannableString = SpannableString(nameString)
+                        mSpannableString.setSpan(UnderlineSpan(), 0, mSpannableString.length, 0)
+                        viewCusName?.text = mSpannableString
                         viewCusNum?.text =  phoneNo
                         viewdlvrydate?.text = dlvryDate
                         viewCategory?.text = category
@@ -354,6 +382,12 @@ class MyDeliveriesFullView : AppCompatActivity() {
                         val myName = myFirstName + " " +myLastName
                         viewParcelAssignedUser?.text = myName
                         viewFlightDate?.text = flightDate
+
+                        viewCusName?.setOnClickListener {
+                            val intent = Intent(this, CommonOtherUserProfile::class.java)
+                            intent.putExtra("userFromIntent", sentBy)
+                            startActivity(intent)
+                        }
 
                         if (passportImage != "") {
                             // Decode the Base64 string to a Bitmap
@@ -506,26 +540,36 @@ class MyDeliveriesFullView : AppCompatActivity() {
                         if(paid == true) {
                             paymentImage?.setBackgroundResource(R.drawable.circle_background_delivery_appcolor)
                             paymentImage?.setImageResource(R.drawable.img_my_deliveries_payment_completed)
+                            val paidDateTime = "$orderStartedDate $orderStartedTime"
+                            paymentImageButton?.text = paidDateTime
                         }
                         if(received == true){
                             receivedImage?.setBackgroundResource(R.drawable.circle_background_delivery_appcolor)
                             receivedImage?.setImageResource(R.drawable.img_my_deliveries_received_completed)
                             paymentImageLine?.setBackgroundResource(R.color.appcolour)
+                            val receivedDateTime = "$orderReceivedDate $orderReceivedTime"
+                            receivedImageText?.text = receivedDateTime
                         }
                         if(departed == true){
                             departedImage?.setBackgroundResource(R.drawable.circle_background_delivery_appcolor)
                             departedImage?.setImageResource(R.drawable.img_my_deliveries_departed_completed)
                             receivedImageLine?.setBackgroundResource(R.color.appcolour)
+                            val departedDateTime = "$orderDepartedDate $orderDepartedTime"
+                            departedImageText?.text = departedDateTime
                         }
                         if(reached == true){
                             arrivedImage?.setBackgroundResource(R.drawable.circle_background_delivery_appcolor)
                             arrivedImage?.setImageResource(R.drawable.img_my_deliveries_arrived_completed)
                             departedImageLine?.setBackgroundResource(R.color.appcolour)
+                            val reachedDateTime = "$orderReachedDate $orderReachedTime"
+                            arrivedImageText?.text = reachedDateTime
                         }
                         if(delivered == true){
                             deliveredImage?.setBackgroundResource(R.drawable.circle_background_delivery_appcolor)
                             deliveredImage?.setImageResource(R.drawable.img_my_deliveries_received_completed)
                             arrivedImageLine?.setBackgroundResource(R.color.appcolour)
+                            val deliveredDateTime = "$orderCompletedDate $orderCompletedTime"
+                            deliveredImageText?.text = deliveredDateTime
                         }
 
                         if(delivered == true){
@@ -659,13 +703,17 @@ class MyDeliveriesFullView : AppCompatActivity() {
                                         try {
                                             // Update query with placeholders for binding
                                             val query2 =
-                                                "UPDATE orderstatus SET reached = ? WHERE orderstatus_id = ?"
+                                                "UPDATE orderstatus SET reached = ?, orderReachedDate = ?, orderReachedTime = ? WHERE orderstatus_id = ?"
 
                                             val preparedStatement2 =
                                                 connection2.prepareStatement(query2)
 
+                                            val (currentDate, currentTime) = getCurrentDateTime()
+
                                             preparedStatement2.setBoolean(1, true)
-                                            preparedStatement2.setInt(2, orderstatus_id!!)
+                                            preparedStatement2.setString(2, currentDate)
+                                            preparedStatement2.setString(3, currentTime)
+                                            preparedStatement2.setInt(4, orderstatus_id!!)
 
                                             // Execute the update query
                                             preparedStatement2.executeUpdate()
@@ -748,13 +796,15 @@ class MyDeliveriesFullView : AppCompatActivity() {
                                         try {
                                             // Update query with placeholders for binding
                                             val query2 =
-                                                "UPDATE orderstatus SET departed = ? WHERE orderstatus_id = ?"
+                                                "UPDATE orderstatus SET departed = ?, orderDepartedDate = ?, orderDepartedTime = ? WHERE orderstatus_id = ?"
 
                                             val preparedStatement2 =
                                                 connection2.prepareStatement(query2)
-
+                                            val (currentDate, currentTime) = getCurrentDateTime()
                                             preparedStatement2.setBoolean(1, true)
-                                            preparedStatement2.setInt(2, orderstatus_id!!)
+                                            preparedStatement2.setString(2, currentDate)
+                                            preparedStatement2.setString(3, currentTime)
+                                            preparedStatement2.setInt(4, orderstatus_id!!)
 
                                             // Execute the update query
                                             preparedStatement2.executeUpdate()
@@ -932,6 +982,7 @@ class MyDeliveriesFullView : AppCompatActivity() {
             viewParcelDocuments2 = findViewById(R.id.viewParcelDocuments2)
             viewParcelDocuments3 = findViewById(R.id.viewParcelDocuments3)
 
+            paymentImageButton = findViewById(R.id.paymentImageButton)
             receivedImageButton = findViewById(R.id.receivedImageButton)
             departedImageButton = findViewById(R.id.departedImageButton)
             arrivedImageButton = findViewById(R.id.arrivedImageButton)
@@ -996,6 +1047,14 @@ class MyDeliveriesFullView : AppCompatActivity() {
         }
 
         popupMenu.show()
+    }
+    fun getCurrentDateTime(): Pair<String, String> {
+        val currentDateTime = LocalDateTime.now()
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+        val currentDate = currentDateTime.format(dateFormatter)
+        val currentTime = currentDateTime.format(timeFormatter)
+        return Pair(currentDate, currentTime)
     }
 
 }

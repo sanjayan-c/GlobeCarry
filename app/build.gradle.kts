@@ -61,4 +61,5 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.2.0") {
         exclude(group = "com.android.support")
     }
+
 }

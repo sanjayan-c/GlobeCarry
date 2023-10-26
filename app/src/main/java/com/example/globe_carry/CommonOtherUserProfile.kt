@@ -172,6 +172,9 @@ class CommonOtherUserProfile : AppCompatActivity() {
                     var myComment = ""
                     var myrating = 0f
 
+                    var deliveryCount = 0
+                    var parcelsCount = 0
+
                     // Iterate through the result set and log the details
                     while (resultSet.next()) {
                         firstName = resultSet.getString("firstName")?: ""
@@ -294,6 +297,59 @@ class CommonOtherUserProfile : AppCompatActivity() {
                         e.printStackTrace()
                     }
 
+                    val query10 = "SELECT COUNT(orderstatus_id) AS deliveryCount " +
+                                    "FROM orderstatus " +
+                                    "WHERE acptdTravllerId = '$userFromIntent' AND delivered = TRUE " +
+                                    "GROUP BY acptdTravllerId "
+
+                    try {
+
+                        // Create a statement
+                        val statement3 = connection.createStatement()
+
+                        // Execute the query
+                        val resultSet3 = statement3.executeQuery(query10)
+
+                        // Iterate through the result set and log the details
+                        while (resultSet3.next()) {
+                            deliveryCount = resultSet3.getInt("deliveryCount")
+                            Log.d("CustomerDetails", "deliveryCount: $deliveryCount")
+                        }
+                        // Close the statement and result set
+                        statement3.close()
+                        resultSet3.close()
+                    } catch (e: SQLException) {
+                        Log.e("SQL Error", "SQL Exception: " + e.message)
+                        e.printStackTrace()
+                    }
+
+                    val query11 = "SELECT count(o.orderstatus_id) AS parcelsCount " +
+                            "FROM orderstatus o, AdPosts a " +
+                            "WHERE a.Created_by = '$userFromIntent' AND a.postid = o.postid AND o.delivered = TRUE " +
+                            "GROUP BY a.Created_by "
+
+                    try {
+
+                        // Create a statement
+                        val statement3 = connection.createStatement()
+
+                        // Execute the query
+                        val resultSet3 = statement3.executeQuery(query11)
+
+                        // Iterate through the result set and log the details
+                        while (resultSet3.next()) {
+                            parcelsCount = resultSet3.getInt("parcelsCount")
+                            Log.d("CustomerDetails", "parcelsCount: $parcelsCount")
+                        }
+                        // Close the statement and result set
+                        statement3.close()
+                        resultSet3.close()
+                    } catch (e: SQLException) {
+                        Log.e("SQL Error", "SQL Exception: " + e.message)
+                        e.printStackTrace()
+                    }
+
+
                     runOnUiThread {
                         runningManImageView?.visibility = View.GONE
                         translationAnimator.cancel()
@@ -314,7 +370,10 @@ class CommonOtherUserProfile : AppCompatActivity() {
                         viewInputAccountCreated?.text = signUpDate
                         viewInputGmail?.text = gmail
 
-                        ratingBar?.rating = totalRatings
+                        viewInputDeliveryCount?.text = deliveryCount.toString()
+                        viewInputcusMyParcelsCount?.text = parcelsCount.toString()
+
+                            ratingBar?.rating = totalRatings
                         // Set the retrieved values in the RatingBar and EditText
                         ratingBarInput?.rating = myrating // Set the rating in the RatingBar
                         commentEditTextInput?.setText(myComment) // Set the comment in the EditText
@@ -727,8 +786,8 @@ class CommonOtherUserProfile : AppCompatActivity() {
             myHistoryContent= findViewById(R.id.myHistoryContent)
             viewInputGmail= findViewById(R.id.viewInputGmail)
             viewInputAccountCreated= findViewById(R.id.viewInputAccountCreated)
-//        viewInputcusMyParcelsCount= findViewById(R.id.viewInputcusMyParcelsCount)
-//        viewInputDeliveryCount= findViewById(R.id.viewInputDeliveryCount)
+            viewInputcusMyParcelsCount= findViewById(R.id.viewInputcusMyParcelsCount)
+            viewInputDeliveryCount= findViewById(R.id.viewInputDeliveryCount)
             ratingBar= findViewById(R.id.ratingBar)
 
             swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)

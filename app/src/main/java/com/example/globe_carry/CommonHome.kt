@@ -1,9 +1,11 @@
 package com.example.globe_carry
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -27,6 +29,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.sql.SQLException
 
 class CommonHome : AppCompatActivity() {
 
@@ -41,7 +44,7 @@ class CommonHome : AppCompatActivity() {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var currentFragment: Fragment? = null
     private lateinit var userDbRef: DatabaseReference
-
+    private var userImage: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common_home)
@@ -218,6 +221,58 @@ class CommonHome : AppCompatActivity() {
             // Start the AdPostActivity
             startActivity(intent)
         }
+
+        val cusConSQL2 = ConnectionSQL()
+        cusConSQL2.conclass { connection2 ->
+            if (connection2 != null) {
+                try {
+                    val userAuth = FirebaseAuth.getInstance()
+                    val user = userAuth.currentUser?.uid ?: ""
+                    // Update query with placeholders for binding
+                    val query2 = "SELECT userImage FROM user WHERE userId = '$user' ";
+
+                    // Create a statement
+                    val statement2 = connection2.createStatement()
+
+                    // Execute the query
+                    val resultSet2 = statement2.executeQuery(query2)
+
+
+                    // Iterate through the result set and log the details
+                    while (resultSet2.next()) {
+                        userImage = resultSet2.getString("userImage")
+                        Log.d("inside","inside")
+                    }
+
+                    resultSet2.close()
+                    statement2.close()
+
+                    runOnUiThread {
+                        if (userImage != "") {
+                            // Decode the Base64 string to a Bitmap
+                            val decodedBytes = Base64.decode(userImage, Base64.DEFAULT)
+                            val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+
+                            // Set the decoded Bitmap as the image for the ImageView
+                            profileImageView.setImageBitmap(decodedBitmap)
+                        } else {
+                            // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
+                            profileImageView.setImageResource(R.drawable.cus_image_not_found)
+                        }
+
+
+                    }
+                } catch (e: SQLException) {
+                    Log.e("Update Error", "SQL Exception: ${e.message}")
+                    e.printStackTrace()
+                    // Handle any errors that occur during the update
+                } finally {
+                    // Close the connection in the finally block to ensure it's always closed
+                    connection2.close()
+                }
+            }
+        }
+
 
     }
 
