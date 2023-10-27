@@ -94,7 +94,7 @@ class AdPostActivity : AppCompatActivity() {
             if (!hasFocus) {
                 // When the eTxtWeight field loses focus, calculate the total charge
                 val weight = eTxtWeight.text.toString().toDouble()
-                var totalCharge = 0.1 * (800.0 * weight) + (800 * weight)
+                var totalCharge = 0.05 * (800.0 * weight) + (800 * weight)
                 if (switchUrgency.isChecked) {
                     // If urgency is true, add an extra 10% charge
                     totalCharge += totalCharge * 0.10
