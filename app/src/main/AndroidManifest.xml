@@ -86,6 +86,19 @@
         <activity
             android:name=".AddTravellerRequest4"
             android:exported="false" />
+        <activity
+            android:name=".QRGenerator"
+            android:label="QR Generator">
+        </activity>
+    <activity
+        android:name=".RequestedPeopleNdParcelView"
+        android:label="Requested People"/>
+        <activity
+            android:name=".Status"
+            android:label="QR Generator"/>
+        <activity android:name=".TravellerDetailView"
+            android:exported="false" />
+
     </application>
 
 </manifest>

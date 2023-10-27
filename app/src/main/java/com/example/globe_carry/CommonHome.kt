@@ -1,5 +1,6 @@
 package com.example.globe_carry
 
+
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
@@ -12,17 +13,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.globe_carry.adapter.UserAdapter
 import com.example.globe_carry.fragment.HomeFragment
 import com.example.globe_carry.fragment.MyDeliveriesFragment
-import com.example.globe_carry.fragment.MyParcelsFragment
+import com.example.globe_carry.fragment.MyParcel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -109,7 +107,7 @@ class CommonHome : AppCompatActivity() {
 
         val homeFragment = HomeFragment()
         val myDeliveriesFragment = MyDeliveriesFragment()
-        val myParcelsFragment = MyParcelsFragment()
+        val MyParcel = MyParcel()
 
 
 
@@ -197,7 +195,7 @@ class CommonHome : AppCompatActivity() {
         }
 
         linearNavbarItem3.setOnClickListener {
-            setFragment(myParcelsFragment)
+            setFragment(MyParcel)
             val image1 = findViewById<ImageView>(R.id.imageFolder1)
             val text1 = findViewById<TextView>(R.id.txtMyparcels)
             image1.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)

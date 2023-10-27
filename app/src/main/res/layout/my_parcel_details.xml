@@ -114,61 +114,7 @@
                     tools:text="" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <TextView
-                    style="@style/txtPoppinsmedium12_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
-                    android:text="Name:"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    tools:text="Name :" />
-
-                <TextView
-                    android:id="@+id/viewCusName"
-                    style="@style/txtPoppinsmedium12_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="20dp"
-                    android:textSize="16sp"
-                    tools:text="" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/txtPoppinsmedium12_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
-                    android:text="Contact Number :"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    tools:text="Contact Number :" />
-
-                <TextView
-                    android:id="@+id/viewCusNum"
-                    style="@style/txtPoppinsmedium12_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
-                    android:textSize="16sp"
-                    tools:text="" />
-            </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -478,38 +424,6 @@
                     tools:text="" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btnAceeptDlvry"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/layout_password"
-                    android:text="Accept"
-                    android:textSize="18dp"
-                    android:layout_marginStart="100dp"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/green"
-                    android:background="@drawable/edt_background"
-                    android:layout_marginTop="20dp" />
-
-                <Button
-                    android:id="@+id/btnCancel"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/layout_password"
-                    android:text="Cancel"
-                    android:textSize="18dp"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/bluegray_100_87"
-                    android:background="@drawable/edt_background"
-                    android:layout_marginTop="20dp" />
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
