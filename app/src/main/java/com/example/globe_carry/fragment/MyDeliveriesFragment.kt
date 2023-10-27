@@ -1,34 +1,41 @@
 package com.example.globe_carry.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.globe_carry.ConnectionSQL
+import com.example.globe_carry.HomeItems
+import com.example.globe_carry.MyDeliveryRequests
 import com.example.globe_carry.R
+import com.example.globe_carry.Verification
+import com.example.globe_carry.adapter.MyDeliveriesAdapter
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.sql.Date
+import java.sql.SQLException
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class MyDeliveriesFragment: Fragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MyDeliveriesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class MyDeliveriesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val cusConSQL = ConnectionSQL()
+    private var currentFragment: Fragment? = null
+    private var textMyDeliveriesPending: TextView? = null
+    private var textMyDeliveriesDelivered: TextView? = null
+    private var textMyDeliveriesRejected: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,23 +45,169 @@ class MyDeliveriesFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_my_deliveries, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MyDeliveriesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MyDeliveriesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            if (!isAdded) {
+                return@launch
             }
+
+        textMyDeliveriesPending = view?.findViewById(R.id.textMyDeliveriesPending)
+        textMyDeliveriesDelivered = view?.findViewById(R.id.textMyDeliveriesDelivered)
+
+        val myDeliveriesPendingFragment = MyDeliveriesPendingFragment()
+        val myDeliveriesDeliveredFragment = MyDeliveriesDeliveredFragment()
+
+        setFragment(myDeliveriesPendingFragment)
+
+        textMyDeliveriesPending?.setOnClickListener {
+            // Handle click on textMyDeliveriesPending
+            setFragment(myDeliveriesPendingFragment)
+            textMyDeliveriesPending?.setBackgroundResource(R.drawable.cus_button_update)
+            textMyDeliveriesDelivered?.setBackgroundResource(R.drawable.cus_button_mydeliveries_fragment)
+        }
+
+        textMyDeliveriesDelivered?.setOnClickListener {
+            // Handle click on textMyDeliveriesDelivered
+            setFragment(myDeliveriesDeliveredFragment)
+            textMyDeliveriesDelivered?.setBackgroundResource(R.drawable.cus_button_update)
+            textMyDeliveriesPending?.setBackgroundResource(R.drawable.cus_button_mydeliveries_fragment)
+        }
     }
+
+    }
+    private fun setFragment(fragment: Fragment) {
+        val fragmentManager: FragmentManager = childFragmentManager
+        val transaction: FragmentTransaction = fragmentManager.beginTransaction()
+
+        // Replace the fragment container with the new fragment
+        transaction.replace(R.id.cusTransactionMethodFragmentContainer, fragment)
+
+        // Commit the transaction
+        transaction.commit()
+
+        currentFragment = fragment
+    }
+
+
+
+//        val userAuth = FirebaseAuth.getInstance()
+//        val user = userAuth.currentUser?.uid ?: ""
+//  //      val data = mutableListOf<MyDeliveries>()
+//
+//
+//        cusConSQL.conclass { connection ->
+//            if (connection != null) {
+//                val user = userAuth.currentUser?.uid ?: ""
+//
+//                val query = "SELECT a.*, o.* " +
+//                        "FROM AdPosts a, orderstatus o " +
+//                        "WHERE a.postid = o.postid AND o.acptdTravllerId = ?";
+//
+//                try {
+//                    val preparedStatement = connection.prepareStatement(query)
+//                    preparedStatement.setString(1, user)
+//
+//                    val resultSet = preparedStatement.executeQuery()
+//                    val filteredData = mutableListOf<MyDeliveryRequests>()
+//
+//                    while (resultSet.next()) {
+//                        // Parse data from the result set
+//                        val postId = resultSet.getInt("postid")
+//                        val urgency = resultSet.getBoolean("urgency")
+//                        val category = resultSet.getString("category")
+//                        val content = resultSet.getString("content")
+//                        val value = resultSet.getBigDecimal("value")
+//                        val weight = resultSet.getBigDecimal("weight")
+//                        val dlvryAddress = resultSet.getString("dlvryAddress")
+//                        val city = resultSet.getString("city")
+//                        val country = resultSet.getString("country")
+//                        val recipient = resultSet.getString("recipient")
+//                        val rcptContactNo = resultSet.getString("rcptContactNo")
+//                        val dlvryDate = resultSet.getString("dlvryDate")
+//                        val instructions = resultSet.getString("instructions")
+//                        val ttlCharge = resultSet.getBigDecimal("ttlCharge")
+//                        val dimension = resultSet.getString("dimension")
+//                        val createdDate = resultSet.getString("createdDate")
+//                        val createdBy = resultSet.getString("Created_by")
+//                        val imageBytes = resultSet.getString("image")
+//
+//                        val orderstatus_id = resultSet.getInt("orderstatus_id")
+//                        val received = resultSet.getBoolean("received")
+//                        val delivered = resultSet.getBoolean("delivered")
+//
+//
+//                        Log.d("Query ","Query is successful")
+//
+//                        Log.d("MyParcel", "PostNo: $postId")
+//                        Log.d("MyParcel", "urgency: $urgency")
+//                        Log.d("MyParcel", "category: $category")
+//                        Log.d("MyParcel", "content: $content")
+//                        Log.d("MyParcel", "value: $value")
+//                        Log.d("MyParcel", "weight: $weight")
+//                        Log.d("MyParcel", "dlvryAddress: $dlvryAddress")
+//                        Log.d("MyParcel", "city: $city")
+//                        Log.d("MyParcel", "country: $country")
+//                        Log.d("MyParcel", "recipient: $recipient")
+//                        Log.d("MyParcel", "rcptContactNo: $rcptContactNo")
+//                        Log.d("MyParcel", "dlvryDate: $dlvryDate")
+//                        Log.d("MyParcel", "instructions: $instructions")
+//                        Log.d("MyParcel", "ttlCharge: $ttlCharge")
+//                        Log.d("MyParcel", "dimension: $dimension")
+//                        Log.d("MyParcel", "createdDate: $createdDate")
+//                        Log.d("MyParcel", "createdBy: $createdBy")
+//                        Log.d("MyParcel", "imageBytes: $imageBytes")
+//
+//                        Log.d("MyParcel", "orderstatus_id: $orderstatus_id")
+//                        Log.d("MyParcel", "received: $received")
+//                        Log.d("MyParcel", "delivered: $delivered")
+//                        // Create a HomeItems object and add it to the data list
+//                        val homeItem = MyDeliveryRequests(
+//                            postId, urgency,
+//                            category, content,
+//                            value, weight,
+//                            dlvryAddress, city,
+//                            country, recipient,
+//                            rcptContactNo, dlvryDate,
+//                            instructions, ttlCharge,
+//                            dimension, createdDate,
+//                            createdBy, imageBytes,
+//                            orderstatus_id,received, delivered
+//                        )
+//
+//                        filteredData.add(homeItem)
+//                    }
+//
+//                    resultSet.close()
+//                    preparedStatement.close()
+//                    updateRecyclerView(filteredData) // Pass filteredData here
+//
+//                } catch (e: SQLException) {
+//                    Log.e("SQL Error", "SQL Exception: " + e.message)
+//                    e.printStackTrace()
+//
+//                }finally {
+//                    connection.close()
+//                }
+//            }
+//        }
+//
+//    }
+//
+//
+//    private fun updateRecyclerView(filteredData: List<MyDeliveryRequests>) {
+//        requireActivity().runOnUiThread {
+//            val recyclerView = view?.findViewById<RecyclerView>(R.id.MydelRecyclerView)
+//            val adapter = MyDeliveriesAdapter(this,filteredData)
+//            recyclerView?.adapter = adapter
+//            recyclerView?.layoutManager = LinearLayoutManager(requireContext())
+//        }
+//    }
+override fun onDestroyView() {
+    super.onDestroyView()
+
+    // Cancel the coroutine when the fragment is destroyed
+    CoroutineScope(Dispatchers.IO).cancel()
+}
 }

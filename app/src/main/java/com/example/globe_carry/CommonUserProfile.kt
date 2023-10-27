@@ -16,6 +16,7 @@ import android.text.Editable
 import android.util.Base64
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -24,6 +25,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.RatingBar
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -32,6 +34,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.globe_carry.adapter.CommentAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -96,6 +99,8 @@ class CommonUserProfile : AppCompatActivity() {
     private lateinit var userAuth: FirebaseAuth
     private var editMode: Boolean = false
 
+    private var swipeRefreshLayout: SwipeRefreshLayout? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_common_user_profile)
@@ -115,7 +120,7 @@ class CommonUserProfile : AppCompatActivity() {
         )
 
         // Set the animator duration
-        translationAnimator.duration = 1000  // Adjust the duration as needed
+        translationAnimator.duration = 2000  // Adjust the duration as needed
 
         // Set the repeat mode to reverse for back-and-forth animation
         translationAnimator.repeatMode = ObjectAnimator.RESTART
@@ -130,19 +135,13 @@ class CommonUserProfile : AppCompatActivity() {
         val cusConSQL = ConnectionSQL()
         cusConSQL.conclass { connection ->
             if (connection != null) {
-                val intent = intent
+
                 // Your SQL query to fetch customer details
                 val user = userAuth.currentUser?.uid ?: ""
-                    var userFromIntent = intent.getStringExtra("userFromIntent")
-                println("userFromIntent1 : $userFromIntent")
-                if(userFromIntent==null){
-                    userFromIntent=user
-                }
-                println("User : $user")
-                println("userFromIntent2 : $userFromIntent")
+
                 val query = "SELECT firstName, lastName, nic, phoneNo, gmail, addressLine1, addressLine2, addressLine3, city, postalCode, country, userImage, signUpDate ,signUpTime " +
                         "FROM user " +
-                        "WHERE userId = '$userFromIntent' ";
+                        "WHERE userId = '$user' ";
 
                 try {
 
@@ -165,6 +164,11 @@ class CommonUserProfile : AppCompatActivity() {
                     var country: String? = null
                     var signUpDate: String? = null
                     var signUpTime: String? = null
+                    var totalRatings = 0f
+                    val comments = mutableListOf<CommentData>()
+
+                    var deliveryCount = 0
+                    var parcelsCount = 0
 
                     // Iterate through the result set and log the details
                     while (resultSet.next()) {
@@ -195,13 +199,124 @@ class CommonUserProfile : AppCompatActivity() {
                         Log.d("CustomerDetails", "city: $city")
                         Log.d("CustomerDetails", "postalCode: $postalCode")
                         Log.d("CustomerDetails", "country: $country")
-                        Log.d("CustomerDetails", "userImage: $imageData")
+//                        Log.d("CustomerDetails", "userImage: $imageData")
                         Log.d("CustomerDetails", "signUpDate: $signUpDate")
                         Log.d("CustomerDetails", "signUpTime: $signUpTime")
                     }
                     // Close the statement and result set
                     statement.close()
                     resultSet.close()
+
+                    val query1 = "SELECT SUM(ratings)/COUNT(ratings) AS totalRatings " +
+                            "FROM ratings " +
+                            "WHERE ratingsToId = '$user' " +
+                            "GROUP BY ratingsToId"
+
+                    try {
+
+                        // Create a statement
+                        val statement1 = connection.createStatement()
+
+                        // Execute the query
+                        val resultSet1 = statement1.executeQuery(query1)
+
+                        // Iterate through the result set and log the details
+                        while (resultSet1.next()) {
+                            totalRatings = resultSet1.getFloat("totalRatings")
+                            Log.d("CustomerDetails", "totalRatings: $totalRatings")
+                        }
+                        // Close the statement and result set
+                        statement1.close()
+                        resultSet1.close()
+                    } catch (e: SQLException) {
+                        Log.e("SQL Error", "SQL Exception: " + e.message)
+                        e.printStackTrace()
+                    }
+
+
+                    val query2 = "SELECT r.comments, u.userId, u.gmail " +
+                            "FROM ratings r, user u " +
+                            "WHERE r.ratingsToId = '$user' AND r.ratingsFromId = u.userId "
+
+                    try {
+
+                        // Create a statement
+                        val statement2 = connection.createStatement()
+
+                        // Execute the query
+                        val resultSet2 = statement2.executeQuery(query2)
+
+                        // Iterate through the result set and log the details
+                        while (resultSet2.next()) {
+                            var comment = resultSet2.getString("comments") ?: ""
+                            var commentUserId = resultSet2.getString("userId") ?: ""
+                            var commentGmail = resultSet2.getString("gmail") ?: ""
+                            if(comment!="") {
+                                Log.d("CustomerDetails", "comments: $comment")
+                                val commentItem = CommentData(comment,commentGmail,commentUserId)
+                                comments.add(commentItem)
+                            }
+                        }
+                        // Close the statement and result set
+                        statement2.close()
+                        resultSet2.close()
+                    } catch (e: SQLException) {
+                        Log.e("SQL Error", "SQL Exception: " + e.message)
+                        e.printStackTrace()
+                    }
+
+                    val query10 = "SELECT COUNT(orderstatus_id) AS deliveryCount " +
+                            "FROM orderstatus " +
+                            "WHERE acptdTravllerId = '$user' AND delivered = TRUE " +
+                            "GROUP BY acptdTravllerId "
+
+                    try {
+
+                        // Create a statement
+                        val statement3 = connection.createStatement()
+
+                        // Execute the query
+                        val resultSet3 = statement3.executeQuery(query10)
+
+                        // Iterate through the result set and log the details
+                        while (resultSet3.next()) {
+                            deliveryCount = resultSet3.getInt("deliveryCount")
+                            Log.d("CustomerDetails", "deliveryCount: $deliveryCount")
+                        }
+                        // Close the statement and result set
+                        statement3.close()
+                        resultSet3.close()
+                    } catch (e: SQLException) {
+                        Log.e("SQL Error", "SQL Exception: " + e.message)
+                        e.printStackTrace()
+                    }
+
+                    val query11 = "SELECT count(o.orderstatus_id) AS parcelsCount " +
+                            "FROM orderstatus o, AdPosts a " +
+                            "WHERE a.Created_by = '$user' AND a.postid = o.postid AND o.delivered = TRUE " +
+                            "GROUP BY a.Created_by "
+
+                    try {
+
+                        // Create a statement
+                        val statement3 = connection.createStatement()
+
+                        // Execute the query
+                        val resultSet3 = statement3.executeQuery(query11)
+
+                        // Iterate through the result set and log the details
+                        while (resultSet3.next()) {
+                            parcelsCount = resultSet3.getInt("parcelsCount")
+                            Log.d("CustomerDetails", "parcelsCount: $parcelsCount")
+                        }
+                        // Close the statement and result set
+                        statement3.close()
+                        resultSet3.close()
+                    } catch (e: SQLException) {
+                        Log.e("SQL Error", "SQL Exception: " + e.message)
+                        e.printStackTrace()
+                    }
+
                     runOnUiThread {
                         runningManImageView?.visibility = View.GONE
                         translationAnimator.cancel()
@@ -231,7 +346,13 @@ class CommonUserProfile : AppCompatActivity() {
                         cusAccountPostalCode1?.text = Editable.Factory.getInstance().newEditable(postalCode)
                         cusAccountCountry1?.text = Editable.Factory.getInstance().newEditable(country)
 
+                        viewInputDeliveryCount?.text = deliveryCount.toString()
+                        viewInputcusMyParcelsCount?.text = parcelsCount.toString()
+
+                        ratingBar?.rating = totalRatings
+
                         viewInputGmail?.text = gmail
+
                         if (imageData != "") {
                             // Decode the Base64 string to a Bitmap
                             val decodedBytes = Base64.decode(imageData, Base64.DEFAULT)
@@ -245,10 +366,58 @@ class CommonUserProfile : AppCompatActivity() {
                         }
 
 
+//                        cusAccountProfileImage?.setOnClickListener {
+//
+//                            val decodedBytes = Base64.decode(imageData, Base64.DEFAULT)
+//                            val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+//
+//                            // Inflate the dialog layout
+//                            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_large_image, null)
+//
+//                            // Find the ImageView in the dialog layout
+//                            val largeImageView = dialogView.findViewById<ImageView>(R.id.largeImageView)
+//
+//                            // Set the image to the larger ImageView
+//                            largeImageView.setImageBitmap(decodedBitmap)
+//                            // Create and show the dialog
+//                            val builder = AlertDialog.Builder(this)
+//                            builder.setView(dialogView)
+//                            val dialog = builder.create()
+//                            dialog.show()
+//                        }
+
+
 
                         cusAccManagementBack?.setOnClickListener { // Start the CustomerAccountManagement activity
                             finish()
                         }
+
+
+                        val profileImageView = findViewById<ImageView>(R.id.profile_image)
+                        Log.d("SingleProfile", SingleProfile.profileImage!!)
+
+                        if (SingleProfile.profileImage != "") {
+                            // Decode the Base64 string to a Bitmap
+                            val decodedBytes = Base64.decode(SingleProfile.profileImage, Base64.DEFAULT)
+                            val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+
+                            // Set the decoded Bitmap as the image for the ImageView
+                            profileImageView.setImageBitmap(decodedBitmap)
+                        } else {
+                            // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
+                            profileImageView.setImageResource(R.drawable.profile_place_holder)
+                        }
+
+                        profileImageView.setOnClickListener { view ->
+                            showPopupMenu(view)
+                        }
+
+                        swipeRefreshLayout?.setOnRefreshListener {
+                            // This is where you handle the refresh action.
+                            recreate()
+                            swipeRefreshLayout?.isRefreshing = false
+                        }
+
 
                         cusAccountProfileImageFrame?.setOnClickListener {
                             if(editMode) {
@@ -266,6 +435,31 @@ class CommonUserProfile : AppCompatActivity() {
                                     // Hide the edit frame
                                     cusAccountProfileImageEditFrame?.visibility = View.GONE
                                 }
+                            }else{
+                                if (imageData != "") {
+                                    val decodedBytes = Base64.decode(imageData, Base64.DEFAULT)
+                                    val decodedBitmap = BitmapFactory.decodeByteArray(
+                                        decodedBytes,
+                                        0,
+                                        decodedBytes.size
+                                    )
+
+                                    // Inflate the dialog layout
+                                    val dialogView = LayoutInflater.from(this)
+                                        .inflate(R.layout.dialog_large_image, null)
+
+                                    // Find the ImageView in the dialog layout
+                                    val largeImageView =
+                                        dialogView.findViewById<ImageView>(R.id.largeImageView)
+
+                                    // Set the image to the larger ImageView
+                                    largeImageView.setImageBitmap(decodedBitmap)
+                                    // Create and show the dialog
+                                    val builder = AlertDialog.Builder(this)
+                                    builder.setView(dialogView)
+                                    val dialog = builder.create()
+                                    dialog.show()
+                                }
                             }
                         }
 
@@ -277,7 +471,7 @@ class CommonUserProfile : AppCompatActivity() {
                         cusAccManageButton2?.setOnClickListener {
                             if(imageData!="") {
                                 // Set ImageDataSingleton.imageData to null
-                                imageData = null.toString()
+                                imageData = ""
 
                                 // Create a custom dialog
                                 val dialog = Dialog(this)
@@ -327,7 +521,7 @@ class CommonUserProfile : AppCompatActivity() {
 
                                 btnConfirmCusUpdate.setOnClickListener {
                                     Log.d("Photo","Confirm")
-                                    imageData = null.toString()
+                                    imageData = ""
                                     // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
                                     cusAccountProfileImage?.setImageResource(R.drawable.cus_image_not_found)
                                     // Dismiss the dialog
@@ -500,6 +694,8 @@ class CommonUserProfile : AppCompatActivity() {
                                                 // Update the name in the database
                                                 userRef.child("name").setValue( editTextFirstName?.text.toString()+" "+ viewInputLastName?.text.toString())
 
+                                                SingleProfile.profileImage = imageData
+
                                                 // Update query with placeholders for binding
                                                 val query =
                                                     "UPDATE user SET firstName = ?, lastName = ?, nic = ?, phoneNo = ?, addressLine1 = ?, addressLine2 = ?, addressLine3 = ?, city = ?, postalCode = ?, country = ?, userImage = ? WHERE userId = ?"
@@ -617,8 +813,21 @@ class CommonUserProfile : AppCompatActivity() {
 //            viewInputPhoneNo2?.visibility=View.VISIBLE
                         }
 
-                        val comments = listOf("Comment 1", "Comment 2", "Comment 3", "Comment 4") // Replace with your comment data
-                        val commentAdapter = CommentAdapter(comments)
+                        //val comments = listOf("Comment 1", "Comment 2", "Comment 3", "Comment 4") // Replace with your comment data
+                        if (comments.isEmpty()) {
+                            Log.d("CustomerDetails", "No comments found.")
+                            var comment = "No comments yet"
+                            val commentItem = CommentData(comment,"","")
+                            comments.add(commentItem)
+                        }
+
+                        for (commentData in comments) {
+                            Log.d("CommentList", "Comment: ${commentData.comment}")
+                            Log.d("CommentList", "Comment Gmail: ${commentData.commentGmail}")
+                            Log.d("CommentList", "Comment User: ${commentData.commentId}")
+                        }
+
+                        val commentAdapter = CommentAdapter(this, comments)
                         commentsRecyclerView?.adapter = commentAdapter
                     }
 
@@ -721,16 +930,57 @@ class CommonUserProfile : AppCompatActivity() {
             myHistoryContent= findViewById(R.id.myHistoryContent)
             viewInputGmail= findViewById(R.id.viewInputGmail)
             viewInputAccountCreated= findViewById(R.id.viewInputAccountCreated)
-//        viewInputcusMyParcelsCount= findViewById(R.id.viewInputcusMyParcelsCount)
-//        viewInputDeliveryCount= findViewById(R.id.viewInputDeliveryCount)
-//        ratingBar= findViewById(R.id.ratingBar)
+            viewInputcusMyParcelsCount= findViewById(R.id.viewInputcusMyParcelsCount)
+            viewInputDeliveryCount= findViewById(R.id.viewInputDeliveryCount)
+            ratingBar= findViewById(R.id.ratingBar)
+
+            swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
 
             commentsRecyclerView= findViewById(R.id.commentsRecyclerView)
-            val intent = intent
-            if(intent.getStringExtra("userFromIntent")==null){
-                profileEditImage?.visibility=View.VISIBLE
+
+        }
+    }
+
+    private fun showPopupMenu(view: View) {
+        val popupMenu = androidx.appcompat.widget.PopupMenu(this, view)
+        popupMenu.menuInflater.inflate(R.menu.menu, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.logout -> {
+                    // Perform the logout action
+                    userAuth= FirebaseAuth.getInstance()
+                    userAuth.signOut()
+                    val intent = Intent(this@CommonUserProfile, Login::class.java)
+                    finish()
+                    startActivity(intent)
+                    true
+                }
+                // Add more menu items and their actions here
+                else -> false
+            }
+            when (item.itemId) {
+                R.id.help -> {
+                    val intent = Intent(this@CommonUserProfile,HelpCenter::class.java)
+                    startActivity(intent)
+                    true
+                }
+                // Add more menu items and their actions here
+                else -> false
+            }
+            when (item.itemId) {
+
+                R.id.profile -> {
+                    val intent = Intent(this@CommonUserProfile, CommonUserProfile::class.java)
+                    startActivity(intent)
+                    true
+                }
+                // Add more menu items and their actions here
+                else -> false
             }
         }
+
+        popupMenu.show()
     }
 
 }

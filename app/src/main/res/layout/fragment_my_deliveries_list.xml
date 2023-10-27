@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        android:layout_margin="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/homeItemListLinear1"
+            tools:ignore="MissingConstraints"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/homeItemNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="0000909090909090" />
+
+            <TextView
+                android:id="@+id/homeItemArea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Paris, France" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/itemSender"
+                android:layout_below="@+id/homeItemNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:text="Name" />
+
+            <TextView
+                android:id="@+id/homeItemUrgent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_alignTop="@+id/itemSender"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:textColor="@color/red"
+                android:textSize="14sp"
+                android:text="Urgent" />
+            <TextView
+                android:id="@+id/homeItemType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_below="@+id/itemSender"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Type" />
+            <TextView
+                android:id="@+id/homeItemDimensions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/homeItemType"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Orgin : " />
+            <TextView
+                android:id="@+id/homeItemDimensions1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/homeItemDimensions"
+                android:layout_alignTop="@+id/homeItemDimensions"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Country"/>
+            <TextView
+                android:id="@+id/itemFlightDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:layout_below="@+id/homeItemDimensions"
+                android:text="Flight Date : " />
+            <TextView
+                android:id="@+id/itemFlightDate1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/itemFlightDate"
+                android:layout_alignTop="@+id/itemFlightDate"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/homeItemDetails"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="40dp"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:layout_below="@+id/itemFlightDate"
+                android:text="Details >" />
+
+            <TextView
+                android:id="@+id/button2"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/cus_button_update"/>
+            <TextView
+                android:id="@+id/urgency"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:paddingVertical="2dp"
+                android:paddingHorizontal="5dp"
+                android:gravity="center"
+                android:background="@color/red"
+                android:textSize="14sp"
+                android:text="Urgent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

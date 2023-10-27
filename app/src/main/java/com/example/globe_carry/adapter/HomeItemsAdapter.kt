@@ -65,7 +65,11 @@ class HomeItemsAdapter (private var data: List<HomeItems>) :
         holder.homeItemCharge1.text = item.ttlCharge.toString()
         holder.homeItemDlvryDate1.text = item.dlvryDate
         holder.homeItemPostDate.text = item.createdDate
+
        // Log.d("Image", item.image.toString())
+
+        //Log.d("Image", item.image.toString())
+
 
         val urgent = item.urgent
 

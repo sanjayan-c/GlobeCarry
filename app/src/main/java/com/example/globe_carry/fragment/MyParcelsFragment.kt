@@ -16,6 +16,10 @@ import com.example.globe_carry.HomeItems
 import com.example.globe_carry.R
 import com.example.globe_carry.adapter.MyParcelItemAdapter
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import java.sql.SQLException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -45,9 +49,17 @@ class MyParcelsFragment : Fragment() {
         val userAuth = FirebaseAuth.getInstance()
         val user = userAuth.currentUser?.uid ?: ""
         val data = mutableListOf<HomeItems>()
+
         progressBarLayout = view.findViewById(R.id.MyParcelProgressBarLayout)
         progressBar = view.findViewById(R.id.MyParcelProgressBar)
         noTextView = view.findViewById(R.id.MyParcelNoText)
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+            if (!isAdded) {
+                return@launch
+            }
+
         // Replace with your database connection code
         val cusConSQL = ConnectionSQL()
         cusConSQL.conclass { connection ->
@@ -58,7 +70,8 @@ class MyParcelsFragment : Fragment() {
                 val query = "SELECT * FROM AdPosts WHERE Created_by = ? "
 // Assuming you want to filter posts with a delivery date earlier than the current date
                 val currentDate = getCurrentDate() // Get the current date
-                val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate)
+                val formattedDate =
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate)
                 try {
                     val preparedStatement = connection.prepareStatement(query)
                     preparedStatement.setString(1, user)
@@ -86,7 +99,7 @@ class MyParcelsFragment : Fragment() {
                         val imageBytes = resultSet.getString("image")
                         val createdBy = resultSet.getString("Created_by")
 
-                        Log.d("Query ","Query is successful")
+                        Log.d("Query ", "Query is successful")
 
                         Log.d("com.example.globe_carry.fragment.MyParcel", "PostNo: $postId")
                         Log.d("com.example.globe_carry.fragment.MyParcel", "urgency: $urgency")
@@ -140,12 +153,12 @@ class MyParcelsFragment : Fragment() {
                     Log.e("SQL Error", "SQL Exception: " + e.message)
                     e.printStackTrace()
 
-                }finally {
+                } finally {
                     connection.close()
                 }
             }
         }
-
+    }
     }
     fun getCurrentDate(): Date {
         val currentDate = Date() // Get the current date and time
@@ -155,13 +168,17 @@ class MyParcelsFragment : Fragment() {
     }
 
     private fun updateRecyclerView(filteredData: List<HomeItems>) {
-        requireActivity().runOnUiThread {
-            val recyclerView = view?.findViewById<RecyclerView>(R.id.myParcelRecyclerView)
-            val adapter = MyParcelItemAdapter(filteredData)
-            recyclerView?.adapter = adapter
-            recyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        // Check if the fragment is attached to an activity
+        if (isAdded) {
+            requireActivity().runOnUiThread {
+                val recyclerView = view?.findViewById<RecyclerView>(R.id.myParcelRecyclerView)
+                val adapter = MyParcelItemAdapter(filteredData)
+                recyclerView?.adapter = adapter
+                recyclerView?.layoutManager = LinearLayoutManager(requireContext())
+            }
         }
     }
+
     private fun showProgressBar() {
         if (progressBarLayout != null && progressBar != null) {
             progressBarLayout?.visibility = View.VISIBLE
@@ -176,6 +193,13 @@ class MyParcelsFragment : Fragment() {
                 progressBarLayout?.visibility = View.GONE
             }
         }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        // Cancel the coroutine when the fragment is destroyed
+        CoroutineScope(Dispatchers.IO).cancel()
+
     }
 
 }

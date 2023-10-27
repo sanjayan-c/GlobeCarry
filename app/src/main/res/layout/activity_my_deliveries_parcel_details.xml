@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CommonUserProfile"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".DetailActivity">
+        <include layout="@layout/custom_toolbar"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/swipeRefreshLayout">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="10dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/cusAccManagementHeading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+
+                        android:paddingHorizontal="20dp">
+
+                        <ImageView
+                            android:id="@+id/arrowImageView"
+                            android:layout_height="40dp"
+                            android:layout_width="50dp"
+                            android:paddingEnd="10dp"
+                            android:scaleType="fitXY"
+                            android:layout_centerVertical="true"
+                            tools:ignore="ContentDescription"
+                            android:src="@drawable/baseline_arrow_circle_left_24" />
+
+                        <TextView
+                            android:id="@+id/detailName"
+                            style="@style/txtPoppinsmedium12_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:ellipsize="end"
+                            android:paddingVertical="10dp"
+                            android:singleLine="true"
+                            android:text="Parcel Details"
+                            android:textSize="18sp" />
+                    </RelativeLayout>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/commentFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        android:paddingVertical="10dp"
+                        app:cardElevation="20dp"
+                        app:layout_constraintTop_toBottomOf="@+id/cusAccManagementHeading">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:id="@+id/cusMyBookingArrowUpLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingVertical="10dp"
+                                android:visibility="gone">
+                                <TextView
+                                    android:id="@+id/viewTxtUrgent1"
+                                    android:layout_centerVertical="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="center"
+                                    android:text="Urgent"
+                                    android:visibility="gone"
+                                    android:layout_marginStart="10dp"
+                                    android:padding="5dp"
+                                    android:background="@color/red"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"/>
+                                <TextView
+                                    style="@style/custxtOpenSansromanbold20"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_gravity="center_horizontal"
+                                    android:text="Parcel Details"
+                                    android:textSize="18sp" />
+
+                                <ImageView
+                                    android:id="@+id/cusMyBookingArrowUp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="30dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="5dp"
+                                    android:paddingHorizontal="20dp"
+                                    android:src="@drawable/cus_mybookings_expand_arrow"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/cusMyBookingArrowDownLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingVertical="10dp">
+                                <TextView
+                                    android:id="@+id/viewTxtUrgent2"
+                                    android:layout_centerVertical="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:gravity="center"
+                                    android:text="Urgent"
+                                    android:visibility="gone"
+                                    android:layout_marginStart="10dp"
+                                    android:padding="5dp"
+                                    android:background="@color/red"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"/>
+                                <TextView
+                                    style="@style/custxtOpenSansromanbold20"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_gravity="center_horizontal"
+                                    android:text="Parcel Details"
+                                    android:textSize="18sp" />
+
+                                <ImageView
+                                    android:id="@+id/cusMyBookingArrowDown"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="30dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="6dp"
+                                    android:paddingHorizontal="20dp"
+                                    android:rotation="180"
+                                    android:src="@drawable/cus_mybookings_expand_arrow"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginHorizontal="10dp"
+                                android:background="@color/black" />
+
+                            <LinearLayout
+                                android:id="@+id/hideParcelDetails"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginHorizontal="10dp"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/cardImage"
+                                    android:layout_width="250dp"
+                                    android:layout_height="200dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="10dp"
+                                    app:cardCornerRadius="10dp"
+                                    app:cardElevation="8dp">
+
+                                    <ImageView
+                                        android:id="@+id/detailImage"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:scaleType="centerCrop"
+                                        android:src="@drawable/baseline_image_24" />
+                                </androidx.cardview.widget.CardView>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="3"
+                                        android:text="Name:"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold"
+                                        tools:text="Name :" />
+
+                                    <TextView
+                                        android:id="@+id/viewCusName"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="5"
+                                        android:background="@drawable/cus_parcel_details"
+                                        android:gravity="center_vertical"
+                                        android:paddingHorizontal="5dp"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="3"
+                                        android:text="Contact No :"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/viewCusNum"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="5"
+                                        android:background="@drawable/cus_parcel_details"
+                                        android:gravity="center_vertical"
+                                        android:paddingHorizontal="5dp"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="3"
+                                        android:text="Deliver Before :"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold"
+                                        tools:text="Deliver Before :" />
+
+                                    <TextView
+                                        android:id="@+id/viewdlvrydate"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="5"
+                                        android:background="@drawable/cus_parcel_details"
+                                        android:gravity="center_vertical"
+                                        android:paddingHorizontal="5dp"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="3"
+                                        android:text="Category :"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold"
+                                        tools:text="Category :" />
+
+                                    <TextView
+                                        android:id="@+id/viewCategory"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="5"
+                                        android:background="@drawable/cus_parcel_details"
+                                        android:gravity="center_vertical"
+                                        android:paddingHorizontal="5dp"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="3"
+                                        android:text="Content :"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold"
+                                        tools:text="Content :" />
+
+                                    <TextView
+                                        android:id="@+id/viewContent"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="5"
+                                        android:background="@drawable/cus_parcel_details"
+                                        android:gravity="center_vertical"
+                                        android:paddingHorizontal="5dp"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="3"
+                                        android:text="Value :"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold"
+                                        tools:text="Value :" />
+
+                                    <TextView
+                                        android:id="@+id/viewValue"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="5"
+                                        android:background="@drawable/cus_parcel_details"
+                                        android:gravity="center_vertical"
+                                        android:paddingHorizontal="5dp"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="3"
+                                        android:text="Weight :"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold"
+                                        tools:text="Weight :" />
+
+                                    <TextView
+                                        android:id="@+id/viewWeight"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="5"
+                                        android:background="@drawable/cus_parcel_details"
+                                        android:gravity="center_vertical"
+                                        android:paddingHorizontal="5dp"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="3"
+                                        android:text="Dimension :"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold"
+                                        tools:text="Dimension :" />
+
+                                    <TextView
+                                        android:id="@+id/viewDimension"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="5"
+                                        android:background="@drawable/cus_parcel_details"
+                                        android:gravity="center_vertical"
+                                        android:paddingHorizontal="5dp"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="40dp"
+                                        android:layout_weight="3"
+                                        android:gravity="center_vertical"
+                                        android:text="Delivery Address :"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold"
+                                        tools:text="Delivery Address :" />
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="5"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/viewdlvryAddrs"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="5dp"
+                                            android:background="@drawable/cus_parcel_details"
+                                            android:gravity="center_vertical"
+                                            android:minHeight="30dp"
+                                            android:paddingHorizontal="5dp"
+                                            android:textSize="16sp" />
+
+                                        <TextView
+                                            android:id="@+id/viewCity"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="5dp"
+                                            android:background="@drawable/cus_parcel_details"
+                                            android:gravity="center_vertical"
+                                            android:minHeight="30dp"
+                                            android:paddingHorizontal="5dp"
+                                            android:textSize="16sp" />
+
+                                        <TextView
+                                            android:id="@+id/viewCountry"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="5dp"
+                                            android:background="@drawable/cus_parcel_details"
+                                            android:gravity="center_vertical"
+                                            android:minHeight="30dp"
+                                            android:paddingHorizontal="5dp"
+                                            android:textSize="16sp" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="3"
+                                        android:text="Receptient :"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold"
+                                        tools:text="Receptient :" />
+
+                                    <TextView
+                                        android:id="@+id/viewRecName"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="5"
+                                        android:background="@drawable/cus_parcel_details"
+                                        android:gravity="center_vertical"
+                                        android:paddingHorizontal="5dp"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="3"
+                                        android:text="Receptient No :"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/viewRecNum"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="5"
+                                        android:background="@drawable/cus_parcel_details"
+                                        android:gravity="center_vertical"
+                                        android:paddingHorizontal="5dp"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="20dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="40dp"
+                                        android:layout_weight="3"
+                                        android:text="Special Instructions :"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold"
+                                        tools:text="Special Instructions :" />
+
+                                    <TextView
+                                        android:id="@+id/viewSpclIns"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="5"
+                                        android:background="@drawable/cus_parcel_details"
+                                        android:gravity="center_vertical"
+                                        android:minHeight="30dp"
+                                        android:paddingHorizontal="5dp"
+                                        android:textSize="16sp"
+                                        tools:text="" />
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="50dp"
+                        app:layout_constraintTop_toBottomOf="@+id/commentFrame">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_marginHorizontal="20dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="3"
+                                    android:text="Total Charge :"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/viewParcelCharge"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="5"
+                                    android:gravity="center_vertical"
+                                    android:paddingHorizontal="5dp"
+                                    android:textSize="16sp"
+                                    android:text="asdsafsa"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_marginHorizontal="20dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="3"
+                                    android:text="Assigned User :"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/viewParcelAssignedUser"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="5"
+                                    android:gravity="center_vertical"
+                                    android:paddingHorizontal="5dp"
+                                    android:textSize="16sp"
+                                    android:text="asdsafsa"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_marginHorizontal="20dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:text="Flight Schedule Date :"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/viewFlightDate"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="5"
+                                    android:gravity="center_vertical"
+                                    android:paddingHorizontal="5dp"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_marginHorizontal="20dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="50dp"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="5"
+                                    android:text="Documents"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/viewParcelDocuments1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="5"
+                                    android:layout_marginEnd="5dp"
+                                    android:src="@drawable/cus_image_not_found"/>
+                                <ImageView
+                                    android:id="@+id/viewParcelDocuments2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="5"
+                                    android:layout_marginEnd="5dp"
+                                    android:src="@drawable/cus_image_not_found"/>
+                                <ImageView
+                                    android:id="@+id/viewParcelDocuments3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="5"
+                                    android:src="@drawable/cus_image_not_found"/>
+
+
+
+                            </LinearLayout>
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="50dp">
+
+                                <LinearLayout
+                                    android:id="@+id/paymentLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:paddingHorizontal="20dp"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:orientation="horizontal">
+                                    <RelativeLayout
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="40dp">
+
+                                        <ImageView
+                                            android:id="@+id/paymentImage"
+                                            android:layout_width="40dp"
+                                            android:layout_height="40dp"
+                                            android:layout_centerInParent="true"
+                                            android:background="@drawable/circle_background_delivery"
+                                            android:padding="10dp"
+                                            android:src="@drawable/img_my_deliveries_payment" />
+                                    </RelativeLayout>
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="4"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical"
+                                        android:textColor="@color/black"
+                                        android:text="Payment"/>
+                                    <TextView
+                                        android:id="@+id/paymentImageButton"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center" />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/paymentLineLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:paddingHorizontal="20dp"
+                                    app:layout_constraintTop_toBottomOf="@+id/paymentLayout"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:orientation="horizontal">
+                                    <RelativeLayout
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="40dp">
+
+                                        <View
+                                            android:id="@+id/paymentImageLine"
+                                            android:layout_width="1dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:layout_marginHorizontal="10dp"
+                                            android:background="@color/black" />
+                                    </RelativeLayout>
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="4"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical" />
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/receivedLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:paddingHorizontal="20dp"
+                                    app:layout_constraintTop_toBottomOf="@+id/paymentLineLayout"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:orientation="horizontal">
+                                    <RelativeLayout
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="40dp">
+
+                                        <ImageView
+                                            android:id="@+id/receivedImage"
+                                            android:layout_width="40dp"
+                                            android:layout_height="40dp"
+                                            android:layout_centerInParent="true"
+                                            android:background="@drawable/circle_background_delivery"
+                                            android:padding="5dp"
+                                            android:src="@drawable/img_my_deliveries_received" />
+                                    </RelativeLayout>
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="4"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical"
+                                        android:textColor="@color/black"
+                                        android:text="Parcel handed over"/>
+                                    <Button
+                                        android:visibility="gone"
+                                        android:id="@+id/receivedImageButton"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:background="@drawable/cus_button_update"
+                                        android:text="Scan QR"/>
+                                    <TextView
+                                        android:id="@+id/receivedImageText"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center" />
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/receivedLineLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:paddingHorizontal="20dp"
+                                    app:layout_constraintTop_toBottomOf="@+id/receivedLayout"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:orientation="horizontal">
+                                    <RelativeLayout
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="40dp">
+                                        <View
+                                            android:id="@+id/receivedImageLine"
+                                            android:layout_width="1dp"
+                                            android:layout_height="match_parent"
+                                            android:background="@color/black"
+                                            android:layout_centerInParent="true"
+                                            android:layout_marginHorizontal="10dp"/>
+                                    </RelativeLayout>
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="4"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical" />
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/departedLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:paddingHorizontal="20dp"
+                                    app:layout_constraintTop_toBottomOf="@+id/receivedLineLayout"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:orientation="horizontal">
+                                    <RelativeLayout
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="40dp">
+                                        <ImageView
+                                            android:id="@+id/departedImage"
+                                            android:layout_width="40dp"
+                                            android:padding="10dp"
+                                            android:layout_centerInParent="true"
+                                            android:layout_height="40dp"
+                                            android:background="@drawable/circle_background_delivery"
+                                            android:src="@drawable/img_my_deliveries_departed" />
+                                    </RelativeLayout>
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="4"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical"
+                                        android:textColor="@color/black"
+                                        android:text="Departed from the country"/>
+                                    <Button
+                                        android:visibility="gone"
+                                        android:id="@+id/departedImageButton"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:background="@drawable/cus_button_update"
+                                        android:text="Departed"/>
+                                    <TextView
+                                        android:id="@+id/departedImageText"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center" />
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/departedLineLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:paddingHorizontal="20dp"
+                                    app:layout_constraintTop_toBottomOf="@+id/departedLayout"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:orientation="horizontal">
+                                    <RelativeLayout
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="40dp">
+                                        <View
+                                            android:id="@+id/departedImageLine"
+                                            android:layout_width="1dp"
+                                            android:layout_height="match_parent"
+                                            android:background="@color/black"
+                                            android:layout_centerInParent="true"
+                                            android:layout_marginHorizontal="10dp"/>
+                                    </RelativeLayout>
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="4"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical" />
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/arrivedLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:paddingHorizontal="20dp"
+                                    app:layout_constraintTop_toBottomOf="@+id/departedLineLayout"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:orientation="horizontal">
+                                    <RelativeLayout
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="40dp">
+                                        <ImageView
+                                            android:id="@+id/arrivedImage"
+                                            android:layout_width="40dp"
+                                            android:padding="10dp"
+                                            android:layout_centerInParent="true"
+                                            android:layout_height="40dp"
+                                            android:background="@drawable/circle_background_delivery"
+                                            android:src="@drawable/img_my_deliveries_arrived" />
+                                    </RelativeLayout>
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="4"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical"
+                                        android:textColor="@color/black"
+                                        android:text="Reached the destination"/>
+                                    <Button
+                                        android:visibility="gone"
+                                        android:id="@+id/arrivedImageButton"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:background="@drawable/cus_button_update"
+                                        android:text="Arrived"/>
+                                    <TextView
+                                        android:id="@+id/arrivedImageText"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center" />
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/arrivedLineLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:paddingHorizontal="20dp"
+                                    app:layout_constraintTop_toBottomOf="@+id/arrivedLayout"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:orientation="horizontal">
+                                    <RelativeLayout
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="40dp">
+
+                                        <View
+                                            android:id="@+id/arrivedImageLine"
+                                            android:layout_width="1dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:layout_marginHorizontal="10dp"
+                                            android:background="@color/black" />
+                                    </RelativeLayout>
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="4"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical" />
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/deliveredLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:paddingHorizontal="20dp"
+                                    app:layout_constraintTop_toBottomOf="@+id/arrivedLineLayout"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:orientation="horizontal">
+                                    <RelativeLayout
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="40dp">
+
+                                        <ImageView
+                                            android:id="@+id/deliveredImage"
+                                            android:layout_width="40dp"
+                                            android:layout_height="40dp"
+                                            android:layout_centerInParent="true"
+                                            android:background="@drawable/circle_background_delivery"
+                                            android:padding="5dp"
+                                            android:src="@drawable/img_my_deliveries_received" />
+                                    </RelativeLayout>
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="4"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical"
+                                        android:textColor="@color/black"
+                                        android:text="Parcel received"/>
+                                    <Button
+                                        android:visibility="gone"
+                                        android:id="@+id/deliveredImageButton"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:background="@drawable/cus_button_update"
+                                        android:text="Scan QR"/>
+                                    <TextView
+                                        android:id="@+id/deliveredImageText"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center" />
+                                </LinearLayout>
+
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>

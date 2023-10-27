@@ -1,14 +1,20 @@
 package com.example.globe_carry.adapter
 
+import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.globe_carry.CommentData
+import com.example.globe_carry.CommonOtherUserProfile
 import com.example.globe_carry.R
+import com.google.firebase.auth.FirebaseAuth
 
-class CommentAdapter(private val comments: List<String>) :
+class CommentAdapter(private val context: Context, private val comments: List<CommentData>) :
     RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
     private var currentCommentIndex = 0
@@ -20,8 +26,22 @@ class CommentAdapter(private val comments: List<String>) :
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        val comment = comments[currentCommentIndex]
-        holder.commentText.text = comment
+        val item = comments[currentCommentIndex]
+        holder.commentText.text = item.comment
+        holder.commentUserText.text = item.commentGmail
+
+        // Initialize Firebase Authentication
+        val userAuth = FirebaseAuth.getInstance()
+        Log.d("current user",item.commentId)
+        Log.d("Commented user",userAuth.currentUser?.uid.toString())
+        if(item.commentId!="" && item.commentId!=userAuth.currentUser?.uid) {
+            holder.commentUserText.setOnClickListener {
+                Log.d("Inside","Inside")
+                val intent = Intent(context, CommonOtherUserProfile::class.java)
+                intent.putExtra("userFromIntent", item.commentId)
+                context.startActivity(intent)
+            }
+        }
 
         holder.arrowLeft.setOnClickListener {
             showPreviousComment()
@@ -32,24 +52,25 @@ class CommentAdapter(private val comments: List<String>) :
         }
     }
 
-    override fun getItemCount() = 1
-
     private fun showPreviousComment() {
         if (currentCommentIndex > 0) {
             currentCommentIndex--
-            notifyItemChanged(0)
+            notifyDataSetChanged ()
         }
     }
 
     private fun showNextComment() {
         if (currentCommentIndex < comments.size - 1) {
             currentCommentIndex++
-            notifyItemChanged(0)
+            notifyDataSetChanged ()
         }
     }
-
+    override fun getItemCount(): Int {
+        return 1  // Always display one comment at a time
+    }
     inner class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val commentText: TextView = itemView.findViewById(R.id.commentText)
+        val commentUserText: TextView = itemView.findViewById(R.id.commentUserText)
         val arrowLeft: ImageButton = itemView.findViewById(R.id.arrowLeft)
         val arrowRight: ImageButton = itemView.findViewById(R.id.arrowRight)
     }

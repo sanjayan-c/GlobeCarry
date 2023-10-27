@@ -49,6 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
             <TextView
                 android:ellipsize="end"
                 android:id="@+id/TxtPlace"
@@ -75,6 +76,35 @@
                 android:ellipsize="end"
                 android:gravity="end"
                 android:singleLine="true" />
+
+                <TextView
+                    android:ellipsize="end"
+                    android:id="@+id/TxtPlace"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_below="@+id/ttlLayout"
+                    android:singleLine="true"
+                    android:text="Parcel Number :"
+                    style="@style/txtPoppinsmedium12_1" tools:text="Parcel Number : "/>
+
+                <EditText
+                    android:id="@+id/editTxtParcelNo"
+                    style="@style/txtPoppinsmedium12_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:layout_below="@id/ttlLayout"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/TxtPlace"
+                    android:layout_marginEnd="21dp"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:singleLine="true"
+                    tools:text="Parcel No : " />
+
             </LinearLayout>
             <FrameLayout
                 android:id="@+id/frameStackvectorone"
@@ -126,6 +156,7 @@
                     android:background="@drawable/step_ball_inactive" />
             </FrameLayout>
             <TextView
+
                 android:id="@+id/txtIns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,6 +167,13 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="21dp"
                 style="@style/txtPoppinsmedium12_1"
+
+                android:id="@+id/txtODc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="21dp"
                 tools:text="Please Upload Your Passport : " />
 
             <LinearLayout
@@ -161,12 +199,18 @@
                     android:src="@drawable/baseline_image_24" />
 
             </LinearLayout>
+
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_below="@id/passportImgUpld"
     android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <ImageView
                     android:id="@+id/imageImageOne"
                     android:layout_width="140dp"
@@ -182,14 +226,23 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="12dp"
         style="@style/txtPoppinsmedium12_1" />
+                <TextView
+                    android:id="@+id/txtPoppinsmedium12_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/passportImgUpld"
+                    app:layout_constraintEnd_toEndOf="@+id/imageImageOne"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="5dp"
+                    android:ellipsize="end"
+                    style="@style/txtPoppinsmedium12_1" tools:text="@string/msg_please_take_an" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-
-                >
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btnCancel"
@@ -221,4 +274,5 @@
 
         </LinearLayout>
     </ScrollView>
+</LinearLayout>
 </LinearLayout>

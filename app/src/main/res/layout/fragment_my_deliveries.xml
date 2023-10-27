@@ -1,14 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/commonHomeConstraint1"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.MyDeliveriesFragment">
+    tools:context=".CommonUserProfile"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="My Deliveries" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/myDeliveriesFragmentsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/cus_button_mydeliveries_fragment"
+        android:gravity="center_horizontal"
+        android:layout_marginHorizontal="10dp"
+        android:backgroundTint="@color/my_light_grey"
+        tools:ignore="MissingConstraints">
+            <TextView
+                android:background="@drawable/cus_button_update"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:id="@+id/textMyDeliveriesPending"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:textColor="@color/black"
+                android:singleLine="true"
+                android:paddingVertical="5dp"
+                android:layout_gravity="center"
+                android:textSize="16sp"
+                android:layout_marginEnd="10dp"
+                android:text="Pending"/>
 
-</FrameLayout>
+            <TextView
+                android:background="@drawable/cus_button_mydeliveries_fragment"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:id="@+id/textMyDeliveriesDelivered"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:paddingVertical="5dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:text="Delivered"/>
+
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/cusTransactionMethodFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        tools:ignore="MissingConstraints" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
