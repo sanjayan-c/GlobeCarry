@@ -394,6 +394,19 @@ class CommonUserProfile : AppCompatActivity() {
 
 
                         val profileImageView = findViewById<ImageView>(R.id.profile_image)
+                        Log.d("SingleProfile", SingleProfile.profileImage!!)
+
+                        if (SingleProfile.profileImage != "") {
+                            // Decode the Base64 string to a Bitmap
+                            val decodedBytes = Base64.decode(SingleProfile.profileImage, Base64.DEFAULT)
+                            val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+
+                            // Set the decoded Bitmap as the image for the ImageView
+                            profileImageView.setImageBitmap(decodedBitmap)
+                        } else {
+                            // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
+                            profileImageView.setImageResource(R.drawable.profile_place_holder)
+                        }
 
                         profileImageView.setOnClickListener { view ->
                             showPopupMenu(view)
@@ -680,6 +693,8 @@ class CommonUserProfile : AppCompatActivity() {
 
                                                 // Update the name in the database
                                                 userRef.child("name").setValue( editTextFirstName?.text.toString()+" "+ viewInputLastName?.text.toString())
+
+                                                SingleProfile.profileImage = imageData
 
                                                 // Update query with placeholders for binding
                                                 val query =

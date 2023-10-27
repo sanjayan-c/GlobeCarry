@@ -234,3 +234,8 @@ data class CommentData(
     var commentGmail: String = "",
     var commentId: String = ""
 )
+
+
+object SingleProfile{
+    var profileImage : String? = ""
+}

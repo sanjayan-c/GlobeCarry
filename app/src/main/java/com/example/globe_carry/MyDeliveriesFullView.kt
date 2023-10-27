@@ -313,6 +313,17 @@ class MyDeliveriesFullView : AppCompatActivity() {
                             showPopupMenu(view)
                         }
 
+                        if (SingleProfile.profileImage != "") {
+                            // Decode the Base64 string to a Bitmap
+                            val decodedBytes = Base64.decode(SingleProfile.profileImage, Base64.DEFAULT)
+                            val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+
+                            // Set the decoded Bitmap as the image for the ImageView
+                            profileImageView.setImageBitmap(decodedBitmap)
+                        } else {
+                            // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
+                            profileImageView.setImageResource(R.drawable.profile_place_holder)
+                        }
 
                         arrowImageView?.setOnClickListener {
                             if(fromDeliveredAdapter){

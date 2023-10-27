@@ -1,9 +1,11 @@
 package com.example.globe_carry
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -95,6 +97,20 @@ class ChatActivity : AppCompatActivity() {
         profileImageView.setOnClickListener { view ->
             showPopupMenu(view)
         }
+
+        if (SingleProfile.profileImage != "") {
+            // Decode the Base64 string to a Bitmap
+            val decodedBytes = Base64.decode(SingleProfile.profileImage, Base64.DEFAULT)
+            val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+
+            // Set the decoded Bitmap as the image for the ImageView
+            profileImageView.setImageBitmap(decodedBitmap)
+        } else {
+            // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
+            profileImageView.setImageResource(R.drawable.profile_place_holder)
+        }
+
+
 //
 //        //logic for adding data to recycler
 //        userDbRef.child("chats").child(senderRoom!!).child("messages")

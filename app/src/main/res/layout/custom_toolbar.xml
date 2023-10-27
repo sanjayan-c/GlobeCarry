@@ -45,7 +45,7 @@
                 android:id="@+id/profile_image"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/profile"
+                android:src="@drawable/profile_place_holder"
                 android:layout_gravity="end"/>
         </LinearLayout>
         <LinearLayout

@@ -240,7 +240,7 @@ class CommonHome : AppCompatActivity() {
 
                     // Iterate through the result set and log the details
                     while (resultSet2.next()) {
-                        userImage = resultSet2.getString("userImage")
+                        userImage = resultSet2.getString("userImage")?: ""
                         Log.d("inside","inside")
                     }
 
@@ -252,12 +252,12 @@ class CommonHome : AppCompatActivity() {
                             // Decode the Base64 string to a Bitmap
                             val decodedBytes = Base64.decode(userImage, Base64.DEFAULT)
                             val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-
+                            SingleProfile.profileImage = userImage
                             // Set the decoded Bitmap as the image for the ImageView
                             profileImageView.setImageBitmap(decodedBitmap)
                         } else {
                             // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
-                            profileImageView.setImageResource(R.drawable.cus_image_not_found)
+                            profileImageView.setImageResource(R.drawable.profile_place_holder)
                         }
 
 
