@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import com.example.globe_carry.CusConSQL
 import com.example.globe_carry.fragment.MyDeliveriesFragment
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
@@ -20,7 +19,7 @@ class QRscanner : AppCompatActivity() {
 
     //private lateinit var scheduleId: String
     private lateinit var PostId: String
-    private val cusConSQL = CusConSQL()
+    private val cusConSQL = ConnectionSQL()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT

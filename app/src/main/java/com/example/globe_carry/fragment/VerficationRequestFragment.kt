@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.globe_carry.CusConSQL
+import com.example.globe_carry.ConnectionSQL
+
 import com.example.globe_carry.R
 import com.example.globe_carry.Verification
 import com.example.globe_carry.adapter.RequestItemsAdapter
@@ -18,7 +19,7 @@ import java.text.SimpleDateFormat
 
 class VerficationRequestFragment: Fragment() {
 
-    private val cusConSQL = CusConSQL()
+    private val cusConSQL = ConnectionSQL()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -105,7 +106,7 @@ WHERE
 
                         // Create an InspectorTimeTableItems object and add it to the list
                         val VerificationRequest = Verification(
-                             verficationNo,
+                            verficationNo,
                             Fname,
                             Lname,
                             flightdate,

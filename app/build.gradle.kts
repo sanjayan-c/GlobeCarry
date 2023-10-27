@@ -61,4 +61,6 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.2.0") {
         exclude(group = "com.android.support")
     }
+    //implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
 }

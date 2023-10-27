@@ -36,15 +36,16 @@ data class HomeItems(
     var dlvryAddress: String? = null,
     var city: String? = null,
     var country: String? = null,
-    var type: String? = null,
-    var weight: String? = null,
-    var dimensions: String? = null,
-    var charge: BigDecimal? = null,
-    var expectedDate: String? = null,
-    var time: String? = null,
-    var date: String? = null,
-    var urgent: Boolean? = null,
-    )
+    var recipient: String? = null,
+    var rcptContactNo: String? = null,
+    var dlvryDate: String? = null,
+    var instructions: String? = null,
+    var ttlCharge: Float? = null,
+    var dimension: String? = null,
+    var createdDate: String? = null,
+    var createdBy: String? = null
+
+)
 
 data class Verification(
     var no: String? = null,
@@ -59,30 +60,6 @@ data class Verification(
     var requestid: String? = null,
     var urgent: Boolean? = null,
     var travellerId:String?=null
-)
-
-data class MyDeliveries(
-    var no: String? = null,
-    var city: String? = null,
-    var country: String? = null,
-    var type: String? = null,
-    var weight: String? = null,
-    var dimensions: String? = null,
-    var charge: BigDecimal? = null,
-    var expectedDate: String? = null,
-    var time: String? = null,
-    var date: String? = null,
-    var urgent: Boolean? = null,
-)
-    var recipient: String? = null,
-    var rcptContactNo: String? = null,
-    var dlvryDate: String? = null,
-    var instructions: String? = null,
-    var ttlCharge: Float? = null,
-    var dimension: String? = null,
-    var createdDate: String? = null,
-    var createdBy: String? = null
-
 )
 
 //data class travellerItems(

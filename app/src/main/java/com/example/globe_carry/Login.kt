@@ -26,6 +26,11 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class Login : AppCompatActivity() {
 
@@ -39,6 +44,7 @@ class Login : AppCompatActivity() {
     private lateinit var cus_login_no_username_password:TextView
     private lateinit var pwdVisible:ImageView
     private lateinit var userAuth:FirebaseAuth
+    private lateinit var userDbRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +100,13 @@ class Login : AppCompatActivity() {
                 }, 2000)
             }else{
                 cus_login_no_username_password.visibility = View.GONE
+                cusWalletProgressBarLayout = findViewById(R.id.cusWalletProgressBarLayout)
+                worldImageView = findViewById(R.id.worldImageView)
+                cusWalletProgressBarLayout.visibility = View.VISIBLE
+                cusWalletProgressBarLayout.isClickable = true
+                cusWalletProgressBarLayout.isFocusable = true
+                val horizontalRotationAnimation = createHorizontalRotationAnimation()
+                worldImageView.startAnimation(horizontalRotationAnimation)
                 login(email,password)
             }
         }
@@ -104,28 +117,43 @@ class Login : AppCompatActivity() {
         userAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    cusWalletProgressBarLayout = findViewById(R.id.cusWalletProgressBarLayout)
-                    worldImageView = findViewById(R.id.worldImageView)
-                    cusWalletProgressBarLayout.visibility = View.VISIBLE
-                    cusWalletProgressBarLayout.isClickable = true
-                    cusWalletProgressBarLayout.isFocusable = true
-                    val horizontalRotationAnimation = createHorizontalRotationAnimation()
-                    worldImageView.startAnimation(horizontalRotationAnimation)
-                    // Delay the login by 2 seconds using a Handler
+                    // Perform the login after a delay
                     Handler().postDelayed({
-                        // Perform login after the delay
-                        userAuth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(this) { task ->
-                                if (task.isSuccessful) {
-                                    // Hide the animation view if the login is successful
-
-                                    // Proceed with the login
-                                    val intent = Intent(this@Login, CommonHome::class.java)
-                                    finish()
-                                    startActivity(intent)
+                        // Check the user's type by fetching the data from the database
+                        val currentUser = userAuth.currentUser
+                        if (currentUser != null) {
+                            val uid = currentUser.uid
+                            userDbRef= FirebaseDatabase.getInstance().reference
+                            userDbRef.child("user").child(uid).addListenerForSingleValueEvent(object :
+                                ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    val userType = dataSnapshot.child("type").getValue(String::class.java)
+                                    if (userType == "user") {
+                                        // This is a user
+                                        // Proceed with the login
+                                        val intent = Intent(this@Login, CommonHome::class.java)
+                                        finish()
+                                        startActivity(intent)
+                                    } else if (userType == "staff") {
+                                        // This is a staff member
+                                        // Proceed with the login
+                                        val intent = Intent(this@Login, StaffCommonHome::class.java)
+                                        finish()
+                                        startActivity(intent)
+                                    } else {
+                                        // Handle other user types, if needed
+                                        val intent = Intent(this@Login, CommonHome::class.java)
+                                        finish()
+                                        startActivity(intent)
+                                    }
                                 }
-                            }
-                    }, 2000)
+
+                                override fun onCancelled(databaseError: DatabaseError) {
+                                    // Handle error
+                                }
+                            })
+                        }
+                    }, 2000) // Delay for 2 seconds
                 } else {
                     // Check the error message
                     val errorMessage = task.exception?.message
@@ -160,12 +188,15 @@ class Login : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+                    cusWalletProgressBarLayout.visibility = View.GONE
+                    cusWalletProgressBarLayout.isClickable = false
+                    cusWalletProgressBarLayout.isFocusable = false
                 }
             }
     }
 
 
-//    private fun login(email:String,password:String){
+    //    private fun login(email:String,password:String){
 //        userAuth.signInWithEmailAndPassword(email, password)
 //            .addOnCompleteListener(this) { task ->
 //                if (task.isSuccessful) {
@@ -222,18 +253,18 @@ class Login : AppCompatActivity() {
 //                }
 //            }
 //    }
-private fun createHorizontalRotationAnimation(): RotateAnimation {
-    val rotateAnimation = RotateAnimation(
-        0.0f,
-        360.0f,
-        Animation.RELATIVE_TO_SELF,
-        0.5f,
-        Animation.RELATIVE_TO_SELF,
-        0.5f
-    )
-    rotateAnimation.duration = 1000 // Animation duration in milliseconds
-    return rotateAnimation
-}
+    private fun createHorizontalRotationAnimation(): RotateAnimation {
+        val rotateAnimation = RotateAnimation(
+            0.0f,
+            360.0f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        rotateAnimation.duration = 1000 // Animation duration in milliseconds
+        return rotateAnimation
+    }
 
 }
 //android:theme="@style/Theme.Globe_Carry"

@@ -139,12 +139,12 @@ class CommonHome : AppCompatActivity() {
             val text1 = findViewById<TextView>(R.id.txtMyparcels)
             image1.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
             text1.setTextColor(ContextCompat.getColor(this, R.color.black))
-            setFragment(homeFragment)
+
             val image2 = findViewById<ImageView>(R.id.imageFolder2)
             val text2 = findViewById<TextView>(R.id.txtHome)
             image2.setColorFilter(ContextCompat.getColor(this, R.color.bluegray_100_87), PorterDuff.Mode.SRC_IN)
             text2.setTextColor(ContextCompat.getColor(this, R.color.bluegray_100_87))
-            setFragment(homeFragment)
+
             val image3 = findViewById<ImageView>(R.id.imageFolder3)
             val text3 = findViewById<TextView>(R.id.txtMyDeliveries)
             image3.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
@@ -157,12 +157,12 @@ class CommonHome : AppCompatActivity() {
             val text1 = findViewById<TextView>(R.id.txtMyparcels)
             image1.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
             text1.setTextColor(ContextCompat.getColor(this, R.color.black))
-            setFragment(myDeliveriesFragment)
+
             val image2 = findViewById<ImageView>(R.id.imageFolder2)
             val text2 = findViewById<TextView>(R.id.txtHome)
             image2.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
             text2.setTextColor(ContextCompat.getColor(this, R.color.black))
-            setFragment(myDeliveriesFragment)
+
             val image3 = findViewById<ImageView>(R.id.imageFolder3)
             val text3 = findViewById<TextView>(R.id.txtMyDeliveries)
             image3.setColorFilter(ContextCompat.getColor(this, R.color.bluegray_100_87), PorterDuff.Mode.SRC_IN)

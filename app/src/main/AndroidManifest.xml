@@ -38,6 +38,10 @@
             android:name=".SignUp"
             android:exported="true" />
 
+        <activity
+            android:name=".Staff_Adview"
+            android:exported="true" />
+
 <!--        <activity-->
 <!--            android:name=".StaffCommonHome"-->
 <!--            android:exported="false" />-->
@@ -46,11 +50,12 @@
             android:name=".ViewVerificationRequest"
             android:exported="false" />
 
-<!--            android:name=".StaffCommonHome"-->
+<!--      android:name=".Login"       -->
 <!--            android:exported="true">-->
+<!--        android:name=".CommonHome"-->
 
         <activity
-            android:name=".CommonHome"
+            android:name=".StaffCommonHome"
             android:exported="true" >
 
             <intent-filter>

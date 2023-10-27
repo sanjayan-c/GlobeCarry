@@ -1,19 +1,30 @@
 package com.example.globe_carry
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import java.sql.SQLException
 import java.sql.Timestamp
 
+
 class ViewVerificationRequest: AppCompatActivity() {
-    private val cusConSQL = CusConSQL()
+    private val cusConSQL = ConnectionSQL()
     private var intVerficationId :Int = 0
+    private lateinit var scaleGestureDetector: ScaleGestureDetector
+    private lateinit var passport: ImageView
+    private var IntentPostID: String? =null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +42,9 @@ class ViewVerificationRequest: AppCompatActivity() {
       //  val homeItemUrgent: TextView =findViewById(R.id.homeItemUrgent)
 
 
-        val passport = findViewById<ImageView>(R.id.imageView)
+         passport = findViewById<ImageView>(R.id.imageView)
+        scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
+
 
         val UserImage = findViewById<ImageView>(R.id.imageView2)
 
@@ -108,6 +121,8 @@ WHERE
                         passportImage=resultSet.getString("PassportImage")
                         UserImage1=resultSet.getString("TicketImage")
                         TicketImage1=resultSet.getString("TravellerImage")
+                        IntentPostID=PostID
+
 
 
 
@@ -128,25 +143,82 @@ WHERE
 
 
 
+
                         if (passportImage != null && UserImage1 !=null && TicketImage1 !=null) {
                             // Decode the Base64 string to a Bitmap
-                            val decodedBytes = Base64.decode(passportImage, Base64.DEFAULT)
+                            var decodedBytes = Base64.decode(passportImage, Base64.DEFAULT)
                             val decodedBitmap1 = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
 
                             // Set the decoded Bitmap as the image for the ImageView
                             passport?.setImageBitmap(decodedBitmap1)
 
-                            val decodedBytes2 = Base64.decode(UserImage1, Base64.DEFAULT)
-                            val decodedBitmap2 = BitmapFactory.decodeByteArray(decodedBytes2, 0, decodedBytes.size)
+                            passport.setOnClickListener {
+                                // Create a dialog view with the larger image
+                                val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_full_screen_image, null)
+
+                                // Find the ImageView in the dialog layout
+                                val largeImageView = dialogView.findViewById<ImageView>(R.id.largeImageView)
+
+                                // Set the image to the larger ImageView (decodedBitmap1 is your larger image)
+                                largeImageView.setImageBitmap(decodedBitmap1)
+
+                                // Create and show the dialog
+                                val builder = AlertDialog.Builder(this)
+                                builder.setView(dialogView)
+                                val dialog = builder.create()
+                                dialog.show()
+                            }
+
+                             decodedBytes = Base64.decode(UserImage1, Base64.DEFAULT)
+                            val decodedBitmap2 = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
 
                             // Set the decoded Bitmap as the image for the ImageView
                             UserImage?.setImageBitmap(decodedBitmap2)
 
-                            val decodedBytes3 = Base64.decode(TicketImage1, Base64.DEFAULT)
-                            val decodedBitmap3 = BitmapFactory.decodeByteArray(decodedBytes3, 0, decodedBytes.size)
+
+                            UserImage.setOnClickListener {
+                                // Create a dialog view with the larger image
+                                val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_full_screen_image, null)
+
+                                // Find the ImageView in the dialog layout
+                                val largeImageView = dialogView.findViewById<ImageView>(R.id.largeImageView)
+
+                                // Set the image to the larger ImageView (decodedBitmap1 is your larger image)
+                                largeImageView.setImageBitmap(decodedBitmap1)
+
+                                // Create and show the dialog
+                                val builder = AlertDialog.Builder(this)
+                                builder.setView(dialogView)
+                                val dialog = builder.create()
+                                dialog.show()
+                            }
+
+
+
+                             decodedBytes = Base64.decode(TicketImage1, Base64.DEFAULT)
+                            val decodedBitmap3 = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
 
                             // Set the decoded Bitmap as the image for the ImageView
                             TicketImage?.setImageBitmap(decodedBitmap3)
+
+                            TicketImage.setOnClickListener {
+                                // Create a dialog view with the larger image
+                                val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_full_screen_image, null)
+
+                                // Find the ImageView in the dialog layout
+                                val largeImageView = dialogView.findViewById<ImageView>(R.id.largeImageView)
+
+                                // Set the image to the larger ImageView (decodedBitmap1 is your larger image)
+                                largeImageView.setImageBitmap(decodedBitmap1)
+
+                                // Create and show the dialog
+                                val builder = AlertDialog.Builder(this)
+                                builder.setView(dialogView)
+                                val dialog = builder.create()
+                                dialog.show()
+                            }
+
+
 
 
 
@@ -174,23 +246,37 @@ WHERE
 
         val acceptButton = findViewById<Button>(R.id.accept)
         val rejectButton = findViewById<Button>(R.id.rejectbutton)
+        val Adview = findViewById<Button>(R.id.Adview)
+
+        Adview.setOnClickListener {
+            // When the "Accept" button is clicked, update the status to true (accepted)
+            val intent = Intent(this, Staff_Adview::class.java)
+
+            // Put extra data in the intent (replace "key" and "value" with your actual data)
+            intent.putExtra("PostID", "$PostID")
+
+            Toast.makeText(this, "$PostID", Toast.LENGTH_SHORT).show()
+            // Start the new activity
+            startActivity(intent)
+
+
+            Toast.makeText(this, "TextView Clicked", Toast.LENGTH_SHORT).show()
+        }
+
+
+
 
         acceptButton.setOnClickListener {
             // When the "Accept" button is clicked, update the status to true (accepted)
             updateVerificationStatus(intVerficationId, true)
+            Toast.makeText(this, "Accepted", Toast.LENGTH_SHORT).show()
         }
 
         rejectButton.setOnClickListener {
             // When the "Reject" button is clicked, update the status to false (rejected)
             updateVerificationStatus(intVerficationId, false)
+            Toast.makeText(this, "Rejected", Toast.LENGTH_SHORT).show()
         }
-
-
-
-
-
-
-
 
 
     }
@@ -228,6 +314,34 @@ WHERE
             // Handle any errors, such as database connection errors or SQL errors
         }
     }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        scaleGestureDetector.onTouchEvent(event)
+        return true
+    }
+
+    private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+        override fun onScale(detector: ScaleGestureDetector): Boolean {
+            val scaleFactor = detector.scaleFactor
+            passport.scaleX *= scaleFactor
+            passport.scaleY *= scaleFactor
+            return true
+        }
+    }
+
+//    fun yourOnClickMethod(view: View) {
+//        // Your code to be executed when the TextView is clicked
+//        // For example, you can show a toast message
+//        val intent = Intent(this, Staff_Adview::class.java)
+//
+//        // Put extra data in the intent (replace "key" and "value" with your actual data)
+//        intent.putExtra("PostID", "$IntentPostID")
+//
+//        // Start the new activity
+//        startActivity(intent)
+//
+//        Toast.makeText(this, "TextView Clicked", Toast.LENGTH_SHORT).show()
+//    }
 
 
 

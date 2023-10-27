@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.HomeItems
-import com.example.globe_carry.MyDeliveries
 import com.example.globe_carry.R
 import com.example.globe_carry.Verification
 import com.example.globe_carry.ViewVerificationRequest
@@ -38,14 +37,14 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesFragment, private val
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.homeItemNo.text = item.no
+        holder.homeItemNo.text = item.id
         holder.homeItemArea.text = "${item.city} , ${item.country}"
-        holder.homeItemType.text = item.type
+        holder.homeItemType.text = item.category
         holder.homeItemWeight1.text = item.weight
-        holder.homeItemDimensions1.text = item.dimensions
-        holder.homeItemCharge1.text = item.charge.toString()
-        holder.homeItemDate1.text = item.expectedDate
-        holder.homeItemPostDate.text = "${item.time} , ${item.date}"
+        holder.homeItemDimensions1.text = item.dimension
+        holder.homeItemCharge1.text = item.ttlCharge.toString()
+        holder.homeItemDate1.text = item.dlvryDate
+     //   holder.homeItemPostDate.text = "${item.time} , ${item.date}"
         val urgent= item.urgent
 
 //        if (urgent!!) {
@@ -60,7 +59,7 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesFragment, private val
             val intent = Intent(context.requireContext(), ViewVerificationRequest::class.java)
 
             // Put the request ID as an extra in the Intent
-            intent.putExtra("REQUEST_ID_KEY", item.no)
+            intent.putExtra("REQUEST_ID_KEY", item.id)
 
             // Start the new activity
             context.startActivity(intent)
