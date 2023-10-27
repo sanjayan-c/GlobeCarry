@@ -1,9 +1,11 @@
 package com.example.globe_carry
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -52,15 +54,27 @@ class ChatActivity : AppCompatActivity() {
         barTextView.text = name
 
         barTextView.setOnClickListener {
-            val intent =
-                Intent(this@ChatActivity, CommonUserProfile::class.java)
-            intent.putExtra("userFromIntent", receiverUid)
-            startActivity(intent)
+            userDbRef= FirebaseDatabase.getInstance().reference
+            userDbRef.child("user").child(receiverUid!!).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val userType = dataSnapshot.child("type").getValue(String::class.java)
+                    if (userType == "user") {
+                        // This is a user Proceed with the login
+                        val intent = Intent(this@ChatActivity, CommonOtherUserProfile::class.java)
+                        intent.putExtra("userFromIntent", receiverUid)
+                        startActivity(intent)
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle error
+                }
+            })
+
         }
         cusAccManagementBack.setOnClickListener {
-            val intent =
-                Intent(this@ChatActivity, ChatHistory::class.java)
-            startActivity(intent)
+            finish()
         }
 
         val senderUid = FirebaseAuth.getInstance().currentUser?.uid
@@ -83,6 +97,20 @@ class ChatActivity : AppCompatActivity() {
         profileImageView.setOnClickListener { view ->
             showPopupMenu(view)
         }
+
+        if (SingleProfile.profileImage != "") {
+            // Decode the Base64 string to a Bitmap
+            val decodedBytes = Base64.decode(SingleProfile.profileImage, Base64.DEFAULT)
+            val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+
+            // Set the decoded Bitmap as the image for the ImageView
+            profileImageView.setImageBitmap(decodedBitmap)
+        } else {
+            // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
+            profileImageView.setImageResource(R.drawable.profile_place_holder)
+        }
+
+
 //
 //        //logic for adding data to recycler
 //        userDbRef.child("chats").child(senderRoom!!).child("messages")
@@ -202,8 +230,8 @@ class ChatActivity : AppCompatActivity() {
                 else -> false
             }
             when (item.itemId) {
-                R.id.chat -> {
-                    val intent = Intent(this@ChatActivity,ChatHistory::class.java)
+                R.id.help -> {
+                    val intent = Intent(this@ChatActivity,HelpCenter::class.java)
                     startActivity(intent)
                     true
                 }
@@ -211,8 +239,9 @@ class ChatActivity : AppCompatActivity() {
                 else -> false
             }
             when (item.itemId) {
-                R.id.help -> {
-                    val intent = Intent(this@ChatActivity,HelpCenter::class.java)
+
+                R.id.profile -> {
+                    val intent = Intent(this@ChatActivity, CommonUserProfile::class.java)
                     startActivity(intent)
                     true
                 }

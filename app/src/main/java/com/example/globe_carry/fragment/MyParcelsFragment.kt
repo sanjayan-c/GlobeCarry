@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ConnectionSQL
@@ -13,15 +16,23 @@ import com.example.globe_carry.HomeItems
 import com.example.globe_carry.R
 import com.example.globe_carry.adapter.MyParcelItemAdapter
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import java.sql.SQLException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class MyParcelsFragment : Fragment() {
+    private var progressBarLayout: FrameLayout? = null
+    private var progressBar: ProgressBar? = null
+    private var noTextView: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("Entered","Entered")
 
     }
 
@@ -39,20 +50,32 @@ class MyParcelsFragment : Fragment() {
         val user = userAuth.currentUser?.uid ?: ""
         val data = mutableListOf<HomeItems>()
 
+        progressBarLayout = view.findViewById(R.id.MyParcelProgressBarLayout)
+        progressBar = view.findViewById(R.id.MyParcelProgressBar)
+        noTextView = view.findViewById(R.id.MyParcelNoText)
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+            if (!isAdded) {
+                return@launch
+            }
+
         // Replace with your database connection code
         val cusConSQL = ConnectionSQL()
         cusConSQL.conclass { connection ->
             if (connection != null) {
+                showProgressBar()
                 val user = userAuth.currentUser?.uid ?: ""
 
-                val query = "SELECT * FROM AdPosts WHERE Created_by = ? AND dlvryDate < ?"
+                val query = "SELECT * FROM AdPosts WHERE Created_by = ? "
 // Assuming you want to filter posts with a delivery date earlier than the current date
                 val currentDate = getCurrentDate() // Get the current date
-                val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate)
+                val formattedDate =
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate)
                 try {
                     val preparedStatement = connection.prepareStatement(query)
                     preparedStatement.setString(1, user)
-                    preparedStatement.setString(2, formattedDate)
+                   // preparedStatement.setString(2, formattedDate)
                     val resultSet = preparedStatement.executeQuery()
                     val filteredData = mutableListOf<HomeItems>()
 
@@ -76,25 +99,25 @@ class MyParcelsFragment : Fragment() {
                         val imageBytes = resultSet.getString("image")
                         val createdBy = resultSet.getString("Created_by")
 
-                        Log.d("Query ","Query is successful")
+                        Log.d("Query ", "Query is successful")
 
-                        Log.d("MyParcel", "PostNo: $postId")
-                        Log.d("MyParcel", "urgency: $urgency")
-                        Log.d("MyParcel", "category: $category")
-                        Log.d("MyParcel", "content: $content")
-                        Log.d("MyParcel", "weight: $weight")
-                        Log.d("MyParcel", "value: $value")
-                        Log.d("MyParcel", "dlvryAddress: $dlvryAddress")
-                        Log.d("MyParcel", "city: $city")
-                        Log.d("MyParcel", "country: $country")
-                        Log.d("MyParcel", "dimension: $dimension")
-                        Log.d("MyParcel", "dlvryDate: $dlvryDate")
-                        Log.d("MyParcel", "recipient: $recipient")
-                        Log.d("MyParcel", "rcptContactNo: $rcptContactNo")
-                        Log.d("MyParcel", "recipient: $recipient")
-                        Log.d("MyParcel", "instructions: $instructions")
-                        Log.d("MyParcel", "ttlCharge: $ttlCharge")
-                        Log.d("MyParcel", "Created_by: $createdBy")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "PostNo: $postId")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "urgency: $urgency")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "category: $category")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "content: $content")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "weight: $weight")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "value: $value")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "dlvryAddress: $dlvryAddress")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "city: $city")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "country: $country")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "dimension: $dimension")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "dlvryDate: $dlvryDate")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "recipient: $recipient")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "rcptContactNo: $rcptContactNo")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "recipient: $recipient")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "instructions: $instructions")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "ttlCharge: $ttlCharge")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "Created_by: $createdBy")
                         // Create a HomeItems object and add it to the data list
                         val homeItem = HomeItems(
                             id = postId.toString(),
@@ -124,17 +147,18 @@ class MyParcelsFragment : Fragment() {
                     resultSet.close()
                     preparedStatement.close()
                     updateRecyclerView(filteredData) // Pass filteredData here
+                    hideProgressBar()
 
                 } catch (e: SQLException) {
                     Log.e("SQL Error", "SQL Exception: " + e.message)
                     e.printStackTrace()
 
-                }finally {
+                } finally {
                     connection.close()
                 }
             }
         }
-
+    }
     }
     fun getCurrentDate(): Date {
         val currentDate = Date() // Get the current date and time
@@ -144,12 +168,38 @@ class MyParcelsFragment : Fragment() {
     }
 
     private fun updateRecyclerView(filteredData: List<HomeItems>) {
-        requireActivity().runOnUiThread {
-            val recyclerView = view?.findViewById<RecyclerView>(R.id.myParcelRecyclerView)
-            val adapter = MyParcelItemAdapter(filteredData)
-            recyclerView?.adapter = adapter
-            recyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        // Check if the fragment is attached to an activity
+        if (isAdded) {
+            requireActivity().runOnUiThread {
+                val recyclerView = view?.findViewById<RecyclerView>(R.id.myParcelRecyclerView)
+                val adapter = MyParcelItemAdapter(filteredData)
+                recyclerView?.adapter = adapter
+                recyclerView?.layoutManager = LinearLayoutManager(requireContext())
+            }
         }
+    }
+
+    private fun showProgressBar() {
+        if (progressBarLayout != null && progressBar != null) {
+            progressBarLayout?.visibility = View.VISIBLE
+            progressBar?.visibility = View.VISIBLE
+            noTextView?.visibility = View.GONE
+        }
+    }
+
+    private fun hideProgressBar() {
+        if (progressBarLayout != null) {
+            requireActivity().runOnUiThread {
+                progressBarLayout?.visibility = View.GONE
+            }
+        }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        // Cancel the coroutine when the fragment is destroyed
+        CoroutineScope(Dispatchers.IO).cancel()
+
     }
 
 }

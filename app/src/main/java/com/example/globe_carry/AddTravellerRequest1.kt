@@ -10,13 +10,16 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import java.io.ByteArrayOutputStream
 import java.util.Date
 
 
-class AddTravellerRequest1:AppCompatActivity() {
+class
+AddTravellerRequest1:AppCompatActivity() {
     private lateinit var passportImg: ImageView
+
     private lateinit var travellerImg: ImageView
     private lateinit var ticketImg: ImageView
     private lateinit var passportNum: EditText
@@ -38,7 +41,6 @@ class AddTravellerRequest1:AppCompatActivity() {
         arrowImageView = findViewById(R.id.arrowImageView)
         btnCancel = findViewById(R.id.btnCancel)
         btnNext = findViewById(R.id.btnNext)
-
         passportImg=findViewById(R.id.passportImgUpld)
 
         passportImg.setOnClickListener {
@@ -46,7 +48,9 @@ class AddTravellerRequest1:AppCompatActivity() {
             intent.type = "image/*"
             startActivityForResult(intent, PICK_IMAGE_REQUEST)
         }
-
+        val postId = intent.getStringExtra("postId")
+        Log.d("AddTravellerRequest1", "Base64 Image: $postId")
+        findViewById<TextView>(R.id.TxtParcelNo).text=postId
         btnNext.setOnClickListener {
 
             val passportImageBase64 = convertImageToBase64(selectedImageUri)
@@ -56,10 +60,12 @@ class AddTravellerRequest1:AppCompatActivity() {
             PassportImgSingleton.passportImageBase64 = passportImageBase64
 
             // Receive the postId from the previous activity
-            val postId = intent.getStringExtra("postId")
+
             Log.d("AddTravellerRequest1", postId ?: "No PostId available")
 
             val intent = Intent(this, AddTravellerRequest2::class.java)
+            intent.putExtra("postId", postId)
+            Log.d("AddTravellerRequest1 Passed", "Base64 Image: $passportImageBase64")
             startActivity(intent)
         }
 

@@ -10,6 +10,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.DetailActivity
+import com.example.globe_carry.HomeItemImageSingleton
 import com.example.globe_carry.HomeItems
 import com.example.globe_carry.R
 //import com.example.globe_carry.post
@@ -33,8 +34,8 @@ class HomeItemsAdapter (private var data: List<HomeItems>) :
         val homeSpecialIns: TextView = itemView.findViewById(R.id.viewSpclIns)
         val homeRecName: TextView = itemView.findViewById(R.id.homeRecName)
         val homeRecNum: TextView = itemView.findViewById(R.id.homeRecNum)
-        val homeCusNum: TextView = itemView.findViewById(R.id.cusNum)
-        val homeCusName: TextView = itemView.findViewById(R.id.cusName)
+//        val homeCusNum: TextView = itemView.findViewById(R.id.cusNum)
+//        val homeCusName: TextView = itemView.findViewById(R.id.cusName)
         val homeValue: TextView = itemView.findViewById(R.id.homeValue)
         val homeitemContent: TextView = itemView.findViewById(R.id.itemContent)
         val homeItemListLinear1: RelativeLayout = itemView.findViewById(R.id.homeItemListLinear1)
@@ -64,7 +65,11 @@ class HomeItemsAdapter (private var data: List<HomeItems>) :
         holder.homeItemCharge1.text = item.ttlCharge.toString()
         holder.homeItemDlvryDate1.text = item.dlvryDate
         holder.homeItemPostDate.text = item.createdDate
-        Log.d("Image", item.image.toString())
+
+       // Log.d("Image", item.image.toString())
+
+        //Log.d("Image", item.image.toString())
+
 
         val urgent = item.urgent
 
@@ -89,29 +94,32 @@ class HomeItemsAdapter (private var data: List<HomeItems>) :
             intent.putExtra("dlvryDate", item.dlvryDate)
             intent.putExtra("value", item.value)
             intent.putExtra("createdDate", item.createdDate)
-            intent.putExtra("image", item.image)
+            //intent.putExtra("image", item.image)
             intent.putExtra("dlvryAddress", item.dlvryAddress)
             intent.putExtra("instructions", item.instructions)
             intent.putExtra("recipient", item.recipient)
             intent.putExtra("rcptContactNo", item.rcptContactNo)
             intent.putExtra("content", item.content)
             intent.putExtra("createdBy", item.createdBy)
+            intent.putExtra("createdUserName", item.createdUserName)
+            intent.putExtra("createdUserContactNo", item.createdUserContactNo)
+
             context.startActivity(intent)
 
         }
 
 
-        Log.d("HomeItemsAdapter", "Item ID: ${item.id}")
-        Log.d("HomeItemsAdapter", "City: ${item.city}")
-        Log.d("HomeItemsAdapter", "Country: ${item.country}")
-        Log.d("HomeItemsAdapter", "Category: ${item.category}")
-        Log.d("HomeItemsAdapter", "Weight: ${item.weight}")
-        Log.d("HomeItemsAdapter", "Dimensions: ${item.dimension}")
-        Log.d("HomeItemsAdapter", "Total Charge: ${item.ttlCharge}")
-        Log.d("HomeItemsAdapter", "Delivery Date: ${item.dlvryDate}")
-        Log.d("HomeItemsAdapter", "Created Date: ${item.createdDate}")
-        Log.d("HomeItemsAdapter", "recipient: ${item.recipient}")
-        Log.d("HomeItemsAdapter", "Urgent: $urgent")
+//        Log.d("HomeItemsAdapter", "Item ID: ${item.id}")
+//        Log.d("HomeItemsAdapter", "City: ${item.city}")
+//        Log.d("HomeItemsAdapter", "Country: ${item.country}")
+//        Log.d("HomeItemsAdapter", "Category: ${item.category}")
+//        Log.d("HomeItemsAdapter", "Weight: ${item.weight}")
+//        Log.d("HomeItemsAdapter", "Dimensions: ${item.dimension}")
+//        Log.d("HomeItemsAdapter", "Total Charge: ${item.ttlCharge}")
+//        Log.d("HomeItemsAdapter", "Delivery Date: ${item.dlvryDate}")
+//        Log.d("HomeItemsAdapter", "Created Date: ${item.createdDate}")
+//        Log.d("HomeItemsAdapter", "recipient: ${item.recipient}")
+//        Log.d("HomeItemsAdapter", "Urgent: $urgent")
     }
 
     override fun getItemCount(): Int {

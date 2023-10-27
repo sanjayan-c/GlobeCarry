@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp">
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp"
+            android:layout_margin="8dp">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/myParcelPendListLinear1"
+                tools:ignore="MissingConstraints"
+                android:gravity="center"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/myParcelPendItemNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="start"
+                    android:gravity="start"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="0000909090909090" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/myParcelPendItemArea"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:layout_marginEnd="8dp"> <!-- Adjust the margin here -->
+
+                    <TextView
+                        android:id="@+id/myParcelPendItemCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:text="Paris" />
+                    <TextView
+                        android:id="@+id/myParcelPendItemTravellerName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textColor="@color/black"
+                        android:visibility="gone" />
+                    <TextView
+                        android:id="@+id/myParcelPendItemTravellerNum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textColor="@color/black"
+                        android:visibility="gone" />
+                    <TextView
+                        android:id="@+id/myParcelPendItemCountry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:text="France" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/myParcelPendItemType"
+                    android:layout_below="@+id/myParcelPendItemNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="start"
+                    android:gravity="start"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="Clothing, Booking" />
+
+                <TextView
+                    android:id="@+id/myParcelPendItemUrgent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_alignTop="@+id/myParcelPendItemType"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:textColor="@color/red"
+                    android:textSize="14sp"
+                    android:text="Urgent" />
+                <TextView
+                    android:id="@+id/myParcelPendItemWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/myParcelPendItemType"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="Weight : " />
+                <TextView
+                    android:id="@+id/myParcelPendItemWeight1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/myParcelPendItemWeight"
+                    android:layout_alignTop="@+id/myParcelPendItemWeight"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="150 g" />
+
+                <TextView
+                    android:id="@+id/myParcelPendItemDimensions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/myParcelPendItemWeight"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="Dimension : " />
+                <TextView
+                    android:id="@+id/myParcelPendItemDimensions1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/myParcelPendItemDimensions"
+                    android:layout_alignTop="@+id/myParcelPendItemDimensions"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="5 * 8 * 5"/>
+                <TextView
+                    android:id="@+id/myParcelPendItemStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:layout_alignTop="@+id/myParcelPendItemDimensions1"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:textColor="@color/indigo_A200"
+                    android:textSize="18sp"
+                    android:text="Status" />
+                <TextView
+                    android:id="@+id/myParcelPendItemCharge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_below="@+id/myParcelPendItemDimensions"
+                    android:text="Charge : " />
+                <TextView
+                    android:id="@+id/myParcelPendItemCharge1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/myParcelPendItemCharge"
+                    android:layout_alignTop="@+id/myParcelPendItemCharge"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="LKR 150" />
+                <TextView
+                    android:id="@+id/myParcelPendItemDate"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_below="@+id/myParcelPendItemCharge"
+                    android:text="Expected delivery within : " />
+                <TextView
+                    android:id="@+id/myParcelPendDlvryAdrs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="0"
+                    android:text="Desc"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/myParcelPendItemSpclIns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="0"
+                    android:text="Desc"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/myParcelPendItemRecName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="0"
+                    android:text="Desc"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/myParcelPendItemRecNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="0"
+                    android:text="Desc"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/myParcelPendcusName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="0"
+                    android:text="Desc"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/myParcelPendcusNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="0"
+                    android:text="Desc"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/myParcelPenditemContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="0"
+                    android:text="Desc"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/myParcelPendItemValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="0"
+                    android:text="Desc"
+                    android:textSize="18sp" />
+                <ImageView
+                    android:id="@+id/myParcelPendItemImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="0"
+                    android:text="Desc"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/myParcelPendItemDlvryDate1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/myParcelPendItemDate"
+                    android:layout_alignTop="@+id/myParcelPendItemDate"
+                    android:textSize="14sp"
+                    android:text="27/09/2023" />
+                <TextView
+                    android:id="@+id/myParcelPendItemDetails"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_below="@+id/myParcelPendItemDate"
+                    android:text="Details >" />
+                <TextView
+                    android:id="@+id/myParcelPendItemPostDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:layout_toEndOf="@+id/myParcelPendItemDetails"
+                    android:layout_alignTop="@+id/myParcelPendItemDetails"
+                    android:textSize="14sp"
+                    android:text="11:35   27/09/2023" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+        <!-- Notification Badge View -->
+
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

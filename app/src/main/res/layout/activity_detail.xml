@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".DetailActivity">
+    <include
+        layout="@layout/custom_toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -358,7 +366,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="20dp"
                         android:textSize="16sp"
-                        tools:text="glgfkll;kl" />
+                        tools:text="" />
                 </LinearLayout>
 
                 <LinearLayout

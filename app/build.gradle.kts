@@ -54,6 +54,9 @@ dependencies {
     implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation ("net.sourceforge.jtds:jtds:1.3.1")
     implementation("mysql:mysql-connector-java:5.1.49")
+
+    implementation("com.google.zxing:core:3.4.1")
+
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
 
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -61,6 +64,8 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.2.0") {
         exclude(group = "com.android.support")
     }
+
     //implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
 
 }

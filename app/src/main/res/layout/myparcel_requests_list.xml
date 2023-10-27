@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp">
+        <TextView
+            android:id="@+id/notificationBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:elevation="5dp"
+            android:background="@drawable/badge_circle"
+            android:padding="8dp"
+            android:text="5"
+            android:textColor="#090909"
+            android:textSize="12sp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        android:layout_margin="8dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/myParcelReqListLinear1"
+            tools:ignore="MissingConstraints"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/myParcelReqItemNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="0000909090909090" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/myParcelReqItemArea"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:layout_marginEnd="8dp"> <!-- Adjust the margin here -->
+
+                <TextView
+                    android:id="@+id/myParcelReqItemCity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="Paris" />
+                <TextView
+                    android:id="@+id/myParcelReqItemCountry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="France" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/myParcelReqItemType"
+                android:layout_below="@+id/myParcelReqItemNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Clothing, Booking" />
+
+            <TextView
+                android:id="@+id/myParcelReqItemUrgent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_alignTop="@+id/myParcelReqItemType"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:textColor="@color/red"
+                android:textSize="14sp"
+                android:text="Urgent" />
+            <TextView
+                android:id="@+id/myParcelReqItemWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/myParcelReqItemType"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Weight : " />
+            <TextView
+                android:id="@+id/myParcelReqItemWeight1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/myParcelReqItemWeight"
+                android:layout_alignTop="@+id/myParcelReqItemWeight"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="150 g" />
+            <TextView
+                android:id="@+id/myParcelReqItemDimensions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/myParcelReqItemWeight"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Dimension : " />
+            <TextView
+                android:id="@+id/myParcelReqItemDimensions1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/myParcelReqItemDimensions"
+                android:layout_alignTop="@+id/myParcelReqItemDimensions"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="5 * 8 * 5"/>
+            <TextView
+                android:id="@+id/myParcelReqItemCharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:layout_below="@+id/myParcelReqItemDimensions"
+                android:text="Charge : " />
+            <TextView
+                android:id="@+id/myParcelReqItemCharge1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/myParcelReqItemCharge"
+                android:layout_alignTop="@+id/myParcelReqItemCharge"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="LKR 150" />
+            <TextView
+                android:id="@+id/myParcelReqItemDate"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_below="@+id/myParcelReqItemCharge"
+                android:text="Expected delivery within : " />
+            <TextView
+                android:id="@+id/myParcelReqDlvryAdrs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/myParcelReqItemSpclIns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/myParcelReqItemRecName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/myParcelReqItemRecNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/myParcelReqcusName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/myParcelReqcusNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/myParcelReqitemContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/myParcelReqItemValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <ImageView
+                android:id="@+id/myParcelReqItemImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/myParcelReqItemDlvryDate1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/myParcelReqItemDate"
+                android:layout_alignTop="@+id/myParcelReqItemDate"
+                android:textSize="14sp"
+                android:text="27/09/2023" />
+            <TextView
+                android:id="@+id/myParcelReqItemDetails"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_below="@+id/myParcelReqItemDate"
+                android:text="Details >" />
+            <TextView
+                android:id="@+id/myParcelReqItemPostDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:layout_toEndOf="@+id/myParcelReqItemDetails"
+                android:layout_alignTop="@+id/myParcelReqItemDetails"
+                android:textSize="14sp"
+                android:text="11:35   27/09/2023" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+        <!-- Notification Badge View -->
+
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

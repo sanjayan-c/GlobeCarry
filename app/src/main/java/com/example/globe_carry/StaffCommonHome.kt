@@ -1,9 +1,12 @@
 package com.example.globe_carry
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -21,6 +24,7 @@ import com.example.globe_carry.fragment.MyParcelsFragment
 import com.example.globe_carry.fragment.StaffHomeFragment
 import com.example.globe_carry.fragment.VerficationRequestFragment
 import com.google.firebase.auth.FirebaseAuth
+import java.sql.SQLException
 
 class StaffCommonHome : AppCompatActivity() {
 
@@ -32,7 +36,7 @@ class StaffCommonHome : AppCompatActivity() {
     private lateinit var profileImageView: ImageView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var currentFragment: Fragment? = null
-
+    private var userImage: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.staff_common_home)
@@ -129,6 +133,57 @@ class StaffCommonHome : AppCompatActivity() {
             text3.setTextColor(ContextCompat.getColor(this, R.color.bluegray_100_87))
         }
 
+        val cusConSQL2 = ConnectionSQL()
+        cusConSQL2.conclass { connection2 ->
+            if (connection2 != null) {
+                try {
+                    val userAuth = FirebaseAuth.getInstance()
+                    val user = userAuth.currentUser?.uid ?: ""
+                    // Update query with placeholders for binding
+                    val query2 = "SELECT userImage FROM user WHERE userId = '$user' ";
+
+                    // Create a statement
+                    val statement2 = connection2.createStatement()
+
+                    // Execute the query
+                    val resultSet2 = statement2.executeQuery(query2)
+
+
+                    // Iterate through the result set and log the details
+                    while (resultSet2.next()) {
+                        userImage = resultSet2.getString("userImage")?: ""
+                        Log.d("inside","inside")
+                    }
+
+                    resultSet2.close()
+                    statement2.close()
+
+                    runOnUiThread {
+                        if (userImage != "") {
+                            // Decode the Base64 string to a Bitmap
+                            val decodedBytes = Base64.decode(userImage, Base64.DEFAULT)
+                            val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+                            SingleProfile.profileImage = userImage
+                            // Set the decoded Bitmap as the image for the ImageView
+                            profileImageView.setImageBitmap(decodedBitmap)
+                        } else {
+                            // If ImageDataSingleton.imageData is null, you can set a default image or do nothing
+                            profileImageView.setImageResource(R.drawable.profile_place_holder)
+                        }
+
+
+                    }
+                } catch (e: SQLException) {
+                    Log.e("Update Error", "SQL Exception: ${e.message}")
+                    e.printStackTrace()
+                    // Handle any errors that occur during the update
+                } finally {
+                    // Close the connection in the finally block to ensure it's always closed
+                    connection2.close()
+                }
+            }
+        }
+
     }
 
 
@@ -136,13 +191,16 @@ class StaffCommonHome : AppCompatActivity() {
         val popupMenu = PopupMenu(this, view)
         popupMenu.menuInflater.inflate(R.menu.menu, popupMenu.menu)
 
+        val help = popupMenu.menu.findItem(R.id.help)
+        help.isVisible = false
+
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.logout -> {
                     // Perform the logout action
                     userAuth= FirebaseAuth.getInstance()
                     userAuth.signOut()
-                    val intent = Intent(this@StaffCommonHome, Login::class.java)
+                    val intent = Intent(this, Login::class.java)
                     finish()
                     startActivity(intent)
                     true
@@ -150,18 +208,11 @@ class StaffCommonHome : AppCompatActivity() {
                 // Add more menu items and their actions here
                 else -> false
             }
+
             when (item.itemId) {
-                R.id.chat -> {
-                    val intent = Intent(this@StaffCommonHome,ChatHistory::class.java)
-                    startActivity(intent)
-                    true
-                }
-                // Add more menu items and their actions here
-                else -> false
-            }
-            when (item.itemId) {
-                R.id.help -> {
-                    val intent = Intent(this@StaffCommonHome,HelpCenter::class.java)
+
+                R.id.profile -> {
+                    val intent = Intent(this, CommonUserProfile::class.java)
                     startActivity(intent)
                     true
                 }
@@ -172,6 +223,7 @@ class StaffCommonHome : AppCompatActivity() {
 
         popupMenu.show()
     }
+
 
     private fun setFragment(fragment: Fragment) {
         val fragmentManager: FragmentManager = supportFragmentManager

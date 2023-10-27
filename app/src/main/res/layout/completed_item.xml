@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        android:layout_margin="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/completeItemListLinear1"
+            tools:ignore="MissingConstraints"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/completeItemNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="0000909090909090" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/completeItemArea"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/completeItemCity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="Paris"
+                    android:layout_marginEnd="8dp" />
+                <TextView
+                    android:id="@+id/completeItemCountry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="1dp"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="France" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/completedItemType"
+                android:layout_below="@+id/completedItemNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Clothing, Booking" />
+
+            <TextView
+                android:id="@+id/completeItemUrgent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_alignTop="@+id/completeItemType"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:textColor="@color/red"
+                android:textSize="14sp"
+                android:text="Urgent" />
+            <TextView
+                android:id="@+id/completeItemWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/completeItemType"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Weight : " />
+            <TextView
+                android:id="@+id/completeItemWeight1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/completeItemWeight"
+                android:layout_alignTop="@+id/completeItemWeight"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="150 g" />
+            <TextView
+                android:id="@+id/completeItemDimensions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/completeItemWeight"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Dimension : " />
+            <TextView
+                android:id="@+id/completeItemDimensions1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/completeItemDimensions"
+                android:layout_alignTop="@+id/completeItemDimensions"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="5 * 8 * 5"/>
+            <TextView
+                android:id="@+id/completeItemCharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:layout_below="@+id/completeItemDimensions"
+                android:text="Charge : " />
+            <TextView
+                android:id="@+id/completeItemCharge1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/completeItemCharge"
+                android:layout_alignTop="@+id/completeItemCharge"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="LKR 150" />
+            <TextView
+                android:id="@+id/completeItemDate"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_below="@+id/completeItemCharge"
+                android:text="Delivered : " />
+            <TextView
+                android:id="@+id/myParcelDlvryAdrs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/completeItemSpclIns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/completeItemRecName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/completeItemRecNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/myParcelcusName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/myParcelcusNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/completeItemContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/completeItemValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <ImageView
+                android:id="@+id/completeItemImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="0"
+                android:text="Desc"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/completeItemDlvryDate1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/completeItemDate"
+                android:layout_alignTop="@+id/completeItemDate"
+                android:textSize="14sp"
+                android:text="27/09/2023" />
+            <TextView
+                android:id="@+id/completeItemDetails"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_below="@+id/completeItemDate"
+                android:text="Details >" />
+            <TextView
+                android:id="@+id/completeItemPostDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:layout_toEndOf="@+id/completeItemDetails"
+                android:layout_alignTop="@+id/completeItemDetails"
+                android:textSize="14sp"
+                android:text="11:35   27/09/2023" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+

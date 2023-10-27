@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import java.io.ByteArrayOutputStream
 import java.util.Date
@@ -44,6 +45,8 @@ class AddTravellerRequest3 :AppCompatActivity(){
             intent.type = "image/*"
             startActivityForResult(intent, PICK_IMAGE_REQUEST)
         }
+        val postId = intent.getStringExtra("postId")
+        findViewById<TextView>(R.id.TxtParcelNo3).text=postId
         btnNext3.setOnClickListener {
             val ticketImageBase64 = convertImageToBase64(selectedImageUri)
             Log.d("AddTravellerRequest3", "Base64 Image: $ticketImageBase64")
@@ -53,7 +56,7 @@ class AddTravellerRequest3 :AppCompatActivity(){
 
             // Create an Intent to start the next activity
             val nextActivityIntent = Intent(this, AddTravellerRequest4::class.java)
-            val postId = intent.getStringExtra("postId")
+
             Log.d("AddTravellerRequest3", postId ?: "No PostId available")
             // Pass the data to the next activity
             nextActivityIntent.putExtra("postId", postId)
@@ -61,6 +64,12 @@ class AddTravellerRequest3 :AppCompatActivity(){
             // Start the next activity
             startActivity(nextActivityIntent)
 
+        }
+        arrowImageView!!.setOnClickListener { // Start the CustomerAccountManagement activity
+            finish()
+        }
+        btnCancel3!!.setOnClickListener { // Start the CustomerAccountManagement activity
+            finish()
         }
     }
 

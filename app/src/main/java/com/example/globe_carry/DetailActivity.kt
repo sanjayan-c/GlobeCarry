@@ -51,6 +51,8 @@ class DetailActivity:AppCompatActivity() {
         val content = intent.getStringExtra("content")
         val dimensions = intent.getStringExtra("dimensions")
         val createdBy = intent.getStringExtra("createdBy")
+        val createdName = intent.getStringExtra("createdUserName")
+        val createdContactNo = intent.getStringExtra("createdUserContactNo")
 
         // Now you have the clicked HomeItems object, and you can access its properties
         findViewById<TextView>(R.id.viewTxtUrgent).text = if (urgent) "Urgent" else "Not Urgent"
@@ -68,11 +70,14 @@ class DetailActivity:AppCompatActivity() {
         findViewById<TextView>(R.id.viewCity).text = city
         findViewById<TextView>(R.id.viewCountry).text = country
         findViewById<TextView>(R.id.viewWeight).text = weight
-        // Inside your DetailActivity's `onCreate` method
+        findViewById<TextView>(R.id.viewCusName).text = createdName
+        findViewById<TextView>(R.id.viewCusNum).text = createdContactNo
 
-        val imageBase64 = intent.getStringExtra("image")
+        // Inside your DetailActivity's `onCreate` method
+       // fetchCustomerDetails(createdBy)
+        val imageBase64 =HomeItemImageSingleton.itemImageBase64
         val imageView = findViewById<ImageView>(R.id.detailImage)
-        Log.d("Image", "ImageBase64 size: ${imageBase64?.length}")
+//        Log.d("Image", "ImageBase64 size: ${imageBase64?.length}")
 
         if (imageBase64 != null && imageBase64.isNotEmpty()) {
             // Decode the Base64 string to a ByteArray
@@ -99,7 +104,7 @@ class DetailActivity:AppCompatActivity() {
         }
 
 
-        fetchCustomerDetails(createdBy)
+
         val btnAceeptDlvry = findViewById<Button>(R.id.btnAceeptDlvry)
         btnAceeptDlvry.setOnClickListener {
             // Define the intent to start the AdPostActivity
@@ -113,52 +118,41 @@ class DetailActivity:AppCompatActivity() {
 
     }
 
-    private fun fetchCustomerDetails(createdBy: String?) {
-        val cusConSQL = ConnectionSQL()
-        cusConSQL.conclass { connection ->
-            if (connection != null) {
-                try {
-                    val sql = "SELECT firstName, phoneNo FROM user WHERE userId = ?"
-                    val preparedStatement: PreparedStatement = connection.prepareStatement(sql)
-                    preparedStatement.setString(1, createdBy)
-                    val resultSet: ResultSet = preparedStatement.executeQuery()
-                    Log.d("Results of Customer", resultSet.toString())
-                    if (resultSet.next()) {
-                        val customerName = resultSet.getString("firstName")
-                        val customerContactNumber = resultSet.getString("phoneNo")
-                        Log.d("Results of Customer", resultSet.getString("firstName"))
-                        Log.d("Results of Customer", resultSet.getString("phoneNo"))
-                        // Update your views with customer details
-
-                        runOnUiThread {
-                            findViewById<TextView>(R.id.viewCusName).text = customerName
-                            findViewById<TextView>(R.id.viewCusNum).text = customerContactNumber
-                        }
-
-                    }
-
-                    resultSet.close()
-                    preparedStatement.close()
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                finally {
-                    connection.close()
-                }
-            }
-        }
-    }
-
-    // Update other views with data from the HomeItems object as needed
-
-    private fun establishDatabaseConnection(): Connection {
-        // Implement your database connection logic here using your existing connection class
-        val url = "jdbc:mysql://your-database-url"
-        val username = "your-username"
-        val password = "your-password"
-
-        return DriverManager.getConnection(url, username, password)
-    }
+//    private fun fetchCustomerDetails(createdBy: String?) {
+//        val cusConSQL = ConnectionSQL()
+//        cusConSQL.conclass { connection ->
+//            if (connection != null) {
+//                try {
+//                    val sql = "SELECT phoneNo FROM user WHERE userId = ?"
+//                    val preparedStatement: PreparedStatement = connection.prepareStatement(sql)
+//                    preparedStatement.setString(1, createdBy)
+//                    val resultSet: ResultSet = preparedStatement.executeQuery()
+//                    Log.d("Results of Customer", resultSet.toString())
+//                    if (resultSet.next()) {
+//
+//                        val customerContactNumber = resultSet.getString("phoneNo")
+//
+//                        Log.d("Results of Customer", resultSet.getString("phoneNo"))
+//                        // Update your views with customer details
+//
+//                        runOnUiThread {
+//
+//                            findViewById<TextView>(R.id.viewCusNum).text = customerContactNumber
+//                        }
+//
+//                    }
+//
+//                    resultSet.close()
+//                    preparedStatement.close()
+//
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//                finally {
+//                    connection.close()
+//                }
+//            }
+//        }
+//    }
 
 }

@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/homeRecyclerView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.HomeFragment"
-    android:layout_centerInParent="true"
-    tools:listitem="@layout/home_item_list"/>
+    android:layout_height="match_parent">
+
+    <!-- Progress Bar Layout -->
+    <FrameLayout
+        android:id="@+id/CustomerMyBookingsProgressBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
+
+        <ProgressBar
+            android:id="@+id/CustomerMyBookingsProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/CustomerMyBookingsNoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Bookings Yet"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/homeRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.HomeFragment"
+        android:layout_centerInParent="true"
+        tools:listitem="@layout/home_item_list"/>
+</FrameLayout>

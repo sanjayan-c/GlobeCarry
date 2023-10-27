@@ -15,6 +15,7 @@ class MessageAdapter(val context : Context, val messageList : ArrayList<Message>
 
     val ITEM_RECEIVE = 1;
     val ITEM_SENT = 2;
+    var messageDate : String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -35,12 +36,43 @@ class MessageAdapter(val context : Context, val messageList : ArrayList<Message>
 
         if(holder.javaClass == SentViewHolder::class.java){
             //sent view holder
+            val parts = currentMessage.timeStamp.split(" ") // Split the timestamp by space
+            val date = parts[0] // First part is the date (25/10/2023)
+            val time = parts[1] // Second part is the time (01:33:35)
+            val timeParts = parts[1].split(":")
+            val timeWithoutSeconds = "${timeParts[0]}:${timeParts[1]}"
+            println("Date: $date")
+            println("Time: $time")
+            println("MessageDate: $messageDate")
             val viewHolder = holder as SentViewHolder
+            if(date!=messageDate){
+                println("If 1")
+                messageDate=date
+                holder.sentMessageDateTextView.visibility = View.VISIBLE
+                holder.sentMessageDateTextView.text = messageDate
+            }
             holder.sentMessage.text = currentMessage.message
+            holder.sentMessageTime.text = timeWithoutSeconds
         }else{
             //receive view holder
+
+            val parts = currentMessage.timeStamp.split(" ") // Split the timestamp by space
+            val date = parts[0] // First part is the date (25/10/2023)
+            val time = parts[1] // Second part is the time (01:33:35)
+            val timeParts = parts[1].split(":")
+            val timeWithoutSeconds = "${timeParts[0]}:${timeParts[1]}"
+            println("Date: $date")
+            println("Time: $time")
+            println("MessageDate: $messageDate")
             val viewHolder = holder as ReceiveViewHolder
+            if(date!=messageDate){
+                println("If 2")
+                messageDate=date
+                holder.receiveMessageDateTextView.visibility = View.VISIBLE
+                holder.receiveMessageDateTextView.text = messageDate
+            }
             holder.receiveMessage.text = currentMessage.message
+            holder.receiveMessageTime.text = timeWithoutSeconds
         }
     }
 
@@ -60,10 +92,15 @@ class MessageAdapter(val context : Context, val messageList : ArrayList<Message>
 
     class SentViewHolder(itemView:View): RecyclerView.ViewHolder(itemView){
         val sentMessage=itemView.findViewById<TextView>(R.id.txt_sent_message)
+        val sentMessageTime=itemView.findViewById<TextView>(R.id.txt_sent_message_time)
+        val sentMessageDateTextView=itemView.findViewById<TextView>(R.id.txt_sent_messageDateTextView)
     }
 
     class ReceiveViewHolder(itemView:View): RecyclerView.ViewHolder(itemView){
         val receiveMessage=itemView.findViewById<TextView>(R.id.txt_receive_message)
+        val receiveMessageTime=itemView.findViewById<TextView>(R.id.txt_receive_message_time)
+        val receiveMessageDateTextView=itemView.findViewById<TextView>(R.id.txt_receive_messageDateTextView)
+
     }
 
 }
