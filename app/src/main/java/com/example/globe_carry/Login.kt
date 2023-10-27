@@ -196,7 +196,7 @@ class Login : AppCompatActivity() {
     }
 
 
-//    private fun login(email:String,password:String){
+    //    private fun login(email:String,password:String){
 //        userAuth.signInWithEmailAndPassword(email, password)
 //            .addOnCompleteListener(this) { task ->
 //                if (task.isSuccessful) {
@@ -253,18 +253,18 @@ class Login : AppCompatActivity() {
 //                }
 //            }
 //    }
-private fun createHorizontalRotationAnimation(): RotateAnimation {
-    val rotateAnimation = RotateAnimation(
-        0.0f,
-        360.0f,
-        Animation.RELATIVE_TO_SELF,
-        0.5f,
-        Animation.RELATIVE_TO_SELF,
-        0.5f
-    )
-    rotateAnimation.duration = 1000 // Animation duration in milliseconds
-    return rotateAnimation
-}
+    private fun createHorizontalRotationAnimation(): RotateAnimation {
+        val rotateAnimation = RotateAnimation(
+            0.0f,
+            360.0f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        rotateAnimation.duration = 1000 // Animation duration in milliseconds
+        return rotateAnimation
+    }
 
 }
 //android:theme="@style/Theme.Globe_Carry"

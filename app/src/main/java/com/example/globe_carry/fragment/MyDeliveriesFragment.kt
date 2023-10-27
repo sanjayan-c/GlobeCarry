@@ -53,28 +53,28 @@ class MyDeliveriesFragment: Fragment() {
                 return@launch
             }
 
-        textMyDeliveriesPending = view?.findViewById(R.id.textMyDeliveriesPending)
-        textMyDeliveriesDelivered = view?.findViewById(R.id.textMyDeliveriesDelivered)
+            textMyDeliveriesPending = view?.findViewById(R.id.textMyDeliveriesPending)
+            textMyDeliveriesDelivered = view?.findViewById(R.id.textMyDeliveriesDelivered)
 
-        val myDeliveriesPendingFragment = MyDeliveriesPendingFragment()
-        val myDeliveriesDeliveredFragment = MyDeliveriesDeliveredFragment()
+            val myDeliveriesPendingFragment = MyDeliveriesPendingFragment()
+            val myDeliveriesDeliveredFragment = MyDeliveriesDeliveredFragment()
 
-        setFragment(myDeliveriesPendingFragment)
-
-        textMyDeliveriesPending?.setOnClickListener {
-            // Handle click on textMyDeliveriesPending
             setFragment(myDeliveriesPendingFragment)
-            textMyDeliveriesPending?.setBackgroundResource(R.drawable.cus_button_update)
-            textMyDeliveriesDelivered?.setBackgroundResource(R.drawable.cus_button_mydeliveries_fragment)
-        }
 
-        textMyDeliveriesDelivered?.setOnClickListener {
-            // Handle click on textMyDeliveriesDelivered
-            setFragment(myDeliveriesDeliveredFragment)
-            textMyDeliveriesDelivered?.setBackgroundResource(R.drawable.cus_button_update)
-            textMyDeliveriesPending?.setBackgroundResource(R.drawable.cus_button_mydeliveries_fragment)
+            textMyDeliveriesPending?.setOnClickListener {
+                // Handle click on textMyDeliveriesPending
+                setFragment(myDeliveriesPendingFragment)
+                textMyDeliveriesPending?.setBackgroundResource(R.drawable.cus_button_update)
+                textMyDeliveriesDelivered?.setBackgroundResource(R.drawable.cus_button_mydeliveries_fragment)
+            }
+
+            textMyDeliveriesDelivered?.setOnClickListener {
+                // Handle click on textMyDeliveriesDelivered
+                setFragment(myDeliveriesDeliveredFragment)
+                textMyDeliveriesDelivered?.setBackgroundResource(R.drawable.cus_button_update)
+                textMyDeliveriesPending?.setBackgroundResource(R.drawable.cus_button_mydeliveries_fragment)
+            }
         }
-    }
 
     }
     private fun setFragment(fragment: Fragment) {
@@ -92,7 +92,7 @@ class MyDeliveriesFragment: Fragment() {
 
 
 
-//        val userAuth = FirebaseAuth.getInstance()
+    //        val userAuth = FirebaseAuth.getInstance()
 //        val user = userAuth.currentUser?.uid ?: ""
 //  //      val data = mutableListOf<MyDeliveries>()
 //
@@ -204,10 +204,10 @@ class MyDeliveriesFragment: Fragment() {
 //            recyclerView?.layoutManager = LinearLayoutManager(requireContext())
 //        }
 //    }
-override fun onDestroyView() {
-    super.onDestroyView()
+    override fun onDestroyView() {
+        super.onDestroyView()
 
-    // Cancel the coroutine when the fragment is destroyed
-    CoroutineScope(Dispatchers.IO).cancel()
-}
+        // Cancel the coroutine when the fragment is destroyed
+        CoroutineScope(Dispatchers.IO).cancel()
+    }
 }

@@ -43,15 +43,20 @@
             android:exported="false" />
         <activity
             android:name=".SignUp"
-            android:exported="true" /> <!-- <activity -->
-        <!-- android:name=".StaffCommonHome" -->
-        <!-- android:exported="false" /> -->
+            android:exported="true" />
+
+        <activity
+            android:name=".Staff_Adview"
+            android:exported="true" />
+
         <activity
             android:name=".ViewVerificationRequest"
             android:exported="false" />
+
         <activity
             android:name=".StaffCommonHome"
-            android:exported="false" />
+            android:exported="true" /> 
+
         <activity
             android:name=".Login"
             android:exported="true" >

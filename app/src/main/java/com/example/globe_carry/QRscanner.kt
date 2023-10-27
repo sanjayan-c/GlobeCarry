@@ -104,7 +104,7 @@ class QRscanner : AppCompatActivity() {
                     val query: String
                     val user=userAuth.currentUser?.uid
                     if(!received){
-                       query= "UPDATE orderstatus " +
+                        query= "UPDATE orderstatus " +
                                 "SET received = TRUE, orderReceivedDate = ?, orderReceivedTime = ? " +
                                 "WHERE acptdTravllerId = ? " +
                                 "AND postId = ?"
@@ -150,7 +150,7 @@ class QRscanner : AppCompatActivity() {
                         println("Failed to insert data.")
                     }
 
-                // Perform any UI updates or navigation as needed
+                    // Perform any UI updates or navigation as needed
                     // For example, show a success message or navigate to another screen
                 } catch (e: SQLException) {
                     Log.e("Update Error", "SQL Exception: ${e.message}")

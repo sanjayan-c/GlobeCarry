@@ -194,6 +194,7 @@ class MyParcelsFragment : Fragment() {
             }
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
