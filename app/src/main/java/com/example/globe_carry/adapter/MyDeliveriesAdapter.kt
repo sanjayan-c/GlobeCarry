@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ConnectionSQL
 import com.example.globe_carry.HomeItems
+
 import com.example.globe_carry.MyDeliveriesFullView
 import com.example.globe_carry.MyDeliveryRequests
 import com.example.globe_carry.QRscanner
@@ -69,6 +70,23 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment,
 
 
         val item = data[position]
+        holder.homeItemNo.text = item.id
+        holder.homeItemArea.text = "${item.city} , ${item.country}"
+        holder.homeItemType.text = item.category
+        holder.homeItemWeight1.text = item.weight
+        holder.homeItemDimensions1.text = item.dimension
+        holder.homeItemCharge1.text = item.ttlCharge.toString()
+        holder.homeItemDate1.text = item.dlvryDate
+     //   holder.homeItemPostDate.text = "${item.time} , ${item.date}"
+        val urgent= item.urgent
+
+//        if (urgent!!) {
+//            holder.homeItemUrgent.visibility = View.VISIBLE
+//        }
+        //  val homeItemDetailsTextView = findViewById<TextView>(R.id.homeItemDetails)
+
+        holder.button2.setOnClickListener {
+            // Code to execute when the TextView is clicked
         holder.itemNo.text = item.postId.toString()
         val location = "${item.city} , ${item.country}"
         holder.toCountry.text = location
@@ -77,10 +95,11 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment,
         holder.type.text = item.category
         val orginLocation =  "${item.cityOrgin} , ${item.countryOrgin}"
         holder.orgin.text = item.orgin
-
         val today = LocalDate.now()
         val flightDate = LocalDate.parse(item.flightDate)
 
+            // Put the request ID as an extra in the Intent
+            intent.putExtra("REQUEST_ID_KEY", item.id)
         if (flightDate == today) {
             holder.flightDate.text = "Today"
             holder.flightDate.setTextColor(ContextCompat.getColor(context.requireContext(), R.color.red))

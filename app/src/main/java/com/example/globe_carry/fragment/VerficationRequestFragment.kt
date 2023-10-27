@@ -106,7 +106,7 @@ WHERE
 
                         // Create an InspectorTimeTableItems object and add it to the list
                         val VerificationRequest = Verification(
-                             verficationNo,
+                            verficationNo,
                             Fname,
                             Lname,
                             flightdate,

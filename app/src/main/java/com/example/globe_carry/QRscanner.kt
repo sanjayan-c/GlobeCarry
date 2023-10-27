@@ -30,6 +30,9 @@ class QRscanner : AppCompatActivity() {
 
     private lateinit var userAuth: FirebaseAuth
     //private lateinit var scheduleId: String
+
+    private lateinit var PostId: String
+
     private var postId: Int = 0
     private var poId: Int = 0
     private var orderstatus_id: Int = 0
@@ -37,7 +40,6 @@ class QRscanner : AppCompatActivity() {
     private var delivered: Boolean = false
     private var insideClass: Boolean = false
     private var over: Boolean = false
-
     private val cusConSQL = ConnectionSQL()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

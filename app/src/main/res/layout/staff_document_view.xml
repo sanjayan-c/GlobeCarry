@@ -238,12 +238,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="536dp"
                 android:layout_height="273dp"
-                android:layout_marginTop="112dp"
+                android:layout_marginTop="96dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.533"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView"
                 tools:srcCompat="@tools:sample/avatars" />
@@ -253,82 +255,97 @@
                 style="@style/custxtOpenSansromanbold20"
                 android:layout_width="137dp"
                 android:layout_height="36dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="24dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="Ticket"
                 android:textColor="@color/black"
                 android:textSize="25dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.061"
+                app:layout_constraintHorizontal_bias="0.083"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="536dp"
                 android:layout_height="288dp"
-                android:layout_marginTop="332dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.48"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/userpic"
-                app:layout_constraintVertical_bias="0.453"
+                app:layout_constraintTop_toBottomOf="@+id/ticket"
+                app:layout_constraintVertical_bias="0.366"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="bottom">
+                android:layout_gravity="bottom"
+                android:orientation="horizontal">
 
 
             </LinearLayout>
 
-            <RelativeLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="66dp"
-                android:layout_weight="1"
                 android:gravity="start"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.35"
+                app:layout_constraintHorizontal_bias="0.8"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.999"> <!-- Add margin to the left -->
+                app:layout_constraintTop_toTopOf="@+id/linearLayout2"
+                app:layout_constraintVertical_bias="0.951"></LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:gravity="start"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3"
+                app:layout_constraintVertical_bias="1.0">
 
                 <Button
                     android:id="@+id/accept"
                     style="@style/green"
-                    android:layout_width="227dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="52dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="42dp"
-                    android:layout_marginBottom="-5dp"
-                    android:layout_toStartOf="@+id/button"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:singleLine="true"
                     android:text="Accept"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintVertical_bias="0.652" />
 
                 <Button
                     android:id="@+id/rejectbutton"
-                    android:layout_width="230dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="302dp"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
                     android:background="@color/redColor"
+                    android:singleLine="true"
                     android:text="Rejected" />
-            </RelativeLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/Adview"
+                android:layout_width="103dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="37dp"
+                android:layout_marginBottom="180dp"
+                android:text="View Ad"
+                app:layout_constraintBottom_toTopOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="@+id/homeItemPostDate"
+                app:layout_constraintHorizontal_bias="0.984"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/homeItemPostDate"
+                app:layout_constraintVertical_bias="0.0" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

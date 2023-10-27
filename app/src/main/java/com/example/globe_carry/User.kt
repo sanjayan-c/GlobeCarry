@@ -46,6 +46,10 @@ data class HomeItems(
     var ttlCharge: Float? = null,
     var dimension: String? = null,
     var createdDate: String? = null,
+    var createdBy: String? = null
+
+)
+
 
     var createdBy: String? = null,
     var createdUserName: String? = null,
@@ -71,6 +75,41 @@ data class Verification(
     var urgent: Boolean? = null,
     var travellerId:String?=null
 
+//data class travellerItems(
+//    var travellerId: String? = null,
+//    var pasportImg: String? = null,
+//    var travellerImg: String? = null,
+//    var ticketImg: String? = null,
+//    var passportNum: String? = null,
+//    var flightDate: String? = null,
+//    var destCountry: String? = null,
+//    var destCity: String? = null,
+//    var origin: String? = null,
+//    var reqDate: String? = null,
+//    var requId: String? = null
+//
+//    )
+
+//object HomeItemsData {
+//    var id: String? = null
+//    var urgent: Boolean? = null
+//    var image: String? = null
+//    var category: String? = null
+//    var content: String? = null
+//    var value: Float? = null
+//    var weight: String? = null
+//    var dlvryAddress: String? = null
+//    var city: String? = null
+//    var country: String? = null
+//    var recipient: String? = null
+//    var rcptContactNo: String? = null
+//    var dlvryDate: String? = null
+//    var instructions: String? = null
+//    var ttlCharge: Float? = null
+//    var dimension: String? = null
+//    var createdDate: String? = null
+//    var createdBy: String? = null
+//}
 )
 
 data class TravelerDetails(
