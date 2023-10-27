@@ -193,6 +193,7 @@ class MyParcelsFragment : Fragment() {
                 progressBarLayout?.visibility = View.GONE
             }
         }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.globe_carry.fragment.HomeFragment
 import com.example.globe_carry.fragment.MyDeliveriesFragment
 import com.example.globe_carry.fragment.MyParcel
+import com.example.globe_carry.fragment.MyParcelsFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -107,7 +108,7 @@ class CommonHome : AppCompatActivity() {
 
         val homeFragment = HomeFragment()
         val myDeliveriesFragment = MyDeliveriesFragment()
-        val MyParcel = MyParcel()
+        val myParcel = MyParcel()
 
 
 
@@ -137,7 +138,7 @@ class CommonHome : AppCompatActivity() {
             image3.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
             text3.setTextColor(ContextCompat.getColor(this, R.color.black))
         }else if (fragmentToShow == "MyParcelsFragment") {
-            setFragment(myParcelsFragment)
+            setFragment(myParcel)
             val image1 = findViewById<ImageView>(R.id.imageFolder1)
             val text1 = findViewById<TextView>(R.id.txtMyparcels)
             image1.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
@@ -195,7 +196,7 @@ class CommonHome : AppCompatActivity() {
         }
 
         linearNavbarItem3.setOnClickListener {
-            setFragment(MyParcel)
+            setFragment(myParcel)
             val image1 = findViewById<ImageView>(R.id.imageFolder1)
             val text1 = findViewById<TextView>(R.id.txtMyparcels)
             image1.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN)
