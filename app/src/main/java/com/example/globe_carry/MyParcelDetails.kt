@@ -7,31 +7,24 @@ import android.util.Base64
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.play.core.integrity.e
 import com.google.firebase.auth.FirebaseAuth
-import java.sql.Connection
-import java.sql.DriverManager
-import java.sql.PreparedStatement
-import java.sql.ResultSet
-import java.sql.SQLException
 
-class DetailActivity:AppCompatActivity() {
+class MyParcelDetails: AppCompatActivity() {
+
     private lateinit var data: List<HomeItems>
     private var arrowImageView: ImageView? = null
     private lateinit var btnCancel: Button
     private lateinit var userAuth: FirebaseAuth
     private lateinit var btnAceeptDlvry : Button
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
+        setContentView(R.layout.my_parcel_details)
 
         arrowImageView = findViewById(R.id.arrowImageView)
-        btnCancel = findViewById(R.id.btnCancel)
+
         // Retrieve the clicked HomeItems object from intent extras
         val postIdString = intent.getStringExtra("postId")
         val postId = postIdString?.toIntOrNull() // This returns null if the conversion fails
@@ -74,8 +67,8 @@ class DetailActivity:AppCompatActivity() {
         findViewById<TextView>(R.id.viewCusNum).text = createdContactNo
 
         // Inside your DetailActivity's `onCreate` method
-       // fetchCustomerDetails(createdBy)
-        val imageBase64 =HomeItemImageSingleton.itemImageBase64
+        // fetchCustomerDetails(createdBy)
+        val imageBase64 = HomeItemImageSingleton.itemImageBase64
         val imageView = findViewById<ImageView>(R.id.detailImage)
 //        Log.d("Image", "ImageBase64 size: ${imageBase64?.length}")
 
@@ -99,60 +92,5 @@ class DetailActivity:AppCompatActivity() {
         arrowImageView!!.setOnClickListener { // Start the CustomerAccountManagement activity
             finish()
         }
-        btnCancel!!.setOnClickListener { // Start the CustomerAccountManagement activity
-            finish()
-        }
-
-
-
-        val btnAceeptDlvry = findViewById<Button>(R.id.btnAceeptDlvry)
-        btnAceeptDlvry.setOnClickListener {
-            // Define the intent to start the AdPostActivity
-            val intent = Intent(this, AddTravellerRequest1::class.java)
-            intent.putExtra("postId", postIdString)
-            Log.d("DetailActivity", "postId: $postIdString")
-
-            // Start the AdPostActivity
-            startActivity(intent)
-        }
-
     }
-
-//    private fun fetchCustomerDetails(createdBy: String?) {
-//        val cusConSQL = ConnectionSQL()
-//        cusConSQL.conclass { connection ->
-//            if (connection != null) {
-//                try {
-//                    val sql = "SELECT phoneNo FROM user WHERE userId = ?"
-//                    val preparedStatement: PreparedStatement = connection.prepareStatement(sql)
-//                    preparedStatement.setString(1, createdBy)
-//                    val resultSet: ResultSet = preparedStatement.executeQuery()
-//                    Log.d("Results of Customer", resultSet.toString())
-//                    if (resultSet.next()) {
-//
-//                        val customerContactNumber = resultSet.getString("phoneNo")
-//
-//                        Log.d("Results of Customer", resultSet.getString("phoneNo"))
-//                        // Update your views with customer details
-//
-//                        runOnUiThread {
-//
-//                            findViewById<TextView>(R.id.viewCusNum).text = customerContactNumber
-//                        }
-//
-//                    }
-//
-//                    resultSet.close()
-//                    preparedStatement.close()
-//
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                }
-//                finally {
-//                    connection.close()
-//                }
-//            }
-//        }
-//    }
-
 }

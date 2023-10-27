@@ -34,8 +34,8 @@ class HomeItemsAdapter (private var data: List<HomeItems>) :
         val homeSpecialIns: TextView = itemView.findViewById(R.id.viewSpclIns)
         val homeRecName: TextView = itemView.findViewById(R.id.homeRecName)
         val homeRecNum: TextView = itemView.findViewById(R.id.homeRecNum)
-        val homeCusNum: TextView = itemView.findViewById(R.id.cusNum)
-        val homeCusName: TextView = itemView.findViewById(R.id.cusName)
+//        val homeCusNum: TextView = itemView.findViewById(R.id.cusNum)
+//        val homeCusName: TextView = itemView.findViewById(R.id.cusName)
         val homeValue: TextView = itemView.findViewById(R.id.homeValue)
         val homeitemContent: TextView = itemView.findViewById(R.id.itemContent)
         val homeItemListLinear1: RelativeLayout = itemView.findViewById(R.id.homeItemListLinear1)
@@ -97,6 +97,8 @@ class HomeItemsAdapter (private var data: List<HomeItems>) :
             intent.putExtra("rcptContactNo", item.rcptContactNo)
             intent.putExtra("content", item.content)
             intent.putExtra("createdBy", item.createdBy)
+            intent.putExtra("createdUserName", item.createdUserName)
+            intent.putExtra("createdUserContactNo", item.createdUserContactNo)
 
             context.startActivity(intent)
 

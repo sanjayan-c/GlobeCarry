@@ -12,8 +12,10 @@ import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.globe_carry.fragment.HomeFragment
 import com.google.firebase.auth.FirebaseAuth
 import java.io.ByteArrayOutputStream
 import java.util.Calendar
@@ -30,6 +32,8 @@ class AddTravellerRequest4 : AppCompatActivity() {
     private lateinit var destCity: EditText
     private lateinit var originCountry: EditText
     private var selectedImageUri: Uri? = null
+    private lateinit var ParcelNo: TextView
+
     private val PICK_IMAGE_REQUEST = 1
     var base64String: String? = null
     private lateinit var btnSubmit4: Button
@@ -45,7 +49,7 @@ class AddTravellerRequest4 : AppCompatActivity() {
         arrowImageView = findViewById(R.id.arrowImageView)
         btnPrevious4 = findViewById(R.id.btnPrevious4)
         btnSubmit4 = findViewById(R.id.btnSubmit4)
-
+        ParcelNo = findViewById(R.id.TxtParcelNo4)
         passportNum = findViewById(R.id.passportNum)
         // Assuming you have a DatePicker widget with ID R.id.datePicker
         flightDate = findViewById(R.id.flightdate)
@@ -66,11 +70,16 @@ class AddTravellerRequest4 : AppCompatActivity() {
 
 
             val receivedIntent = intent
-            if (receivedIntent != null) {
-                // Assign the postId to the class property
-                postId = receivedIntent.getStringExtra("postId")
-                Log.d("AddTravellerRequest4", postId ?: "No PostId available")
+        if (receivedIntent != null) {
+            // Assign the postId to the class property
+            val postId = receivedIntent.getStringExtra("postId")
+            if (postId != null) {
+                Log.d("AddTravellerRequest4", postId)
+                ParcelNo.text=postId
+            } else {
+                Log.d("AddTravellerRequest4", "No PostId available")
             }
+        }
 
         btnSubmit4.setOnClickListener {
             val passportNum = passportNum.text.toString()
@@ -79,6 +88,7 @@ class AddTravellerRequest4 : AppCompatActivity() {
             val destCity = destCity.text.toString()
             val originCountry = originCountry.text.toString()
             val currentDate = getCurrentDate()
+            val parcelNo=   ParcelNo.text.toString()
             val currentUser = FirebaseAuth.getInstance().currentUser
             val userID = currentUser?.uid
             val connectSQL = ConnectionSQL()
@@ -86,9 +96,10 @@ class AddTravellerRequest4 : AppCompatActivity() {
                 if (connection != null) {
                     try {
                         val query =
-                            "INSERT INTO verification (PostID, TravellerID, FlightDate, passport, destination, orgin, PassportImage, TicketImage, TravellerImage, time, city)" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                            "INSERT INTO verification (PostID, TravellerID, FlightDate, passport, destination, orgin, PassportImage, TicketImage, TravellerImage, time, city)" +
+                                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                         val preparedStatement = connection.prepareStatement(query)
-                        preparedStatement.setString(1, postId)
+                        preparedStatement.setString(1, parcelNo)
                         Log.d("AddTravellerRequest4 Addition", postId ?: "No PostId available")
                         preparedStatement.setString(2, userID)
                         preparedStatement.setString(3, flightDate)
@@ -107,7 +118,7 @@ class AddTravellerRequest4 : AppCompatActivity() {
                         runOnUiThread {
                             // Show a success message or navigate to another screen
                             Toast.makeText(this, "Data inserted successfully", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, DetailActivity::class.java)
+                            val intent = Intent(this, HomeFragment::class.java)
                             startActivity(intent)
                             finish()
                         }
@@ -129,6 +140,16 @@ class AddTravellerRequest4 : AppCompatActivity() {
             }
 
 
+        }
+        arrowImageView!!.setOnClickListener { // Start the CustomerAccountManagement activity
+            finish()
+        }
+        btnPrevious4!!.setOnClickListener { // Start the CustomerAccountManagement activity
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra("postId", postId)
+            Log.d("AddTravellerRequest4 Passed", postId ?: "No PostId available")
+            startActivity(intent)
+            finish()
         }
     }
     private fun decodeBase64ToBitmap(base64String: String?): Bitmap {

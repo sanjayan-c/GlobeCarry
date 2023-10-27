@@ -14,56 +14,61 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ConnectionSQL
 import com.example.globe_carry.HomeItemImageSingleton
 import com.example.globe_carry.HomeItems
+//import com.example.globe_carry.HomeItemsDataSingleton
 import com.example.globe_carry.R
-import com.example.globe_carry.adapter.HomeItemsAdapter
+import com.example.globe_carry.adapter.MyParcelRequestAdapter
 import com.google.firebase.auth.FirebaseAuth
 import java.sql.SQLException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-
-class HomeFragment : Fragment() {
-    private lateinit var userAuth: FirebaseAuth
+class MyParcelRequestsFragment : Fragment() {
     private var progressBarLayout: FrameLayout? = null
     private var progressBar: ProgressBar? = null
     private var noTextView: TextView? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
-
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.myparcel_requests, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Initialize the RecyclerView
-
         val userAuth = FirebaseAuth.getInstance()
         val user = userAuth.currentUser?.uid ?: ""
-        val data = mutableListOf<HomeItems>()
-        progressBarLayout = view.findViewById(R.id.CustomerMyBookingsProgressBarLayout)
-        progressBar = view.findViewById(R.id.CustomerMyBookingsProgressBar)
-        noTextView = view.findViewById(R.id.CustomerMyBookingsNoText)
-
-        // Replace with your database connection code
+        progressBarLayout = view.findViewById(R.id.RequestParcelProgressBarLayout)
+        progressBar = view.findViewById(R.id.RequestParcelProgressBar)
+        noTextView = view.findViewById(R.id.RequestParcelNoText)
+        //val data = mutableListOf<HomeItems>()
         val cusConSQL = ConnectionSQL()
         cusConSQL.conclass { connection ->
             if (connection != null) {
-                // Show the progress bar when loading data
                 showProgressBar()
                 val user = userAuth.currentUser?.uid ?: ""
 
-                val query = "SELECT AdPosts.*, user.*\n" +
+                val query = "SELECT AdPosts.*, verification.postId, COUNT(*) AS row_count\n" +
                         "FROM AdPosts\n" +
-                        "INNER JOIN user ON AdPosts.Created_by = user.userId;"
+                        "INNER JOIN verification ON AdPosts.postId = verification.postId\n" +
+                        "LEFT JOIN orderstatus ON AdPosts.postId = orderstatus.postId\n" +
+                        "WHERE AdPosts.Created_by = ? AND verification.status = 1 AND orderstatus.postId IS NULL\n" +
+                        "GROUP BY AdPosts.Created_by, verification.postId;"
+// Assuming you want to filter posts with a delivery date earlier than the current date
+                val currentDate = getCurrentDate() // Get the current date
+                val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate)
                 try {
-                    // Create a statement
-                    val statement = connection.createStatement()
-
-                    // Execute the query
-                    val resultSet = statement.executeQuery(query)
-                    val imageSingleton = HomeItemImageSingleton.itemImageBase64 // Retrieve the image from the singleton
+                    val preparedStatement = connection.prepareStatement(query)
+                    preparedStatement.setString(1, user)
+                    // preparedStatement.setString(2, formattedDate)
+                    val resultSet = preparedStatement.executeQuery()
+                    val imageSingleton = HomeItemImageSingleton.itemImageBase64 // Retrieve the image from the singlet
+                    val filteredData = mutableListOf<HomeItems>()
 
                     while (resultSet.next()) {
                         // Parse data from the result set
@@ -84,39 +89,14 @@ class HomeFragment : Fragment() {
                         val ttlCharge = resultSet.getFloat("ttlCharge")
                         val imageBytes = resultSet.getString("image")
                         val createdBy = resultSet.getString("Created_by")
-                        val createdUserName = resultSet.getString("firstName")
-                        val createdUserContactNo = resultSet.getString("phoneNo")
-//
-//                        Log.d("Query ","Query is successful")
-//
-//                        Log.d("Image Data", "Image from Database: $imageBytes")
-//                        Log.d("PostDetail", "PostNo: $postId")
-//                        Log.d("PostDetail", "urgency: $urgency")
-//                        Log.d("PostDetail", "category: $category")
-//                        Log.d("PostDetail", "content: $content")
-//                        Log.d("PostDetail", "weight: $weight")
-//                        Log.d("PostDetail", "value: $value")
-//                        Log.d("PostDetail", "dlvryAddress: $dlvryAddress")
-//                        Log.d("PostDetail", "city: $city")
-//                        Log.d("PostDetail", "country: $country")
-//                        Log.d("PostDetail", "dimension: $dimension")
-//                        Log.d("PostDetail", "dlvryDate: $dlvryDate")
-//                        Log.d("PostDetail", "recipient: $recipient")
-//                        Log.d("PostDetail", "rcptContactNo: $rcptContactNo")
-//                        Log.d("PostDetail", "recipient: $recipient")
-//                        Log.d("PostDetail", "instructions: $instructions")
-//                        Log.d("PostDetail", "ttlCharge: $ttlCharge")
-//                        Log.d("PostDetail", "Created_by: $createdBy")
-//                        Log.d("PostDetail", "Created_Num: $createdUserContactNo")
-                        // Create a HomeItems object and add it to the data list
-
+                        val notificationCount = resultSet.getInt("row_count")
+                        Log.d("NotificationCount", "Count: $notificationCount")
                         HomeItemImageSingleton.itemImageBase64 = imageBytes
 
                         val homeItem = HomeItems(
                             id = postId.toString(),
                             urgent = urgency,
                             //image = imageBytes,
-                            //image = HomeItemImageSingleton.itemImageBase64,
                             category = category,
                             content = content,
                             value = value,
@@ -131,18 +111,16 @@ class HomeFragment : Fragment() {
                             ttlCharge = ttlCharge,
                             dimension = dimension,
                             createdBy = createdBy,
-                            createdUserName = createdUserName,
-                            createdUserContactNo = createdUserContactNo
-                            )
+                            notificationCount =notificationCount
+                        )
 
-                       // Log.d("Image Data", "Image from Singleton: ${HomeItemImageSingleton.itemImageBase64}")
-                        data.add(homeItem)
-                        Log.d("PhoneData", "PhoneNum Customer: ${homeItem.createdUserContactNo}")
+
+                        filteredData.add(homeItem)
                     }
 
                     resultSet.close()
-                    statement.close()
-                    updateRecyclerView(data)
+                    preparedStatement.close()
+                    updateRecyclerView(filteredData) // Pass filteredData here
                     hideProgressBar()
 
                 } catch (e: SQLException) {
@@ -153,20 +131,25 @@ class HomeFragment : Fragment() {
                     connection.close()
                 }
             }
-            updateRecyclerView(data)
+        }
+
+    }
+    fun getCurrentDate(): Date {
+        val currentDate = Date() // Get the current date and time
+        Log.d("CurrentDate", currentDate.toString()) // Log the current date
+        return currentDate
+
+    }
+
+    private fun updateRecyclerView(filteredData: List<HomeItems>) {
+        requireActivity().runOnUiThread {
+            val recyclerView = view?.findViewById<RecyclerView>(R.id.myRequestsRecyclerView)
+            val adapter = MyParcelRequestAdapter(filteredData)
+            recyclerView?.adapter = adapter
+            recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
-    private fun updateRecyclerView(data: List<HomeItems>) {
-        if (isAdded) {
-            requireActivity().runOnUiThread {
-                val recyclerView = view?.findViewById<RecyclerView>(R.id.homeRecyclerView)
-                val adapter = HomeItemsAdapter(data)
-                recyclerView?.adapter = adapter
-                recyclerView?.layoutManager = LinearLayoutManager(requireContext())
-            }
-        }
-    }
     private fun showProgressBar() {
         if (progressBarLayout != null && progressBar != null) {
             progressBarLayout?.visibility = View.VISIBLE
@@ -176,10 +159,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun hideProgressBar() {
-        val view = view ?: return
-        requireActivity().runOnUiThread {
-            progressBarLayout?.visibility = View.GONE
+        if (progressBarLayout != null) {
+            requireActivity().runOnUiThread {
+                progressBarLayout?.visibility = View.GONE
+            }
         }
     }
 }
-

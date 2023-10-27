@@ -20,8 +20,6 @@ class MyParcel : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.my_parcel_view, container, false)
 
-        val card1 = view.findViewById<RelativeLayout>(R.id.my_parcel)
-        val card2 = view.findViewById<RelativeLayout>(R.id.request_list)
         val card3 = view.findViewById<RelativeLayout>(R.id.pending_list)
         val card4 = view.findViewById<RelativeLayout>(R.id.sent_list)
         val myParcelLayout = view.findViewById<RelativeLayout>(R.id.my_parcel)
@@ -35,25 +33,32 @@ class MyParcel : Fragment() {
 
             fragmentTransaction.commit()
         }
+        val myParcelRequestLayout = view.findViewById<RelativeLayout>(R.id.request_list)
+        myParcelRequestLayout.setOnClickListener {
+            val fragment = MyParcelRequestsFragment()  // Create an instance of your fragment
+            val fragmentManager = requireActivity().supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+// Replace the current fragment in the FrameLayout with the new fragment
+            fragmentTransaction.replace(R.id.cusTransactionMethodFragmentContainer, fragment)
+            fragmentTransaction.addToBackStack(null)  // Optional, to handle back button
 
-//
-//        card2.setOnClickListener {
-//            navigateToDetailsFragment("Requests")
-//        }
-//
-//        card3.setOnClickListener {
-//            navigateToDetailsFragment("Pendings")
-//        }
-//
-//        card4.setOnClickListener {
-//            navigateToDetailsFragment("Sent")
-//        }
+            fragmentTransaction.commit()
+        }
+
+        val myParcelPendingLayout = view.findViewById<RelativeLayout>(R.id.pending_list)
+        myParcelPendingLayout.setOnClickListener {
+            val fragment = PendingParcelFragment()  // Create an instance of your fragment
+            val fragmentManager = requireActivity().supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+// Replace the current fragment in the FrameLayout with the new fragment
+            fragmentTransaction.replace(R.id.cusTransactionMethodFragmentContainer, fragment)
+            fragmentTransaction.addToBackStack(null)  // Optional, to handle back button
+
+            fragmentTransaction.commit()
+        }
 
         return view
     }
 
-//    private fun navigateToDetailsFragment(category: String) {
-//        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(category)
-//        findNavController().navigate(action)
-//    }
+
 }

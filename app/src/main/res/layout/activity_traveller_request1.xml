@@ -61,8 +61,8 @@
                 android:text="Parcel Number :"
                 style="@style/txtPoppinsmedium12_1" tools:text="Parcel Number : "/>
 
-            <EditText
-                android:id="@+id/editTxtParcelNo"
+            <TextView
+                android:id="@+id/TxtParcelNo"
                 style="@style/txtPoppinsmedium12_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,14 +74,13 @@
                 android:layout_marginEnd="21dp"
                 android:ellipsize="end"
                 android:gravity="end"
-                android:singleLine="true"
-                tools:text="Parcel No : " />
+                android:singleLine="true" />
             </LinearLayout>
             <FrameLayout
                 android:id="@+id/frameStackvectorone"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_below="@+id/editTxtParcelNo"
+                android:layout_below="@+id/TxtParcelNo"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"

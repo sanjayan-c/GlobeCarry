@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ConnectionSQL
@@ -19,6 +22,9 @@ import java.util.Date
 import java.util.Locale
 
 class MyParcelsFragment : Fragment() {
+    private var progressBarLayout: FrameLayout? = null
+    private var progressBar: ProgressBar? = null
+    private var noTextView: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,11 +45,14 @@ class MyParcelsFragment : Fragment() {
         val userAuth = FirebaseAuth.getInstance()
         val user = userAuth.currentUser?.uid ?: ""
         val data = mutableListOf<HomeItems>()
-
+        progressBarLayout = view.findViewById(R.id.MyParcelProgressBarLayout)
+        progressBar = view.findViewById(R.id.MyParcelProgressBar)
+        noTextView = view.findViewById(R.id.MyParcelNoText)
         // Replace with your database connection code
         val cusConSQL = ConnectionSQL()
         cusConSQL.conclass { connection ->
             if (connection != null) {
+                showProgressBar()
                 val user = userAuth.currentUser?.uid ?: ""
 
                 val query = "SELECT * FROM AdPosts WHERE Created_by = ? "
@@ -125,6 +134,7 @@ class MyParcelsFragment : Fragment() {
                     resultSet.close()
                     preparedStatement.close()
                     updateRecyclerView(filteredData) // Pass filteredData here
+                    hideProgressBar()
 
                 } catch (e: SQLException) {
                     Log.e("SQL Error", "SQL Exception: " + e.message)
@@ -150,6 +160,21 @@ class MyParcelsFragment : Fragment() {
             val adapter = MyParcelItemAdapter(filteredData)
             recyclerView?.adapter = adapter
             recyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+    private fun showProgressBar() {
+        if (progressBarLayout != null && progressBar != null) {
+            progressBarLayout?.visibility = View.VISIBLE
+            progressBar?.visibility = View.VISIBLE
+            noTextView?.visibility = View.GONE
+        }
+    }
+
+    private fun hideProgressBar() {
+        if (progressBarLayout != null) {
+            requireActivity().runOnUiThread {
+                progressBarLayout?.visibility = View.GONE
+            }
         }
     }
 

@@ -53,21 +53,19 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/txtParcelNo"
-                style="@style/txtPoppinsmedium12_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ttlLayout"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="21dp"
                 android:ellipsize="end"
-                android:gravity="start"
+                android:id="@+id/TxtPlace4"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/ttlLayout"
                 android:singleLine="true"
-                tools:text="Parcel No : " />
+                android:text="Parcel Number :"
+                style="@style/txtPoppinsmedium12_1" tools:text="Parcel Number : "/>
 
-            <EditText
-                android:id="@+id/editTxtParcelNo"
+            <TextView
+                android:id="@+id/TxtParcelNo4"
                 style="@style/txtPoppinsmedium12_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,18 +73,17 @@
                 android:layout_below="@id/ttlLayout"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_toEndOf="@+id/txtParcelNo"
+                android:layout_toEndOf="@+id/TxtPlace4"
                 android:layout_marginEnd="21dp"
                 android:ellipsize="end"
                 android:gravity="end"
-                android:singleLine="true"
-                tools:text="Parcel No : " />
+                android:singleLine="true" />
 
             <FrameLayout
                 android:id="@+id/frameStackvectorone"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_below="@+id/editTxtParcelNo"
+                android:layout_below="@+id/TxtParcelNo4"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"

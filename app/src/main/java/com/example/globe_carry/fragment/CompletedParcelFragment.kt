@@ -12,58 +12,58 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ConnectionSQL
-import com.example.globe_carry.HomeItemImageSingleton
 import com.example.globe_carry.HomeItems
 import com.example.globe_carry.R
-import com.example.globe_carry.adapter.HomeItemsAdapter
+import com.example.globe_carry.adapter.MyParcelItemAdapter
 import com.google.firebase.auth.FirebaseAuth
 import java.sql.SQLException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-
-class HomeFragment : Fragment() {
-    private lateinit var userAuth: FirebaseAuth
+class CompletedParcelFragment:Fragment() {
     private var progressBarLayout: FrameLayout? = null
     private var progressBar: ProgressBar? = null
     private var noTextView: TextView? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("Entered","Entered")
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
-
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_my_parcels, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Initialize the RecyclerView
-
         val userAuth = FirebaseAuth.getInstance()
         val user = userAuth.currentUser?.uid ?: ""
         val data = mutableListOf<HomeItems>()
-        progressBarLayout = view.findViewById(R.id.CustomerMyBookingsProgressBarLayout)
-        progressBar = view.findViewById(R.id.CustomerMyBookingsProgressBar)
-        noTextView = view.findViewById(R.id.CustomerMyBookingsNoText)
-
+        progressBarLayout = view.findViewById(R.id.MyParcelProgressBarLayout)
+        progressBar = view.findViewById(R.id.MyParcelProgressBar)
+        noTextView = view.findViewById(R.id.MyParcelNoText)
         // Replace with your database connection code
         val cusConSQL = ConnectionSQL()
         cusConSQL.conclass { connection ->
             if (connection != null) {
-                // Show the progress bar when loading data
                 showProgressBar()
                 val user = userAuth.currentUser?.uid ?: ""
 
-                val query = "SELECT AdPosts.*, user.*\n" +
-                        "FROM AdPosts\n" +
-                        "INNER JOIN user ON AdPosts.Created_by = user.userId;"
+                val query = "SELECT * FROM AdPosts WHERE Created_by = ? "
+// Assuming you want to filter posts with a delivery date earlier than the current date
+                val currentDate = getCurrentDate() // Get the current date
+                val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate)
                 try {
-                    // Create a statement
-                    val statement = connection.createStatement()
-
-                    // Execute the query
-                    val resultSet = statement.executeQuery(query)
-                    val imageSingleton = HomeItemImageSingleton.itemImageBase64 // Retrieve the image from the singleton
+                    val preparedStatement = connection.prepareStatement(query)
+                    preparedStatement.setString(1, user)
+                    // preparedStatement.setString(2, formattedDate)
+                    val resultSet = preparedStatement.executeQuery()
+                    val filteredData = mutableListOf<HomeItems>()
 
                     while (resultSet.next()) {
                         // Parse data from the result set
@@ -84,39 +84,31 @@ class HomeFragment : Fragment() {
                         val ttlCharge = resultSet.getFloat("ttlCharge")
                         val imageBytes = resultSet.getString("image")
                         val createdBy = resultSet.getString("Created_by")
-                        val createdUserName = resultSet.getString("firstName")
-                        val createdUserContactNo = resultSet.getString("phoneNo")
-//
-//                        Log.d("Query ","Query is successful")
-//
-//                        Log.d("Image Data", "Image from Database: $imageBytes")
-//                        Log.d("PostDetail", "PostNo: $postId")
-//                        Log.d("PostDetail", "urgency: $urgency")
-//                        Log.d("PostDetail", "category: $category")
-//                        Log.d("PostDetail", "content: $content")
-//                        Log.d("PostDetail", "weight: $weight")
-//                        Log.d("PostDetail", "value: $value")
-//                        Log.d("PostDetail", "dlvryAddress: $dlvryAddress")
-//                        Log.d("PostDetail", "city: $city")
-//                        Log.d("PostDetail", "country: $country")
-//                        Log.d("PostDetail", "dimension: $dimension")
-//                        Log.d("PostDetail", "dlvryDate: $dlvryDate")
-//                        Log.d("PostDetail", "recipient: $recipient")
-//                        Log.d("PostDetail", "rcptContactNo: $rcptContactNo")
-//                        Log.d("PostDetail", "recipient: $recipient")
-//                        Log.d("PostDetail", "instructions: $instructions")
-//                        Log.d("PostDetail", "ttlCharge: $ttlCharge")
-//                        Log.d("PostDetail", "Created_by: $createdBy")
-//                        Log.d("PostDetail", "Created_Num: $createdUserContactNo")
+
+                        Log.d("Query ","Query is successful")
+
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "PostNo: $postId")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "urgency: $urgency")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "category: $category")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "content: $content")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "weight: $weight")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "value: $value")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "dlvryAddress: $dlvryAddress")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "city: $city")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "country: $country")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "dimension: $dimension")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "dlvryDate: $dlvryDate")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "recipient: $recipient")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "rcptContactNo: $rcptContactNo")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "recipient: $recipient")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "instructions: $instructions")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "ttlCharge: $ttlCharge")
+                        Log.d("com.example.globe_carry.fragment.MyParcel", "Created_by: $createdBy")
                         // Create a HomeItems object and add it to the data list
-
-                        HomeItemImageSingleton.itemImageBase64 = imageBytes
-
                         val homeItem = HomeItems(
                             id = postId.toString(),
                             urgent = urgency,
-                            //image = imageBytes,
-                            //image = HomeItemImageSingleton.itemImageBase64,
+                            image = imageBytes,
                             category = category,
                             content = content,
                             value = value,
@@ -131,18 +123,16 @@ class HomeFragment : Fragment() {
                             ttlCharge = ttlCharge,
                             dimension = dimension,
                             createdBy = createdBy,
-                            createdUserName = createdUserName,
-                            createdUserContactNo = createdUserContactNo
+
                             )
 
-                       // Log.d("Image Data", "Image from Singleton: ${HomeItemImageSingleton.itemImageBase64}")
-                        data.add(homeItem)
-                        Log.d("PhoneData", "PhoneNum Customer: ${homeItem.createdUserContactNo}")
+
+                        filteredData.add(homeItem)
                     }
 
                     resultSet.close()
-                    statement.close()
-                    updateRecyclerView(data)
+                    preparedStatement.close()
+                    updateRecyclerView(filteredData) // Pass filteredData here
                     hideProgressBar()
 
                 } catch (e: SQLException) {
@@ -153,18 +143,22 @@ class HomeFragment : Fragment() {
                     connection.close()
                 }
             }
-            updateRecyclerView(data)
         }
+
+    }
+    fun getCurrentDate(): Date {
+        val currentDate = Date() // Get the current date and time
+        Log.d("CurrentDate", currentDate.toString()) // Log the current date
+        return currentDate
+
     }
 
-    private fun updateRecyclerView(data: List<HomeItems>) {
-        if (isAdded) {
-            requireActivity().runOnUiThread {
-                val recyclerView = view?.findViewById<RecyclerView>(R.id.homeRecyclerView)
-                val adapter = HomeItemsAdapter(data)
-                recyclerView?.adapter = adapter
-                recyclerView?.layoutManager = LinearLayoutManager(requireContext())
-            }
+    private fun updateRecyclerView(filteredData: List<HomeItems>) {
+        requireActivity().runOnUiThread {
+            val recyclerView = view?.findViewById<RecyclerView>(R.id.myParcelRecyclerView)
+            val adapter = MyParcelItemAdapter(filteredData)
+            recyclerView?.adapter = adapter
+            recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         }
     }
     private fun showProgressBar() {
@@ -176,10 +170,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun hideProgressBar() {
-        val view = view ?: return
-        requireActivity().runOnUiThread {
-            progressBarLayout?.visibility = View.GONE
+        if (progressBarLayout != null) {
+            requireActivity().runOnUiThread {
+                progressBarLayout?.visibility = View.GONE
+            }
         }
     }
-}
 
+}

@@ -20,8 +20,8 @@
             android:layout_width="0dp"
             android:layout_height="42dp"
             android:id="@+id/amazonName"
-            android:text="Amazon"
-            android:textSize="40sp"
+            android:text="My parcel Details "
+            android:textSize="24sp"
             android:textColor="@color/appcolour"
             android:layout_marginStart="18dp"
             android:layout_marginTop="40dp"
@@ -29,21 +29,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/amazonImage"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/amazonDesc"
-            android:text="Shop from A to Z"
-            android:textSize="14sp"
-            android:layout_marginStart="18dp"
-            android:textColor="@color/appcolour"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/amazonName"
-            app:layout_constraintEnd_toStartOf="@+id/amazonImage"/>
+
 
         <ImageView
-            android:layout_width="0dp"
-            android:layout_height="160dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:id="@+id/amazonImage"
             android:src="@drawable/app_image"
             app:layout_constraintTop_toTopOf="parent"
@@ -82,7 +72,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/elecName"
-                        android:text="My Parcel"
+                        android:text="All My Parcels"
                         android:textSize="20sp"
                         android:textColor="@color/black"
                         android:layout_marginTop="10dp"
@@ -90,10 +80,10 @@
                         android:layout_below="@+id/elecImage"/>
 
                     <ImageView
-                        android:layout_width="70dp"
+                        android:layout_width="100dp"
                         android:layout_height="70dp"
                         android:id="@+id/elecImage"
-                        android:src="@drawable/step_ball"
+                        android:src="@drawable/packages"
                         android:layout_marginTop="15dp"
                         android:layout_centerHorizontal="true"/>
 
@@ -141,7 +131,7 @@
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:id="@+id/homeImage"
-                        android:src="@drawable/home_img"
+                        android:src="@drawable/requests"
                         android:layout_marginTop="15dp"
                         android:layout_centerHorizontal="true"/>
 
@@ -176,7 +166,7 @@
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:id="@+id/beautyImage"
-                        android:src="@drawable/hint_profile_login"
+                        android:src="@drawable/pendings"
                         android:layout_marginTop="15dp"
                         android:layout_centerHorizontal="true"/>
 
