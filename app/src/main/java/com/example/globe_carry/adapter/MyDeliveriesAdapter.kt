@@ -20,7 +20,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.ConnectionSQL
 import com.example.globe_carry.HomeItems
-
 import com.example.globe_carry.MyDeliveriesFullView
 import com.example.globe_carry.MyDeliveryRequests
 import com.example.globe_carry.QRscanner
@@ -70,23 +69,6 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment,
 
 
         val item = data[position]
-        holder.homeItemNo.text = item.id
-        holder.homeItemArea.text = "${item.city} , ${item.country}"
-        holder.homeItemType.text = item.category
-        holder.homeItemWeight1.text = item.weight
-        holder.homeItemDimensions1.text = item.dimension
-        holder.homeItemCharge1.text = item.ttlCharge.toString()
-        holder.homeItemDate1.text = item.dlvryDate
-     //   holder.homeItemPostDate.text = "${item.time} , ${item.date}"
-        val urgent= item.urgent
-
-//        if (urgent!!) {
-//            holder.homeItemUrgent.visibility = View.VISIBLE
-//        }
-        //  val homeItemDetailsTextView = findViewById<TextView>(R.id.homeItemDetails)
-
-        holder.button2.setOnClickListener {
-            // Code to execute when the TextView is clicked
         holder.itemNo.text = item.postId.toString()
         val location = "${item.city} , ${item.country}"
         holder.toCountry.text = location
@@ -95,11 +77,10 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment,
         holder.type.text = item.category
         val orginLocation =  "${item.cityOrgin} , ${item.countryOrgin}"
         holder.orgin.text = item.orgin
+
         val today = LocalDate.now()
         val flightDate = LocalDate.parse(item.flightDate)
 
-            // Put the request ID as an extra in the Intent
-            intent.putExtra("REQUEST_ID_KEY", item.id)
         if (flightDate == today) {
             holder.flightDate.text = "Today"
             holder.flightDate.setTextColor(ContextCompat.getColor(context.requireContext(), R.color.red))
@@ -191,96 +172,96 @@ class MyDeliveriesAdapter(private val context: MyDeliveriesPendingFragment,
                 }
                 dialog.show()
             }else if(item.departed == true){
-                        // Create a custom dialog
-                        val dialog = Dialog(context.requireContext())
+                // Create a custom dialog
+                val dialog = Dialog(context.requireContext())
 
-                        // Set the custom layout for the dialog
-                        dialog.setContentView(R.layout.profile_popup)
+                // Set the custom layout for the dialog
+                dialog.setContentView(R.layout.profile_popup)
 
-                        // Set the width of the dialog to match the parent's width
-                        val layoutParams = WindowManager.LayoutParams()
-                        layoutParams.copyFrom(dialog.window?.attributes)
+                // Set the width of the dialog to match the parent's width
+                val layoutParams = WindowManager.LayoutParams()
+                layoutParams.copyFrom(dialog.window?.attributes)
 
-                        // Get the display metrics to calculate the width
-                        val displayMetrics = DisplayMetrics()
-                        context.requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+                // Get the display metrics to calculate the width
+                val displayMetrics = DisplayMetrics()
+                context.requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
 
-                        val screenWidth = displayMetrics.widthPixels
-                        val screenHeight = displayMetrics.heightPixels
-                        val isPortrait = context.requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+                val screenWidth = displayMetrics.widthPixels
+                val screenHeight = displayMetrics.heightPixels
+                val isPortrait = context.requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
-                        val dialogWidthPercent = if (isPortrait) 0.9 else 0.6
-                        var dialogWidth = (if (isPortrait) screenHeight else screenWidth) * dialogWidthPercent
+                val dialogWidthPercent = if (isPortrait) 0.9 else 0.6
+                var dialogWidth = (if (isPortrait) screenHeight else screenWidth) * dialogWidthPercent
 
-                        // Ensure the dialog width doesn't exceed the screen width
-                        if (dialogWidth > screenWidth) {
-                            dialogWidth = screenWidth * 0.9 // Cap it at 80% of the screen width
-                        }
+                // Ensure the dialog width doesn't exceed the screen width
+                if (dialogWidth > screenWidth) {
+                    dialogWidth = screenWidth * 0.9 // Cap it at 80% of the screen width
+                }
 
-                        // Set the calculated width to the layout parameters
-                        layoutParams.width = dialogWidth.toInt()
+                // Set the calculated width to the layout parameters
+                layoutParams.width = dialogWidth.toInt()
 
-                        dialog.window?.attributes = layoutParams
+                dialog.window?.attributes = layoutParams
 
-                        val btnConfirmCusUpdate = dialog.findViewById<AppCompatButton>(R.id.btnConfirmCusUpdate)
-                        val btnConfirmCusCancel = dialog.findViewById<AppCompatButton>(R.id.btnConfirmCusCancel)
-                        val tv_title = dialog.findViewById<TextView>(R.id.tv_title)
+                val btnConfirmCusUpdate = dialog.findViewById<AppCompatButton>(R.id.btnConfirmCusUpdate)
+                val btnConfirmCusCancel = dialog.findViewById<AppCompatButton>(R.id.btnConfirmCusCancel)
+                val tv_title = dialog.findViewById<TextView>(R.id.tv_title)
 
-                        tv_title.text="Are you sure you want update as reached country of recipient?"
-                        btnConfirmCusUpdate.text = "Update" // Change the text as needed
-                        btnConfirmCusCancel.text = "Cancel" // Change the text as needed
+                tv_title.text="Are you sure you want update as reached country of recipient?"
+                btnConfirmCusUpdate.text = "Update" // Change the text as needed
+                btnConfirmCusCancel.text = "Cancel" // Change the text as needed
 
-                        btnConfirmCusCancel.setOnClickListener {
-                            Log.d("Photo","Cancel")
-                            dialog.dismiss()
-                        }
+                btnConfirmCusCancel.setOnClickListener {
+                    Log.d("Photo","Cancel")
+                    dialog.dismiss()
+                }
 
 
 
-                        btnConfirmCusUpdate.setOnClickListener {
+                btnConfirmCusUpdate.setOnClickListener {
 
-                val cusConSQL2 = ConnectionSQL()
-                cusConSQL2.conclass { connection2 ->
-                    if (connection2 != null) {
-                        try {
-                            // Update query with placeholders for binding
-                            val query2 =
-                                "UPDATE orderstatus SET reached = ?, orderReachedDate = ?, orderReachedTime = ? WHERE orderstatus_id = ?"
+                    val cusConSQL2 = ConnectionSQL()
+                    cusConSQL2.conclass { connection2 ->
+                        if (connection2 != null) {
+                            try {
+                                // Update query with placeholders for binding
+                                val query2 =
+                                    "UPDATE orderstatus SET reached = ?, orderReachedDate = ?, orderReachedTime = ? WHERE orderstatus_id = ?"
 
-                            val preparedStatement2 =
-                                connection2.prepareStatement(query2)
+                                val preparedStatement2 =
+                                    connection2.prepareStatement(query2)
 
-                            val (currentDate, currentTime) = getCurrentDateTime()
+                                val (currentDate, currentTime) = getCurrentDateTime()
 
-                            preparedStatement2.setBoolean(1, true)
-                            preparedStatement2.setString(2, currentDate)
-                            preparedStatement2.setString(3, currentTime)
-                            preparedStatement2.setInt(4, item.orderstatus_id)
+                                preparedStatement2.setBoolean(1, true)
+                                preparedStatement2.setString(2, currentDate)
+                                preparedStatement2.setString(3, currentTime)
+                                preparedStatement2.setInt(4, item.orderstatus_id)
 
-                            // Execute the update query
-                            preparedStatement2.executeUpdate()
-                            preparedStatement2.close()
+                                // Execute the update query
+                                preparedStatement2.executeUpdate()
+                                preparedStatement2.close()
 
-                            activity.runOnUiThread {
-                                Log.d("btnCusUpdate", "Clicked")
-                                activity.recreate()
+                                activity.runOnUiThread {
+                                    Log.d("btnCusUpdate", "Clicked")
+                                    activity.recreate()
+                                }
+
+                            } catch (e: SQLException) {
+                                Log.e("Update Error", "SQL Exception: ${e.message}")
+                                e.printStackTrace()
+                                // Handle any errors that occur during the update
+                            } finally {
+                                // Close the connection in the finally block to ensure it's always closed
+                                connection2.close()
                             }
-
-                        } catch (e: SQLException) {
-                            Log.e("Update Error", "SQL Exception: ${e.message}")
-                            e.printStackTrace()
-                            // Handle any errors that occur during the update
-                        } finally {
-                            // Close the connection in the finally block to ensure it's always closed
-                            connection2.close()
+                        } else {
+                            Log.e("Update Error", "Database connection is null")
                         }
-                    } else {
-                        Log.e("Update Error", "Database connection is null")
                     }
+                    dialog.dismiss()
                 }
-                            dialog.dismiss()
-                }
-                        dialog.show()
+                dialog.show()
             }else if(item.received == true){
 
                 // Create a custom dialog

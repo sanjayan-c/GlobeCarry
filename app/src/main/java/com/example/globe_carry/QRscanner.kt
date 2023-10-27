@@ -30,9 +30,6 @@ class QRscanner : AppCompatActivity() {
 
     private lateinit var userAuth: FirebaseAuth
     //private lateinit var scheduleId: String
-
-    private lateinit var PostId: String
-
     private var postId: Int = 0
     private var poId: Int = 0
     private var orderstatus_id: Int = 0
@@ -40,6 +37,7 @@ class QRscanner : AppCompatActivity() {
     private var delivered: Boolean = false
     private var insideClass: Boolean = false
     private var over: Boolean = false
+
     private val cusConSQL = ConnectionSQL()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,7 +104,7 @@ class QRscanner : AppCompatActivity() {
                     val query: String
                     val user=userAuth.currentUser?.uid
                     if(!received){
-                       query= "UPDATE orderstatus " +
+                        query= "UPDATE orderstatus " +
                                 "SET received = TRUE, orderReceivedDate = ?, orderReceivedTime = ? " +
                                 "WHERE acptdTravllerId = ? " +
                                 "AND postId = ?"
@@ -152,7 +150,7 @@ class QRscanner : AppCompatActivity() {
                         println("Failed to insert data.")
                     }
 
-                // Perform any UI updates or navigation as needed
+                    // Perform any UI updates or navigation as needed
                     // For example, show a success message or navigate to another screen
                 } catch (e: SQLException) {
                     Log.e("Update Error", "SQL Exception: ${e.message}")
