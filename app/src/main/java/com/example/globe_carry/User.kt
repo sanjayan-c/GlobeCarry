@@ -46,8 +46,6 @@ data class HomeItems(
     var ttlCharge: Float? = null,
     var dimension: String? = null,
     var createdDate: String? = null,
-
-    var createdBy: String? = null,
     var createdUserName: String? = null,
     var createdUserContactNo: String? = null,
     var notificationCount: Int? = null,

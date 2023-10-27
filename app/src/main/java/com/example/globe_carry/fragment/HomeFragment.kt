@@ -49,6 +49,23 @@ class HomeFragment : Fragment() {
         // Access the parent activity
         val parentActivity = activity
 
+        if (parentActivity is CommonHome) {
+            // Cast the activity to your specific activity type if needed
+            val myActivity = parentActivity as CommonHome
+
+            // Now, you can access views in the activity's layout
+            val someView = myActivity.findViewById<LinearLayout>(R.id.toolBarSearchBar)
+            someView.visibility = View.VISIBLE
+            // Do something with the view
+        }
+
+
+
+        // Initialize the RecyclerView
+        CoroutineScope(Dispatchers.IO).launch {
+            if (!isAdded) {
+                return@launch
+            }
 
         val userAuth = FirebaseAuth.getInstance()
         val user = userAuth.currentUser?.uid ?: ""
@@ -156,110 +173,7 @@ class HomeFragment : Fragment() {
                     updateRecyclerView(data)
                     hideProgressBar()
 
-        if (parentActivity is CommonHome) {
-            // Cast the activity to your specific activity type if needed
-            val myActivity = parentActivity as CommonHome
 
-            // Now, you can access views in the activity's layout
-            val someView = myActivity.findViewById<LinearLayout>(R.id.toolBarSearchBar)
-            someView.visibility = View.VISIBLE
-            // Do something with the view
-        }
-
-
-
-        // Initialize the RecyclerView
-        CoroutineScope(Dispatchers.IO).launch {
-            if (!isAdded) {
-                return@launch
-            }
-
-            val userAuth = FirebaseAuth.getInstance()
-            val user = userAuth.currentUser?.uid ?: ""
-            val data = mutableListOf<HomeItems>()
-
-            // Replace with your database connection code
-            val cusConSQL = ConnectionSQL()
-            cusConSQL.conclass { connection ->
-                if (connection != null) {
-                    val user = userAuth.currentUser?.uid ?: ""
-
-                    val query = "SELECT * FROM AdPosts"
-                    try {
-                        // Create a statement
-                        val statement = connection.createStatement()
-
-                        // Execute the query
-                        val resultSet = statement.executeQuery(query)
-
-                        while (resultSet.next()) {
-                            // Parse data from the result set
-                            val postId = resultSet.getInt("postid")
-                            val urgency = resultSet.getBoolean("urgency")
-                            val category = resultSet.getString("category")
-                            val content = resultSet.getString("content")
-                            val weight = resultSet.getString("weight")
-                            val value = resultSet.getFloat("value")
-                            val dlvryAddress = resultSet.getString("dlvryAddress")
-                            val city = resultSet.getString("city")
-                            val country = resultSet.getString("country")
-                            val dimension = resultSet.getString("dimension")
-                            val dlvryDate = resultSet.getString("dlvryDate")
-                            val instructions = resultSet.getString("instructions")
-                            val recipient = resultSet.getString("recipient")
-                            val rcptContactNo = resultSet.getString("rcptContactNo")
-                            val ttlCharge = resultSet.getFloat("ttlCharge")
-                            val imageBytes = resultSet.getString("image")
-                            val createdBy = resultSet.getString("Created_by")
-
-                            Log.d("Query ", "Query is successful")
-
-                            Log.d("PostDetail", "PostNo: $postId")
-                            Log.d("PostDetail", "urgency: $urgency")
-                            Log.d("PostDetail", "category: $category")
-                            Log.d("PostDetail", "content: $content")
-                            Log.d("PostDetail", "weight: $weight")
-                            Log.d("PostDetail", "value: $value")
-                            Log.d("PostDetail", "dlvryAddress: $dlvryAddress")
-                            Log.d("PostDetail", "city: $city")
-                            Log.d("PostDetail", "country: $country")
-                            Log.d("PostDetail", "dimension: $dimension")
-                            Log.d("PostDetail", "dlvryDate: $dlvryDate")
-                            Log.d("PostDetail", "recipient: $recipient")
-                            Log.d("PostDetail", "rcptContactNo: $rcptContactNo")
-                            Log.d("PostDetail", "recipient: $recipient")
-                            Log.d("PostDetail", "instructions: $instructions")
-                            Log.d("PostDetail", "ttlCharge: $ttlCharge")
-                            Log.d("PostDetail", "Created_by: $createdBy")
-                            // Create a HomeItems object and add it to the data list
-                            val homeItem = HomeItems(
-                                id = postId.toString(),
-                                urgent = urgency,
-                                image = imageBytes,
-                                category = category,
-                                content = content,
-                                value = value,
-                                weight = weight.toString(),
-                                dlvryAddress = dlvryAddress,
-                                city = city,
-                                country = country,
-                                recipient = recipient,
-                                rcptContactNo = rcptContactNo,
-                                dlvryDate = dlvryDate,
-                                instructions = instructions,
-                                ttlCharge = ttlCharge,
-                                dimension = dimension,
-                                createdBy = createdBy,
-
-                                )
-
-                            data.add(homeItem)
-
-                        }
-
-                        resultSet.close()
-                        statement.close()
-                        updateRecyclerView(data)
 
                     } catch (e: SQLException) {
                         Log.e("SQL Error", "SQL Exception: " + e.message)
@@ -269,7 +183,7 @@ class HomeFragment : Fragment() {
                         connection.close()
                     }
                 }
-                updateRecyclerView(data)
+
             }
         }
     }
@@ -298,6 +212,7 @@ class HomeFragment : Fragment() {
         requireActivity().runOnUiThread {
             progressBarLayout?.visibility = View.GONE
         }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

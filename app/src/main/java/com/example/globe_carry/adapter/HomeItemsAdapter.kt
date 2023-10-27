@@ -100,7 +100,6 @@ class HomeItemsAdapter (private var data: List<HomeItems>) :
             intent.putExtra("recipient", item.recipient)
             intent.putExtra("rcptContactNo", item.rcptContactNo)
             intent.putExtra("content", item.content)
-            intent.putExtra("createdBy", item.createdBy)
             intent.putExtra("createdUserName", item.createdUserName)
             intent.putExtra("createdUserContactNo", item.createdUserContactNo)
 
