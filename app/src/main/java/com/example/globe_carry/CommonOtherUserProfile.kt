@@ -204,7 +204,7 @@ class CommonOtherUserProfile : AppCompatActivity() {
                         Log.d("CustomerDetails", "city: $city")
                         Log.d("CustomerDetails", "postalCode: $postalCode")
                         Log.d("CustomerDetails", "country: $country")
-                        Log.d("CustomerDetails", "userImage: $imageData")
+//                        Log.d("CustomerDetails", "userImage: $imageData")
                         Log.d("CustomerDetails", "signUpDate: $signUpDate")
                         Log.d("CustomerDetails", "signUpTime: $signUpTime")
                     }

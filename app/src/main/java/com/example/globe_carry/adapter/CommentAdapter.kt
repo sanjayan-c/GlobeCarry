@@ -2,6 +2,7 @@ package com.example.globe_carry.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.CommentData
 import com.example.globe_carry.CommonOtherUserProfile
 import com.example.globe_carry.R
+import com.google.firebase.auth.FirebaseAuth
 
 class CommentAdapter(private val context: Context, private val comments: List<CommentData>) :
     RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
@@ -28,8 +30,13 @@ class CommentAdapter(private val context: Context, private val comments: List<Co
         holder.commentText.text = item.comment
         holder.commentUserText.text = item.commentGmail
 
-        if(item.commentId!="") {
+        // Initialize Firebase Authentication
+        val userAuth = FirebaseAuth.getInstance()
+        Log.d("current user",item.commentId)
+        Log.d("Commented user",userAuth.currentUser?.uid.toString())
+        if(item.commentId!="" && item.commentId!=userAuth.currentUser?.uid) {
             holder.commentUserText.setOnClickListener {
+                Log.d("Inside","Inside")
                 val intent = Intent(context, CommonOtherUserProfile::class.java)
                 intent.putExtra("userFromIntent", item.commentId)
                 context.startActivity(intent)

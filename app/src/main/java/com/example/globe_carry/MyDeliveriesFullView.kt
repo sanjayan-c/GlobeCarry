@@ -276,7 +276,7 @@ class MyDeliveriesFullView : AppCompatActivity() {
                         Log.d("MyParcel", "dimension: $dimension")
                         Log.d("MyParcel", "createdDate: $createdDate")
                         Log.d("MyParcel", "createdBy: $createdBy")
-                        Log.d("MyParcel", "imageBytes: $imageBytes")
+//                        Log.d("MyParcel", "imageBytes: $imageBytes")
 
                         Log.d("MyParcel", "orderstatus_id: $orderstatus_id")
                         Log.d("MyParcel", "received: $received")

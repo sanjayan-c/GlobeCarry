@@ -3,7 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <TextView
+        android:id="@+id/txt_receive_messageDateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="Date"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true" />
+
     <RelativeLayout
+        android:layout_below="@+id/txt_receive_messageDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -18,6 +31,17 @@
             android:textSize="16sp"
             android:textColor="@color/black"
             android:padding="10dp"/>
+        <TextView
+            android:id="@+id/txt_receive_message_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date Time"
+            android:textSize="10sp"
+            android:layout_alignEnd="@+id/txt_receive_message"
+            android:layout_below="@+id/txt_receive_message"
+            android:textColor="@color/black"
+            android:paddingHorizontal="10dp"
+            android:paddingBottom="5dp"/>
 
     </RelativeLayout>
 
