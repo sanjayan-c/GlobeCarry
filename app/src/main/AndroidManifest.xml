@@ -104,6 +104,9 @@
         <activity android:name=".TravellerDetailView"
             android:exported="false" />
 
+        <activity android:name=".MyParcelDetails"
+            android:exported="false" />
+
     </application>
 
 </manifest>

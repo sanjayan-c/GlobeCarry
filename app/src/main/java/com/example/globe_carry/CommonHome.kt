@@ -139,7 +139,7 @@ class CommonHome : AppCompatActivity() {
             text3.setTextColor(ContextCompat.getColor(this, R.color.black))
         }else if (fragmentToShow == "MyParcelsFragment") {
 
-            setFragment(MyParcel)
+            setFragment(myParcel)
 
             val image1 = findViewById<ImageView>(R.id.imageFolder1)
             val text1 = findViewById<TextView>(R.id.txtMyparcels)

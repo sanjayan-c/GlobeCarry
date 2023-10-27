@@ -48,28 +48,27 @@ class MyParcelDetails: AppCompatActivity() {
         val createdContactNo = intent.getStringExtra("createdUserContactNo")
 
         // Now you have the clicked HomeItems object, and you can access its properties
-        findViewById<TextView>(R.id.viewTxtUrgent).text = if (urgent) "Urgent" else "Not Urgent"
-        findViewById<TextView>(R.id.viewChrge).text = ttlCharge.toString()
-        findViewById<TextView>(R.id.viewdlvrydate).text = dlvryDate
-        findViewById<TextView>(R.id.viewCategory).text = category
-        findViewById<TextView>(R.id.viewValue).text = value.toString()
-        findViewById<TextView>(R.id.viewContent).text = content
-        findViewById<TextView>(R.id.viewdlvryAddrs).text = dlvryAddress
-        findViewById<TextView>(R.id.viewSpclIns).text = instructions
-        findViewById<TextView>(R.id.viewRecName).text = recipient
-        findViewById<TextView>(R.id.viewRecNum).text = rcptContactNo
-        findViewById<TextView>(R.id.viewDimension).text = dimensions
+        findViewById<TextView>(R.id.myParcelviewTxtUrgent).text = if (urgent) "Urgent" else "Not Urgent"
+        findViewById<TextView>(R.id.myParcelviewChrge).text = ttlCharge.toString()
+        findViewById<TextView>(R.id.myParcelviewdlvrydate).text = dlvryDate
+        findViewById<TextView>(R.id.myParcelviewCategory).text = category
+        findViewById<TextView>(R.id.myParcelviewValue).text = value.toString()
+        findViewById<TextView>(R.id.myParcelviewContent).text = content
+        findViewById<TextView>(R.id.myParcelviewdlvryAddrs).text = dlvryAddress
+        findViewById<TextView>(R.id.myParcelviewSpclIns).text = instructions
+        findViewById<TextView>(R.id.myParcelviewRecName).text = recipient
+        findViewById<TextView>(R.id.myParcelviewRecNum).text = rcptContactNo
+        findViewById<TextView>(R.id.myParcelviewDimension).text = dimensions
         // findViewById<TextView>(R.id.viewdlvryAddrs1).text = "" // Set this if needed
-        findViewById<TextView>(R.id.viewCity).text = city
-        findViewById<TextView>(R.id.viewCountry).text = country
-        findViewById<TextView>(R.id.viewWeight).text = weight
-        findViewById<TextView>(R.id.viewCusName).text = createdName
-        findViewById<TextView>(R.id.viewCusNum).text = createdContactNo
+        findViewById<TextView>(R.id.myParcelviewCity).text = city
+        findViewById<TextView>(R.id.myParcelviewCountry).text = country
+        findViewById<TextView>(R.id.myParcelviewWeight).text = weight
+
 
         // Inside your DetailActivity's `onCreate` method
         // fetchCustomerDetails(createdBy)
         val imageBase64 = HomeItemImageSingleton.itemImageBase64
-        val imageView = findViewById<ImageView>(R.id.detailImage)
+        val imageView = findViewById<ImageView>(R.id.myParceldetailImage)
 //        Log.d("Image", "ImageBase64 size: ${imageBase64?.length}")
 
         if (imageBase64 != null && imageBase64.isNotEmpty()) {

@@ -63,7 +63,7 @@
                 app:cardElevation="8dp">
 
                 <ImageView
-                    android:id="@+id/detailImage"
+                    android:id="@+id/myParceldetailImage"
                     android:layout_width="380dp"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -73,7 +73,7 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/viewTxtUrgent"
+                android:id="@+id/myParcelviewTxtUrgent"
                 style="@style/txtPoppinsmedium12_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                     tools:text="Charge :" />
 
                 <TextView
-                    android:id="@+id/viewChrge"
+                    android:id="@+id/myParcelviewChrge"
                     style="@style/txtPoppinsmedium12_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
                     tools:text="Deliver Before :" />
 
                 <TextView
-                    android:id="@+id/viewdlvrydate"
+                    android:id="@+id/myParcelviewdlvrydate"
                     style="@style/txtPoppinsmedium12_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
                     tools:text="Category :" />
 
                 <TextView
-                    android:id="@+id/viewCategory"
+                    android:id="@+id/myParcelviewCategory"
                     style="@style/txtPoppinsmedium12_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
                     tools:text="Content :" />
 
                 <TextView
-                    android:id="@+id/viewContent"
+                    android:id="@+id/myParcelviewContent"
                     style="@style/txtPoppinsmedium12_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -217,7 +217,7 @@
                     tools:text="Value :" />
 
                 <TextView
-                    android:id="@+id/viewValue"
+                    android:id="@+id/myParcelviewValue"
                     style="@style/txtPoppinsmedium12_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -244,7 +244,7 @@
                     tools:text="Weight :" />
 
                 <TextView
-                    android:id="@+id/viewWeight"
+                    android:id="@+id/myParcelviewWeight"
                     style="@style/txtPoppinsmedium12_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -271,7 +271,7 @@
                     tools:text="Dimension :" />
 
                 <TextView
-                    android:id="@+id/viewDimension"
+                    android:id="@+id/myParcelviewDimension"
                     style="@style/txtPoppinsmedium12_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -305,7 +305,7 @@
                         tools:text="Delivery Address :" />
 
                     <TextView
-                        android:id="@+id/viewdlvryAddrs"
+                        android:id="@+id/myParcelviewdlvryAddrs"
                         style="@style/txtPoppinsmedium12_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -320,7 +320,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
-                        android:id="@+id/viewCity"
+                        android:id="@+id/myParcelviewCity"
                         style="@style/txtPoppinsmedium12_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -330,7 +330,7 @@
                         tools:text="" />
 
                     <TextView
-                        android:id="@+id/viewCountry"
+                        android:id="@+id/myParcelviewCountry"
                         style="@style/txtPoppinsmedium12_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -360,7 +360,7 @@
                     tools:text="Receptient :" />
 
                 <TextView
-                    android:id="@+id/viewRecName"
+                    android:id="@+id/myParcelviewRecName"
                     style="@style/txtPoppinsmedium12_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -387,7 +387,7 @@
                     tools:text="Receptient Number :" />
 
                 <TextView
-                    android:id="@+id/viewRecNum"
+                    android:id="@+id/myParcelviewRecNum"
                     style="@style/txtPoppinsmedium12_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -414,7 +414,7 @@
                     tools:text="Special Instructions :" />
 
                 <TextView
-                    android:id="@+id/viewSpclIns"
+                    android:id="@+id/myParcelviewSpclIns"
                     style="@style/txtPoppinsmedium12_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

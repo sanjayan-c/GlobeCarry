@@ -21,7 +21,6 @@ class MyParcel : Fragment() {
         val view = inflater.inflate(R.layout.my_parcel_view, container, false)
 
         val card3 = view.findViewById<RelativeLayout>(R.id.pending_list)
-        val card4 = view.findViewById<RelativeLayout>(R.id.sent_list)
         val myParcelLayout = view.findViewById<RelativeLayout>(R.id.my_parcel)
         myParcelLayout.setOnClickListener {
             val fragment = MyParcelsFragment()  // Create an instance of your fragment

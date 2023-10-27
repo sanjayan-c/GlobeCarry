@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.globe_carry.DetailActivity
 import com.example.globe_carry.HomeItems
+import com.example.globe_carry.MyParcelDetails
 import com.example.globe_carry.R
 
 class MyParcelItemAdapter (private var data: List<HomeItems>) :
@@ -76,7 +77,7 @@ class MyParcelItemAdapter (private var data: List<HomeItems>) :
         holder.myParcelItemListLinear1.setOnClickListener {
             // Handle click event here
             val context = holder.itemView.context
-            val intent = Intent(context, DetailActivity::class.java)
+            val intent = Intent(context, MyParcelDetails::class.java)
             intent.putExtra("postId", item.id)
             intent.putExtra("urgent", item.urgent)
             intent.putExtra("city", item.city)
@@ -88,7 +89,6 @@ class MyParcelItemAdapter (private var data: List<HomeItems>) :
             intent.putExtra("dlvryDate", item.dlvryDate)
             intent.putExtra("value", item.value)
             intent.putExtra("createdDate", item.createdDate)
-            intent.putExtra("image", item.image)
             intent.putExtra("dlvryAddress", item.dlvryAddress)
             intent.putExtra("instructions", item.instructions)
             intent.putExtra("recipient", item.recipient)
@@ -99,18 +99,6 @@ class MyParcelItemAdapter (private var data: List<HomeItems>) :
 
         }
 
-
-        Log.d("myParcelItemsAdapter", "Item ID: ${item.id}")
-        Log.d("myParcelItemsAdapter", "City: ${item.city}")
-        Log.d("myParcelItemsAdapter", "Country: ${item.country}")
-        Log.d("myParcelItemsAdapter", "Category: ${item.category}")
-        Log.d("myParcelItemsAdapter", "Weight: ${item.weight}")
-        Log.d("myParcelItemsAdapter", "Dimensions: ${item.dimension}")
-        Log.d("myParcelItemsAdapter", "Total Charge: ${item.ttlCharge}")
-        Log.d("myParcelItemsAdapter", "Delivery Date: ${item.dlvryDate}")
-        Log.d("myParcelItemsAdapter", "Created Date: ${item.createdDate}")
-        Log.d("myParcelItemsAdapter", "recipient: ${item.recipient}")
-        Log.d("myParcelItemsAdapter", "Urgent: $urgent")
     }
 
     override fun getItemCount(): Int {
