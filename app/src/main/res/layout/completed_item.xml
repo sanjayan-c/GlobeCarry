@@ -16,13 +16,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/myParcelItemListLinear1"
+            android:id="@+id/completeItemListLinear1"
             tools:ignore="MissingConstraints"
             android:gravity="center"
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/myParcelItemNo"
+                android:id="@+id/completeItemNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -35,13 +35,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:id="@+id/myParcelItemArea"
+                android:id="@+id/completeItemArea"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="end"
                 android:gravity="end">
 
                 <TextView
-                    android:id="@+id/myParcelItemCity"
+                    android:id="@+id/completeItemCity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -52,7 +52,7 @@
                     android:text="Paris"
                     android:layout_marginEnd="8dp" />
                 <TextView
-                    android:id="@+id/myParcelItemCountry"
+                    android:id="@+id/completeItemCountry"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -67,8 +67,8 @@
 
             <TextView
                 android:layout_marginTop="10dp"
-                android:id="@+id/myParcelItemType"
-                android:layout_below="@+id/myParcelItemNo"
+                android:id="@+id/completedItemType"
+                android:layout_below="@+id/completedItemNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -79,11 +79,11 @@
                 android:text="Clothing, Booking" />
 
             <TextView
-                android:id="@+id/myParcelItemUrgent"
+                android:id="@+id/completeItemUrgent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:layout_alignTop="@+id/myParcelItemType"
+                android:layout_alignTop="@+id/completeItemType"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="end"
                 android:gravity="end"
@@ -91,63 +91,63 @@
                 android:textSize="14sp"
                 android:text="Urgent" />
             <TextView
-                android:id="@+id/myParcelItemWeight"
+                android:id="@+id/completeItemWeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/myParcelItemType"
+                android:layout_below="@+id/completeItemType"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:text="Weight : " />
             <TextView
-                android:id="@+id/myParcelItemWeight1"
+                android:id="@+id/completeItemWeight1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/myParcelItemWeight"
-                android:layout_alignTop="@+id/myParcelItemWeight"
+                android:layout_toEndOf="@+id/completeItemWeight"
+                android:layout_alignTop="@+id/completeItemWeight"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:text="150 g" />
             <TextView
-                android:id="@+id/myParcelItemDimensions"
+                android:id="@+id/completeItemDimensions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/myParcelItemWeight"
+                android:layout_below="@+id/completeItemWeight"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:text="Dimension : " />
             <TextView
-                android:id="@+id/myParcelItemDimensions1"
+                android:id="@+id/completeItemDimensions1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/myParcelItemDimensions"
-                android:layout_alignTop="@+id/myParcelItemDimensions"
+                android:layout_toEndOf="@+id/completeItemDimensions"
+                android:layout_alignTop="@+id/completeItemDimensions"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:text="5 * 8 * 5"/>
             <TextView
-                android:id="@+id/myParcelItemCharge"
+                android:id="@+id/completeItemCharge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:layout_below="@+id/myParcelItemDimensions"
+                android:layout_below="@+id/completeItemDimensions"
                 android:text="Charge : " />
             <TextView
-                android:id="@+id/myParcelItemCharge1"
+                android:id="@+id/completeItemCharge1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/myParcelItemCharge"
-                android:layout_alignTop="@+id/myParcelItemCharge"
+                android:layout_toEndOf="@+id/completeItemCharge"
+                android:layout_alignTop="@+id/completeItemCharge"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:text="LKR 150" />
             <TextView
-                android:id="@+id/myParcelItemDate"
+                android:id="@+id/completeItemDate"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:layout_below="@+id/myParcelItemCharge"
+                android:layout_below="@+id/completeItemCharge"
                 android:text="Delivered : " />
             <TextView
                 android:id="@+id/myParcelDlvryAdrs"
@@ -157,21 +157,21 @@
                 android:text="Desc"
                 android:textSize="18sp" />
             <TextView
-                android:id="@+id/myParcelItemSpclIns"
+                android:id="@+id/completeItemSpclIns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="0"
                 android:text="Desc"
                 android:textSize="18sp" />
             <TextView
-                android:id="@+id/myParcelItemRecName"
+                android:id="@+id/completeItemRecName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="0"
                 android:text="Desc"
                 android:textSize="18sp" />
             <TextView
-                android:id="@+id/myParcelItemRecNum"
+                android:id="@+id/completeItemRecNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="0"
@@ -193,53 +193,54 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/myParcelitemContent"
+                android:id="@+id/completeItemContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="0"
                 android:text="Desc"
                 android:textSize="18sp" />
             <TextView
-                android:id="@+id/myParcelItemValue"
+                android:id="@+id/completeItemValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="0"
                 android:text="Desc"
                 android:textSize="18sp" />
             <ImageView
-                android:id="@+id/myParcelItemImage"
+                android:id="@+id/completeItemImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="0"
                 android:text="Desc"
                 android:textSize="18sp" />
             <TextView
-                android:id="@+id/myParcelItemDlvryDate1"
+                android:id="@+id/completeItemDlvryDate1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/myParcelItemDate"
-                android:layout_alignTop="@+id/myParcelItemDate"
+                android:layout_toEndOf="@+id/completeItemDate"
+                android:layout_alignTop="@+id/completeItemDate"
                 android:textSize="14sp"
                 android:text="27/09/2023" />
             <TextView
-                android:id="@+id/myParcelItemDetails"
+                android:id="@+id/completeItemDetails"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:layout_below="@+id/myParcelItemDate"
+                android:layout_below="@+id/completeItemDate"
                 android:text="Details >" />
             <TextView
-                android:id="@+id/myParcelItemPostDate"
+                android:id="@+id/completeItemPostDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="end"
                 android:gravity="end"
-                android:layout_toEndOf="@+id/myParcelItemDetails"
-                android:layout_alignTop="@+id/myParcelItemDetails"
+                android:layout_toEndOf="@+id/completeItemDetails"
+                android:layout_alignTop="@+id/completeItemDetails"
                 android:textSize="14sp"
                 android:text="11:35   27/09/2023" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
+

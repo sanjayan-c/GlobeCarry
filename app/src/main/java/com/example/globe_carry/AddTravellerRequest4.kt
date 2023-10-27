@@ -118,9 +118,6 @@ class AddTravellerRequest4 : AppCompatActivity() {
                         runOnUiThread {
                             // Show a success message or navigate to another screen
                             Toast.makeText(this, "Data inserted successfully", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, HomeFragment::class.java)
-                            startActivity(intent)
-                            finish()
                         }
 
                     } catch (e: Exception) {

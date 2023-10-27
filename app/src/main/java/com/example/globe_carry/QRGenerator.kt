@@ -61,7 +61,7 @@ class QRGenerator : AppCompatActivity(){
         greenDownload = findViewById(R.id.greenDownlaod)
 
         QRBack.setOnClickListener { // Start the CustomerAccountManagement activity
-           // finish()
+            finish()
         }
         greenDownload.setOnClickListener {
             // Get the Bitmap from the ImageView
